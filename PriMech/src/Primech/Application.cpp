@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "Events/ApplicationEvent.h"
+#include "Log.h"
 
 namespace PriMech {
 	
@@ -11,9 +13,6 @@ namespace PriMech {
 	}
 
 	void Application::Run() {
-		while (true)
-		{
-
-		}
+		
 	}
 }

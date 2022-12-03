@@ -45,10 +45,10 @@ namespace PriMech {
 		bool m_Handled = false;
 	};
 
-	class EventDispatcher {
-		template<typename T>
+	class EventDispatcher {		
 		//returns bool and takes in T reference
 		//T can be any Event type
+		template<typename T>
 		using EventFunction = std::function<bool(T&)>; 
 	public:
 		EventDispatcher(Event& event) : event_(event) {}
@@ -68,7 +68,7 @@ namespace PriMech {
 	};
 
 	//used in the Logging library to easly call ToString() 
-	inline std::ostream& operator<< (std::ostream & os, const Event& e) {
+	inline std::ostream& operator<<(std::ostream& os, const Event& e) {
 		return os << e.ToString();
 	}
 }
