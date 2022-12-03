@@ -4,6 +4,9 @@
     <Filter Include="Primech">
       <UniqueIdentifier>{6D3E8823-D91D-07BF-E235-92954E946D20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primech\Events">
+      <UniqueIdentifier>{B1CD932F-9D9B-8735-862F-F85B729C639A}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Primech.h" />
@@ -15,6 +18,18 @@
     </ClInclude>
     <ClInclude Include="src\Primech\Entrypoint.h">
       <Filter>Primech</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\ApplicationEvent.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\Event.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\KeyEvent.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\MouseEvents.h">
+      <Filter>Primech\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Log.h">
       <Filter>Primech</Filter>

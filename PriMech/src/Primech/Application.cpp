@@ -1,4 +1,6 @@
 #include "Application.h"
+#include "Events/ApplicationEvent.h"
+#include "Log.h"
 
 namespace PriMech {
 	
@@ -11,9 +13,12 @@ namespace PriMech {
 	}
 
 	void Application::Run() {
-		while (true)
-		{
-
+		WindowResizeEvent e(1280, 900);
+		if (e.IsInCategory(EventCategoryApplication)) {
+			PM_INFO(e); //log event
+		}
+		if (e.IsInCategory(EventCategoryInput)) {
+			PM_WARN(e);
 		}
 	}
 }
