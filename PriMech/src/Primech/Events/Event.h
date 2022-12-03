@@ -1,9 +1,7 @@
 #pragma once
 
 #include "PriMech/Core.h"
-
-#include <string>
-#include <functional>
+#include "ppch.h"
 
 namespace PriMech {
 

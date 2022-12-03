@@ -17,6 +17,9 @@ project "PriMech" --Name of SLN
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "ppch.h"
+	pchsource ("PriMech/src/ppch.cpp")
+
 	files {
 		"%{prj.name}/src/**.h", -- ** = recursively, find all files that end wiht .h
 		"%{prj.name}/src/**.cpp" --all files that end with .cpp
