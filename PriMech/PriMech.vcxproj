@@ -151,6 +151,8 @@
     <ClInclude Include="src\Primech\Core.h" />
     <ClInclude Include="src\Primech\Entrypoint.h" />
     <ClInclude Include="src\Primech\Events\Event.h" />
+    <ClInclude Include="src\Primech\Events\KeyEvent.h" />
+    <ClInclude Include="src\Primech\Events\MouseEvents.h" />
     <ClInclude Include="src\Primech\Log.h" />
   </ItemGroup>
   <ItemGroup>
