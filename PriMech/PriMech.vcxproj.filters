@@ -19,6 +19,7 @@
     <ClInclude Include="src\Primech\Log.h">
       <Filter>Primech</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primech\Events\Event.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Primech\Application.cpp">
