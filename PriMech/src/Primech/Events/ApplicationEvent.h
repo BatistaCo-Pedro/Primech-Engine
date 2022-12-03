@@ -14,7 +14,7 @@ namespace PriMech {
 
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "MouseMovedEvent: " << width_ << "," << height_;
+			ss << "WindowResizeEvent: " << width_ << "," << height_;
 			return ss.str();
 		}
 

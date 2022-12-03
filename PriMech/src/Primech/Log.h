@@ -31,12 +31,7 @@ namespace PriMech {
 #define PM_CORE_CRITICAL(...)	::PriMech::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 //client Log macros
-#define PM_DEBUG(...)		::PriMech::Log::GetClientLogger()->debug(__VA_ARGS__)
-#define PM_TRACE(...)		::PriMech::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define PM_INFO(...)		::PriMech::Log::GetClientLogger()->info(__VA_ARGS__)
-#define PM_WARN(...)		::PriMech::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define PM_ERROR(...)		::PriMech::Log::GetClientLogger()->error(__VA_ARGS__)
-#define PM_CRITICAL(...)	::PriMech::Log::GetClientLogger()->critical(__VA_ARGS__)
-
-//if distribution build
-//#define PM_CORE_WARN
+#define PM_INFO(...)			::PriMech::Log::GetClientLogger()->info(__VA_ARGS__)
+#define PM_WARN(...)			::PriMech::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define PM_ERROR(...)			::PriMech::Log::GetClientLogger()->error(__VA_ARGS__)
+#define PM_CRITICAL(...)		::PriMech::Log::GetClientLogger()->critical(__VA_ARGS__)
