@@ -15,5 +15,4 @@ Intermediates/
 **.csproj
 
 # Directories
-PriMech/vendor/VulkanSDK
-scripts/__pycache__
+PriMech/vendor/
