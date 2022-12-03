@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Event.h"
-
 #include <sstream>
 
-namespace PriMech{
+namespace PriMech {
 
 	class PRIMECH_API MouseMovedEvent : public Event {
 	public:

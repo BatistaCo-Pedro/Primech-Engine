@@ -16,6 +16,7 @@ namespace PriMech {
 		int m_KeyCode;
 	};
 
+
 	class PRIMECH_API KeyPressedEvent : public KeyEvent {
 	public:
 		KeyPressedEvent(int keycode, int repeatCount) : KeyEvent(keycode), repeatCount_(repeatCount) {}
@@ -30,6 +31,7 @@ namespace PriMech {
 	private:
 		int repeatCount_;
 	};
+
 
 	class PRIMECH_API KeyReleasedEvent : public KeyEvent {
 	public:
