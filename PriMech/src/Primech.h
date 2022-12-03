@@ -3,7 +3,7 @@
 // FOR USE BY PRIMECH APPS
 
 #include "Primech/Application.h"
-#include <stdio.h>
+#include "Primech/Log.h"
 
 //---------------Entry Point--------------------
 

@@ -11,12 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Primech\Log.h" />
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h" />
     <ClInclude Include="src\Primech\Core.h" />
     <ClInclude Include="src\Primech\Entrypoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Primech\Log.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
