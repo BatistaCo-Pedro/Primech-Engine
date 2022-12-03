@@ -2,10 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\bfo\source\repos\PriMech\bin\Debug-x64\PriMech\PriMech.dll</FullPath>
+      <FullPath>C:\Users\pedro\source\repos\BatistaCo-Pedro\Primech-Engine\bin\Debug-x64\PriMech\PriMech.dll</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>C:\Users\bfo\source\repos\PriMech\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
+      <FullPath>C:\Users\pedro\source\repos\BatistaCo-Pedro\Primech-Engine\bin\Debug-x64\Sandbox\Sandbox.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
