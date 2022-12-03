@@ -146,6 +146,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\pcph.h" />
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h" />
     <ClInclude Include="src\Primech\Core.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="src\Primech\Log.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\pcph.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />
     <ClCompile Include="src\Primech\Log.cpp" />
   </ItemGroup>
