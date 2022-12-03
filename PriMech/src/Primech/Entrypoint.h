@@ -6,7 +6,7 @@ extern PriMech::Application* PriMech::CreateApplication();
 
 int main(int argc, char** argv) {
 	PriMech::Log::Init();
-	PM_CORE_WARN("Initalized ClientLog");
+	PM_CORE_WARN("Initalized CoreLog");
 	int a = 5;
 	PM_INFO("App var = {0}", a);
 
