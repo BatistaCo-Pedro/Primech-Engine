@@ -7,10 +7,9 @@ extern PriMech::Application* PriMech::CreateApplication();
 int main(int argc, char** argv) {
 	PriMech::Log::Init();
 	PM_CORE_WARN("Initalized CoreLog");
-	int a = 5;
-	PM_INFO("App var = {0}", a);
 
-	auto app = PriMech::CreateApplication();
+	//calls extern method and Application constructor
+	auto app = PriMech::CreateApplication(); 
 	app->Run();
 	delete app;
 }

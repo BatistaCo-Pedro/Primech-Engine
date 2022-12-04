@@ -9,6 +9,7 @@ namespace PriMech {
 	Application::Application() {
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
 		pWindow_->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
+		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
 	}
 
 	Application::~Application() {}
@@ -29,12 +30,6 @@ namespace PriMech {
 
 	void Application::Run() {
 		WindowResizeEvent e(1280, 900);
-		if (e.IsInCategory(EventCategoryApplication)) {
-			PM_INFO(e); //log event
-		}
-		if (e.IsInCategory(EventCategoryInput)) {
-			PM_WARN(e);
-		}
 
 		while (running_) {
 			pWindow_->OnUpdate();

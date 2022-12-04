@@ -121,12 +121,7 @@ namespace PriMech{
 	}
 
 	void WindowsWindow::SetVSync(bool enabled) {
-		if (enabled) {
-			glfwSwapInterval(1);
-		}
-		else {
-			glfwSwapInterval(0);
-		}
+		enabled ? glfwSwapInterval(1) : glfwSwapInterval(0);
 		wData_.VSync = enabled;
 	}
 

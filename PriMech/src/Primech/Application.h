@@ -20,6 +20,6 @@ namespace PriMech {
 		bool running_ = true;
 	};
 
-	// to be defined in client
+	//defined in client [e.g Sandbox]
 	Application* CreateApplication();
 }

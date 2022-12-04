@@ -152,6 +152,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\LayerStack\Layer.h" />
+    <ClInclude Include="src\LayerStack\LayerStack.h" />
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h" />
     <ClInclude Include="src\Primech\Core.h" />
@@ -166,6 +168,8 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\LayerStack\Layer.cpp" />
+    <ClCompile Include="src\LayerStack\LayerStack.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />
     <ClCompile Include="src\Primech\Log.cpp" />
     <ClCompile Include="src\ppch.cpp">
