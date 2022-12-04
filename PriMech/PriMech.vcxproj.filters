@@ -35,6 +35,8 @@
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
+    <ClInclude Include="src\Primech\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Primech\Application.cpp">
@@ -44,5 +46,6 @@
       <Filter>Primech</Filter>
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
 </Project>

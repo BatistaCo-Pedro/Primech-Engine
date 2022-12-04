@@ -9,6 +9,13 @@ workspace "PriMech"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+-- Include directories relative to root folder (SLN)
+includeDir = {}
+includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
+
+-- include the other premake5.lua
+include "PriMech/vendor/GLFW"
+
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
 	kind "SharedLib" --DLL
@@ -27,7 +34,13 @@ project "PriMech" --Name of SLN
 
 	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"%{includeDir.GLFW}"
+	}
+
+	links {
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

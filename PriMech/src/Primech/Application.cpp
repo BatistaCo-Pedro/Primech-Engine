@@ -1,12 +1,11 @@
 #include "ppch.h"
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
-#include "Log.h"
 
 namespace PriMech {
 	
 	Application::Application() {
-
+		pWindow_ = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application() {
@@ -20,6 +19,10 @@ namespace PriMech {
 		}
 		if (e.IsInCategory(EventCategoryInput)) {
 			PM_WARN(e);
+		}
+
+		while (running_) {
+			pWindow_->OnUpdate();
 		}
 	}
 }
