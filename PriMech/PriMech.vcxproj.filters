@@ -28,15 +28,15 @@
     <ClInclude Include="src\Primech\Events\KeyEvent.h">
       <Filter>Primech\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Events\MouseEvents.h">
-      <Filter>Primech\Events</Filter>
-    </ClInclude>
     <ClInclude Include="src\Primech\Log.h">
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
     <ClInclude Include="src\Primech\Window.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Primech\LayerStack\Layer.h" />
+    <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
+    <ClInclude Include="src\Primech\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Primech\Application.cpp">
@@ -47,5 +47,7 @@
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Primech\LayerStack\Layer.cpp" />
+    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp" />
   </ItemGroup>
 </Project>

@@ -39,6 +39,8 @@ namespace PriMech {
 		inline bool IsInCategory(EventCategory category) {
 			return GetCategoryFlags() & category;  //check the current category for the searched one
 		}
+
+		inline bool IsHandled() { return m_Handled; }
 	protected:
 		bool m_Handled = false;
 	};

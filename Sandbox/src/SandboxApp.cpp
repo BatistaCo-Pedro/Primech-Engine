@@ -1,24 +1,29 @@
 #include <Primech.h>
 
+class ExampleLayer : public PriMech::Layer {
+public:
+	ExampleLayer() : Layer("Example") {}
+
+	void OnUpdate() override {
+		PM_INFO("ExampleLayer::Update");
+	}
+
+	void OnEvent(PriMech::Event& event) override {
+		PM_INFO("{0}", event);
+	}
+};
+
 class Sandbox : public PriMech::Application
 {
 public:
-	Sandbox();
-	~Sandbox();
+	Sandbox() {
+		PushLayer(new ExampleLayer());
+	}
+	~Sandbox() {}
 
 private:
 
 };
-
-Sandbox::Sandbox()
-{
-
-}
-
-Sandbox::~Sandbox()
-{
-
-}
 
 PriMech::Application* PriMech::CreateApplication() {
 	return new Sandbox();

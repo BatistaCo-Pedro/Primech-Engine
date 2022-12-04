@@ -83,7 +83,7 @@
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -152,6 +152,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Primech\LayerStack\Layer.h" />
+    <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h" />
     <ClInclude Include="src\Primech\Core.h" />
@@ -166,6 +168,8 @@
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Primech\LayerStack\Layer.cpp" />
+    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />
     <ClCompile Include="src\Primech\Log.cpp" />
     <ClCompile Include="src\ppch.cpp">
