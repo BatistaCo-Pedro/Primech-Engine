@@ -4,6 +4,7 @@
 
 #include "Primech/Application.h"
 #include "Primech/Log.h"
+#include "Primech/LayerStack/Layer.h"
 
 //---------------Entry Point--------------------
 

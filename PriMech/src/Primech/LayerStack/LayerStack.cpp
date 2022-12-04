@@ -28,8 +28,8 @@ namespace PriMech {
 		}
 	}
 	
-	void LayerStack::PopLayer(Layer* layer) {
-		auto iterator = std::find(layers_.begin(), layers_.end(), layer);
+	void LayerStack::PopOverlay(Layer* overlay) {
+		auto iterator = std::find(layers_.begin(), layers_.end(), overlay);
 		if (iterator != layers_.end()) { layers_.erase(iterator); }
 	}
 }

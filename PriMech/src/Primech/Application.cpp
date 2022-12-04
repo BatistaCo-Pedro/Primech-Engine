@@ -14,6 +14,14 @@ namespace PriMech {
 
 	Application::~Application() {}
 
+	void Application::PushLayer(Layer* layer) {
+		layerStack_.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay) {
+		layerStack_.PushOverlay(overlay);
+	}
+
 	void Application::OnEvent(Event& event) {
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
@@ -26,13 +34,19 @@ namespace PriMech {
 		else {
 			PM_CORE_DEBUG(event); //mouse events in blue
 		}
+
+		for (auto iterator = layerStack_.end(); iterator != layerStack_.begin();) {
+			(*--iterator)->OnEvent(event);
+			if (event.IsHandled()) break;
+		}
 	}
 
 	void Application::Run() {
-		WindowResizeEvent e(1280, 900);
-
 		while (running_) {
 			pWindow_->OnUpdate();
+			for (Layer* layer : layerStack_) {
+				layer->OnUpdate();
+			}
 		}
 	}
 
