@@ -1,3 +1,4 @@
+#include "ppch.h"
 #include "Log.h"
 
 namespace PriMech {
