@@ -1,9 +1,7 @@
 #pragma once
 
 #include "PriMech/Core.h"
-
-#include <string>
-#include <functional>
+#include "ppch.h"
 
 namespace PriMech {
 
@@ -17,10 +15,10 @@ namespace PriMech {
 
 	enum EventCategory {
 		None = 0,
-		EventCategoryApplication = BIT(0),
+		EventCategoryApplication = BIT(0), 
 		EventCategoryInput = BIT(1),
 		EventCategoryKeyboard = BIT(2),
-		EventCategoryMouse= BIT(3),
+		EventCategoryMouse= BIT(3), 
 		EventCategoryMouseButton= BIT(4),
 	};
 

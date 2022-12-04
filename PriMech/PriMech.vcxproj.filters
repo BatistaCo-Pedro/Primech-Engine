@@ -34,7 +34,7 @@
     <ClInclude Include="src\Primech\Log.h">
       <Filter>Primech</Filter>
     </ClInclude>
-    <ClInclude Include="src\pcph.h" />
+    <ClInclude Include="src\ppch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Primech\Application.cpp">
@@ -43,6 +43,6 @@
     <ClCompile Include="src\Primech\Log.cpp">
       <Filter>Primech</Filter>
     </ClCompile>
-    <ClCompile Include="src\pcph.cpp" />
+    <ClCompile Include="src\ppch.cpp" />
   </ItemGroup>
 </Project>
