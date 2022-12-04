@@ -17,7 +17,7 @@ namespace PriMech {
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
-		//Printign all events for debugging purposes
+		//Printing all events for debugging purposes
 		if (event.IsInCategory(EventCategoryApplication) ||
 			event.IsInCategory(EventCategoryKeyboard)) {
 			PM_CORE_TRACE(event); //keyboard and window events in white
