@@ -1,42 +1,53 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Quelldateien">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Primech">
+      <UniqueIdentifier>{6D3E8823-D91D-07BF-E235-92954E946D20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Ressourcendateien">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Primech\Events">
+      <UniqueIdentifier>{B1CD932F-9D9B-8735-862F-F85B729C639A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Primech\Core.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
+    <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Primech</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech.h">
-      <Filter>Headerdateien</Filter>
+    <ClInclude Include="src\Primech\Core.h">
+      <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Entrypoint.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Primech</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\ApplicationEvent.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\Event.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Events\KeyEvent.h">
+      <Filter>Primech\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Log.h">
-      <Filter>Headerdateien</Filter>
+      <Filter>Primech</Filter>
     </ClInclude>
+    <ClInclude Include="src\ppch.h" />
+    <ClInclude Include="src\Primech\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\Primech\LayerStack\Layer.h" />
+    <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
+    <ClInclude Include="src\Primech\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Primech\Application.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Primech</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\Log.cpp">
-      <Filter>Quelldateien</Filter>
+      <Filter>Primech</Filter>
     </ClCompile>
+    <ClCompile Include="src\ppch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\Primech\LayerStack\Layer.cpp" />
+    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp" />
   </ItemGroup>
 </Project>

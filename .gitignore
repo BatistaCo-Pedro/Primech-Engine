@@ -1,6 +1,7 @@
 # Binaries
 **/bin/
-bin-int/
+[Bb]in-int/
+[Bb]in
 Intermediates/
 
 # Hazel files
@@ -15,5 +16,4 @@ Intermediates/
 **.csproj
 
 # Directories
-PriMech/vendor/VulkanSDK
-scripts/__pycache__
+PriMech/vendor/
