@@ -54,7 +54,7 @@ namespace PriMech {
 		template<typename T>
 		bool Dispatch(EventFunction<T> func) {
 			//check if eventtype passed to constructor is equal to the eventtype of the function<T>
-			if (event_.GetEventType == T::GetStaticEventType()) {
+			if (event_.GetEventType() == T::GetStaticType()) {
 				//call function to determine if event was handled
 				event_.m_Handled = func(*(T*)&event_);
 				return true;

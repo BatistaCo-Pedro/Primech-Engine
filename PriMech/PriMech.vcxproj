@@ -159,7 +159,7 @@
     <ClInclude Include="src\Primech\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Primech\Events\Event.h" />
     <ClInclude Include="src\Primech\Events\KeyEvent.h" />
-    <ClInclude Include="src\Primech\Events\MouseEvents.h" />
+    <ClInclude Include="src\Primech\Events\MouseEvent.h" />
     <ClInclude Include="src\Primech\Log.h" />
     <ClInclude Include="src\ppch.h" />
     <ClInclude Include="src\Primech\Window.h" />
