@@ -55,6 +55,7 @@ project "PriMech" --Name of SLN
 		defines {
 			"PM_PLATFORM_WINDOWS",
 			"PRIMECH_BUILD_DLL",
+			"GLFW_INCLUDE_NONE",
 		}
 
 		postbuildcommands {
