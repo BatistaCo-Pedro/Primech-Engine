@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 
+#include <glad/glad.h>
+
 namespace PriMech {
 	
 #define BIND_EVENT_FUNCTION(x)	std::bind(&x, this, std::placeholders::_1)
@@ -10,6 +12,9 @@ namespace PriMech {
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
 		pWindow_->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
+
+		unsigned int id;
+		glGenVertexArrays(1, &id);
 	}
 
 	Application::~Application() {}

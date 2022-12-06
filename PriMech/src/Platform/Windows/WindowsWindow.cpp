@@ -5,6 +5,8 @@
 #include <Primech/Events/KeyEvent.h>
 #include <Primech/Events/MouseEvent.h>
 
+#include <glad/glad.h>
+
 namespace PriMech{
 	static bool s_GLFWInitialized = false;
 
@@ -39,6 +41,9 @@ namespace PriMech{
 
 		window_ = glfwCreateWindow((int)props.width, (int)props.height, wData_.title_.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(window_);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		PM_CORE_ASSERT(status, "Failed to initialize glad")
+
 		glfwSetWindowUserPointer(window_, &wData_);
 		SetVSync(true);
 

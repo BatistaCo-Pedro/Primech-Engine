@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Primech">
       <UniqueIdentifier>{6D3E8823-D91D-07BF-E235-92954E946D20}</UniqueIdentifier>
     </Filter>
     <Filter Include="Primech\Events">
       <UniqueIdentifier>{B1CD932F-9D9B-8735-862F-F85B729C639A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primech\LayerStack">
+      <UniqueIdentifier>{2F54F692-1B38-B7E8-8498-B13B709BA16A}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h">
       <Filter>Primech</Filter>
@@ -28,26 +40,39 @@
     <ClInclude Include="src\Primech\Events\KeyEvent.h">
       <Filter>Primech\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primech\Events\MouseEvent.h">
+      <Filter>Primech\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\LayerStack\Layer.h">
+      <Filter>Primech\LayerStack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\LayerStack\LayerStack.h">
+      <Filter>Primech\LayerStack</Filter>
+    </ClInclude>
     <ClInclude Include="src\Primech\Log.h">
       <Filter>Primech</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primech\Window.h">
+      <Filter>Primech</Filter>
+    </ClInclude>
     <ClInclude Include="src\ppch.h" />
-    <ClInclude Include="src\Primech\Window.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\Primech\LayerStack\Layer.h" />
-    <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
-    <ClInclude Include="src\Primech\Events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\Primech\Application.cpp">
       <Filter>Primech</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\LayerStack\Layer.cpp">
+      <Filter>Primech\LayerStack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp">
+      <Filter>Primech\LayerStack</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\Log.cpp">
       <Filter>Primech</Filter>
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\Primech\LayerStack\Layer.cpp" />
-    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp" />
   </ItemGroup>
 </Project>

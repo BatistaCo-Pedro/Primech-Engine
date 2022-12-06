@@ -1,6 +1,6 @@
 #pragma once
-#include "GLFW/glfw3.h"
 #include "Primech/Window.h"
+#include <GLFW/glfw3.h>
 
 namespace PriMech {
 	class WindowsWindow : public Window {

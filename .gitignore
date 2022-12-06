@@ -2,9 +2,10 @@
 **/bin/
 [Bb]in-int/
 [Bb]in
+**/bin-int/
 Intermediates/
 
-# Hazel files
+# PriMech files
 *.log
 
 # Visual Studio files and folder
@@ -14,6 +15,3 @@ Intermediates/
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
-
-# Directories
-PriMech/vendor/

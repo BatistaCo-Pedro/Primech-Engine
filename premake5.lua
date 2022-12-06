@@ -12,9 +12,11 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (SLN)
 includeDir = {}
 includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
+includeDir["glad"] = "PriMech/vendor/glad/include"
 
 -- include the other premake5.lua
 include "PriMech/vendor/GLFW"
+include "PriMech/vendor/glad"
 
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
@@ -35,11 +37,13 @@ project "PriMech" --Name of SLN
 	includedirs {
 		"%{prj.name}/vendor/spdlog/include",
 		"%{prj.name}/src",
-		"%{includeDir.GLFW}"
+		"%{includeDir.GLFW}",
+		"%{includeDir.glad}",
 	}
 
 	links {
 		"GLFW",
+		"glad",
 		"opengl32.lib"
 	}
 
@@ -51,6 +55,7 @@ project "PriMech" --Name of SLN
 		defines {
 			"PM_PLATFORM_WINDOWS",
 			"PRIMECH_BUILD_DLL",
+			"GLFW_INCLUDE_NONE",
 		}
 
 		postbuildcommands {
