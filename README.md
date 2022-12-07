@@ -12,29 +12,29 @@ This is a personal Project, but feel free to fork this repo and play around with
 Open the Folder where you want to clone PriMech Engine.
 Create a command line on that folder and clone this Repo recursively.
 ```console 
-$ git clone --recursive https://github.com/BatistaCo-Pedro/Primech-Engine.git
+git clone --recursive https://github.com/BatistaCo-Pedro/Primech-Engine.git
 ```
 
 Change Folders to the git Folder
 ```console 
-$ cd Primech-Engine
+cd Primech-Engine
 ```
 
 Create VS2022 Project
 ```console 
-$ generateProjects.bat
+generateProjects.bat
 ```
 
 Open the VS2022 SLN
 ```console 
-$ PriMech.sln
+PriMech.sln
 ```
 
 ##### Quick Copy
 ```console 
-$ mkdir C:\dev && cd C:\dev
-$ git clone --recursive https://github.com/BatistaCo-Pedro/Primech-Engine.git
-$ cd Primech-Engine && generateProjects.bat && PriMech.sln
+mkdir C:\dev && cd C:\dev
+git clone --recursive https://github.com/BatistaCo-Pedro/Primech-Engine.git
+cd Primech-Engine && generateProjects.bat && PriMech.sln
 ```
 
 The first time the Project is run it wont work, this occurs because Sandbox doesnt know PriMechs dll at first. 
