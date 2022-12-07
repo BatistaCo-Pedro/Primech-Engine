@@ -26,5 +26,5 @@ private:
 };
 
 PriMech::Application* PriMech::CreateApplication() {
-	return new Sandbox();
+	return new Sandbox(); //Sandbox is of type Application as it inherits from it
 }

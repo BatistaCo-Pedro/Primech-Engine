@@ -8,9 +8,13 @@ namespace PriMech {
 	
 #define BIND_EVENT_FUNCTION(x)	std::bind(&x, this, std::placeholders::_1)
 
+	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
 	Application::Application() {
+		//create Window as graphical interface, event callback funcitons are defined in the Window class
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
+		//Bind the Application defined OnEvent Method to the callback var of Window
 		pWindow_->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
+		//Call the Logger; Logging macros are defined in Log.h
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
 
 		unsigned int id;
@@ -19,19 +23,22 @@ namespace PriMech {
 
 	Application::~Application() {}
 
+	//Push layer to the starting side of the stack
 	void Application::PushLayer(Layer* layer) {
 		layerStack_.PushLayer(layer);
 	}
 
+	//Push layer to the ending side of the stack
 	void Application::PushOverlay(Layer* overlay) {
 		layerStack_.PushOverlay(overlay);
 	}
 
+	//This Method is binded to Window callback and handles events
 	void Application::OnEvent(Event& event) {
 		EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
-		//Printing all events for debugging purposes
+		//Logging all events for debugging purposes
 		if (event.IsInCategory(EventCategoryApplication) ||
 			event.IsInCategory(EventCategoryKeyboard)) {
 			PM_CORE_TRACE(event); //keyboard and window events in white
@@ -40,12 +47,14 @@ namespace PriMech {
 			PM_CORE_DEBUG(event); //mouse events in blue
 		}
 
+		//handle events on the layer
 		for (auto iterator = layerStack_.end(); iterator != layerStack_.begin();) {
 			(*--iterator)->OnEvent(event);
 			if (event.IsHandled()) break;
 		}
 	}
 
+	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
 			pWindow_->OnUpdate();

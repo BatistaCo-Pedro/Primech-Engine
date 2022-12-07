@@ -7,7 +7,7 @@
 
 #include <glad/glad.h>
 
-namespace PriMech{
+namespace PriMech { 
 	static bool s_GLFWInitialized = false;
 
 	static void glfwErrorCallback(int error, const char* description) {
@@ -23,29 +23,35 @@ namespace PriMech{
 	}
 	WindowsWindow::~WindowsWindow() {}
 
+	//Gets called by the constructor on object initalization
 	void WindowsWindow::Init(const WindowProps& props) {
 		wData_.title_ = props.title;
 		wData_.height_ = props.height;
 		wData_.width_ = props.width;
 
-		PM_CORE_DEBUG("Craeting Window {0} ({1}, {2})", props.title, props.width, props.height);
+		PM_CORE_DEBUG("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);
 	
 		if (!s_GLFWInitialized) {
-			//TODO terminate glfw on system shutdown
 			int success = glfwInit();
 			PM_CORE_ASSERT(scucces, "Could not initalize GLFW!");
+			//set callback function to be called in case of error
 			glfwSetErrorCallback(glfwErrorCallback);
 
 			s_GLFWInitialized = true;
 		}
 
+		//create the actual window and save it to a variable of type GLFWwindow
 		window_ = glfwCreateWindow((int)props.width, (int)props.height, wData_.title_.c_str(), nullptr, nullptr);
+
+		//"focus* on the created window
 		glfwMakeContextCurrent(window_);
+		// Load all OpenGL functions using the glfw loader function
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PM_CORE_ASSERT(status, "Failed to initialize glad")
 
+		//set the Window Pointer to the WindowsWindow::WindowData struct
 		glfwSetWindowUserPointer(window_, &wData_);
-		SetVSync(true);
+		SetVSync(true); //cap frames/sec to monitors refresh rate (VSync)
 
 		//Set GLFW callbacks , Lambda function --> []()
 		glfwSetWindowSizeCallback(window_, [](GLFWwindow* glfwWindow, int width, int height) {
@@ -53,13 +59,13 @@ namespace PriMech{
 			WindowResizeEvent event(width, height);
 			data.width_ = width;
 			data.height_ = height;
-			data.EventCallback(event);
+			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 		});
 
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* glfwWindow) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
 			WindowCloseEvent event;
-			data.EventCallback(event);
+			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 		});
 
 		glfwSetKeyCallback(window_, [](GLFWwindow* glfwWindow, int key, int scancode, int action, int mods) {
@@ -69,17 +75,17 @@ namespace PriMech{
 			{
 				case GLFW_PRESS: {
 					KeyPressedEvent event(key, 0);
-					data.EventCallback(event);
+					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 					break;
 				}
 				case GLFW_RELEASE: {
 					KeyReleasedEvent event(key);
-					data.EventCallback(event);
+					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 					break;
 				}
 				case GLFW_REPEAT: {
 					KeyPressedEvent event(key, 1);
-					data.EventCallback(event);
+					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 					break;
 				}
 			}
@@ -92,12 +98,12 @@ namespace PriMech{
 			{
 				case GLFW_PRESS: {
 					MouseButtonPressedEvent event(button);
-					data.EventCallback(event);
+					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 					break;
 				}
 				case GLFW_RELEASE: {
 					MouseButtonReleasedEvent event(button);
-					data.EventCallback(event);
+					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 					break;
 				}
 			}
@@ -106,13 +112,13 @@ namespace PriMech{
 		glfwSetScrollCallback(window_, [](GLFWwindow* glfwWindow, double xOffset, double yOffset) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
 			MouseScrolledEvent event((float)xOffset, (float)yOffset);
-			data.EventCallback(event);
+			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 		});
 
 		glfwSetCursorPosCallback(window_, [](GLFWwindow* glfwWindow, double xPos, double yPos) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
 			MouseMovedEvent event((float)xPos, (float)yPos);
-			data.EventCallback(event);
+			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
 		});
 	}
 
