@@ -13,6 +13,7 @@ namespace PriMech {
 		//create Window as graphical interface, event callback funcitons are defined in the Window class
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
 		//Bind the Application defined OnEvent Method to the callback var of Window
+		//Theres no suitable conversion from OnEvent() to std::function<void(Event&)> so we bind the functions
 		pWindow_->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
 		//Call the Logger; Logging macros are defined in Log.h
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
@@ -33,9 +34,11 @@ namespace PriMech {
 		layerStack_.PushOverlay(overlay);
 	}
 
-	//This Method is binded to Window callback and handles events
+	//This Method is binded to Window callback and is called when an event occurs
 	void Application::OnEvent(Event& event) {
+
 		EventDispatcher dispatcher(event);
+		//Binding once agian becuase no suitable conversion
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
 		//Logging all events for debugging purposes
@@ -48,7 +51,9 @@ namespace PriMech {
 		}
 
 		//handle events on the layer
+		//reverse iterating the layer stack
 		for (auto iterator = layerStack_.end(); iterator != layerStack_.begin();) {
+			//calls OnEvent() from Application e.g. Sandbox
 			(*--iterator)->OnEvent(event);
 			if (event.IsHandled()) break;
 		}
@@ -57,7 +62,7 @@ namespace PriMech {
 	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
-			pWindow_->OnUpdate();
+			pWindow_->OnUpdate(); //updates the frame
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
 			}

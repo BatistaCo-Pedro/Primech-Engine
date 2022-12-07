@@ -9,7 +9,7 @@ public:
 	}
 
 	void OnEvent(PriMech::Event& event) override {
-		PM_INFO("{0}", event);
+		PM_WARN("{0}", event);
 	}
 };
 

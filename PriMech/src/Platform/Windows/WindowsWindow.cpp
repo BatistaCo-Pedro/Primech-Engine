@@ -59,13 +59,13 @@ namespace PriMech {
 			WindowResizeEvent event(width, height);
 			data.width_ = width;
 			data.height_ = height;
-			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
+			data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 		});
 
 		glfwSetWindowCloseCallback(window_, [](GLFWwindow* glfwWindow) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
 			WindowCloseEvent event;
-			data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
+			data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 		});
 
 		glfwSetKeyCallback(window_, [](GLFWwindow* glfwWindow, int key, int scancode, int action, int mods) {
@@ -75,17 +75,17 @@ namespace PriMech {
 			{
 				case GLFW_PRESS: {
 					KeyPressedEvent event(key, 0);
-					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
+					data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 					break;
 				}
 				case GLFW_RELEASE: {
 					KeyReleasedEvent event(key);
-					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
+					data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 					break;
 				}
 				case GLFW_REPEAT: {
 					KeyPressedEvent event(key, 1);
-					data.EventCallback(event); //This calls wData_.Eventcallback whcih is binded to Application OnEvent()
+					data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 					break;
 				}
 			}
@@ -127,8 +127,8 @@ namespace PriMech {
 	}
 
 	void WindowsWindow::OnUpdate() {
-		glfwPollEvents();
-		glfwSwapBuffers(window_);
+		glfwPollEvents(); //check if theres is any pending event and handles it
+		glfwSwapBuffers(window_); //updates the frame based on SwapInterval; 1 for VSync, 0 for all
 	}
 
 	void WindowsWindow::SetVSync(bool enabled) {
