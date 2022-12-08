@@ -15,7 +15,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 includeDir = {}
 includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
 includeDir["glad"] = "PriMech/vendor/glad/include"
-includeDir["imgui"] = "PriMech/vendor/imgui/include"
+includeDir["imgui"] = "PriMech/vendor/imgui"
 
 -- include the other premake5.lua
 include "PriMech/vendor/GLFW"
@@ -62,6 +62,7 @@ project "PriMech" --Name of SLN
 			"PM_PLATFORM_WINDOWS",
 			"PRIMECH_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
+			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM",
 		}
 
 		postbuildcommands {

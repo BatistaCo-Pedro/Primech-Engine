@@ -4,6 +4,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
@@ -13,11 +16,17 @@
     <Filter Include="Primech\Events">
       <UniqueIdentifier>{B1CD932F-9D9B-8735-862F-F85B729C639A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primech\ImGui">
+      <UniqueIdentifier>{5711D37D-C3D1-4EB4-8C0C-9831F88B9390}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Primech\LayerStack">
       <UniqueIdentifier>{2F54F692-1B38-B7E8-8498-B13B709BA16A}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -43,6 +52,9 @@
     <ClInclude Include="src\Primech\Events\MouseEvent.h">
       <Filter>Primech\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primech\ImGui\ImGuiLayer.h">
+      <Filter>Primech\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\Primech\LayerStack\Layer.h">
       <Filter>Primech\LayerStack</Filter>
     </ClInclude>
@@ -58,11 +70,17 @@
     <ClInclude Include="src\ppch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\Application.cpp">
       <Filter>Primech</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\ImGui\ImGuiLayer.cpp">
+      <Filter>Primech\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\LayerStack\Layer.cpp">
       <Filter>Primech\LayerStack</Filter>

@@ -8,8 +8,12 @@ namespace PriMech {
 	
 #define BIND_EVENT_FUNCTION(x)	std::bind(&x, this, std::placeholders::_1)
 
+	Application* Application::instance_ = nullptr; //init Pointer 
+
 	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
 	Application::Application() {
+		PM_CORE_ASSERT(!instance_, "Application already exists")
+		instance_ = this; //Set App Instance Pointer to pint to this App instance
 		//create Window as graphical interface, event callback funcitons are defined in the Window class
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
 		//Bind the Application defined OnEvent Method to the callback var of Window
@@ -27,11 +31,13 @@ namespace PriMech {
 	//Push layer to the starting side of the stack
 	void Application::PushLayer(Layer* layer) {
 		layerStack_.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	//Push layer to the ending side of the stack
 	void Application::PushOverlay(Layer* overlay) {
 		layerStack_.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	//This Method is binded to Window callback and is called when an event occurs
