@@ -18,7 +18,7 @@ namespace PriMech {
 		EventCategoryApplication = BIT(0), 
 		EventCategoryInput = BIT(1),
 		EventCategoryKeyboard = BIT(2),
-		EventCategoryMouse= BIT(3), 
+		EventCategoryMouse= BIT(3),
 		EventCategoryMouseButton= BIT(4),
 	};
 
@@ -67,7 +67,7 @@ namespace PriMech {
 		Event& event_;
 	};
 
-	//used in the Logging library to easly call ToString() 
+	//used in the Logging library to call ToString() 
 	inline std::ostream& operator<<(std::ostream& os, const Event& e) {
 		return os << e.ToString();
 	}

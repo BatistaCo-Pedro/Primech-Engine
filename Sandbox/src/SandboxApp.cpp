@@ -9,7 +9,7 @@ public:
 	}
 
 	void OnEvent(PriMech::Event& event) override {
-		PM_INFO("{0}", event);
+		PM_WARN("{0}", event);
 	}
 };
 
@@ -26,5 +26,5 @@ private:
 };
 
 PriMech::Application* PriMech::CreateApplication() {
-	return new Sandbox();
+	return new Sandbox(); //Sandbox is of type Application as it inherits from it
 }

@@ -11,6 +11,7 @@ namespace PriMech {
 		inline unsigned int GetWidth() { return width_; }
 		inline unsigned int GetHeight() { return height_; }
 
+		//Method used to Log information to the console
 		std::string ToString() const override {
 			std::stringstream ss;
 			ss << "WindowResizeEvent: " << width_ << "," << height_;

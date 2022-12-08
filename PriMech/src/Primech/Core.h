@@ -1,4 +1,5 @@
 #pragma once
+//PriMech Core to set macros such as dllexport or dllimport
 
 #ifdef PM_PLATFORM_WINDOWS
 	#ifdef PRIMECH_BUILD_DLL
