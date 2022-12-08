@@ -15,10 +15,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 includeDir = {}
 includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
 includeDir["glad"] = "PriMech/vendor/glad/include"
+includeDir["imgui"] = "PriMech/vendor/imgui/include"
 
 -- include the other premake5.lua
 include "PriMech/vendor/GLFW"
 include "PriMech/vendor/glad"
+include "PriMech/vendor/imgui"
 
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
@@ -41,11 +43,13 @@ project "PriMech" --Name of SLN
 		"%{prj.name}/src",
 		"%{includeDir.GLFW}",
 		"%{includeDir.glad}",
+		"%{includeDir.imgui}",
 	}
 
 	links {
 		"GLFW",
 		"glad",
+		"ImGui",
 		"opengl32.lib"
 	}
 

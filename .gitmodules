@@ -4,3 +4,6 @@
 [submodule "PriMech/vendor/GLFW"]
 	path = PriMech/vendor/GLFW
 	url = https://github.com/BatistaCo-Pedro/glfw
+[submodule "PriMech/vendor/imgui"]
+	path = PriMech/vendor/imgui
+	url = https://github.com/BatistaCo-Pedro/imgui.git
