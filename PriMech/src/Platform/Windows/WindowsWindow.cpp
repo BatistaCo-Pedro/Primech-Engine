@@ -91,6 +91,12 @@ namespace PriMech {
 			}
 		});
 
+		glfwSetCharCallback(window_, [](GLFWwindow* glfwWindow, unsigned int keycode) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
+			KeyTypedEvent event(keycode);
+			data.EventCallback(event);
+		});
+
 		glfwSetMouseButtonCallback(window_, [](GLFWwindow* glfwWindow, int button, int action, int mods) {
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(glfwWindow);
 			

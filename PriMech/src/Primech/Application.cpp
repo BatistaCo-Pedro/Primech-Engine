@@ -5,8 +5,6 @@
 #include <glad/glad.h>
 
 namespace PriMech {
-	
-#define BIND_EVENT_FUNCTION(x)	std::bind(&x, this, std::placeholders::_1)
 
 	Application* Application::instance_ = nullptr; //init Pointer 
 
@@ -18,7 +16,7 @@ namespace PriMech {
 		pWindow_ = std::unique_ptr<Window>(Window::Create());
 		//Bind the Application defined OnEvent Method to the callback var of Window
 		//Theres no suitable conversion from OnEvent() to std::function<void(Event&)> so we bind the functions
-		pWindow_->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
+		pWindow_->SetEventCallback(PM_BIND_EVENT_FUNCTION(Application::OnEvent));
 		//Call the Logger; Logging macros are defined in Log.h
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
 
@@ -45,7 +43,7 @@ namespace PriMech {
 
 		EventDispatcher dispatcher(event);
 		//Binding once agian becuase no suitable conversion
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
 		//Logging all events for debugging purposes
 		if (event.IsInCategory(EventCategoryApplication) ||

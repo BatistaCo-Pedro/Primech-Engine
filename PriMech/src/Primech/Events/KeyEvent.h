@@ -31,6 +31,19 @@ namespace PriMech {
 		int repeatCount_;
 	};
 
+	class PRIMECH_API KeyTypedEvent : public KeyEvent {
+	public:
+		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
+		
+		std::string ToString() const override {
+			std::stringstream ss;
+			ss << "KeyPressedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+	};
+
 
 	class PRIMECH_API KeyReleasedEvent : public KeyEvent {
 	public:
