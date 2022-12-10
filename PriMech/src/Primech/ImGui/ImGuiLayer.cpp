@@ -6,6 +6,7 @@
 
 #include <GLFW/glfw3.h>
 #include "glad/glad.h"
+#include <Primech/Input.h>
 
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

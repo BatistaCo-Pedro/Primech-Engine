@@ -42,19 +42,18 @@ namespace PriMech {
 
 	//This Method is binded to Window callback and is called when an event occurs
 	void Application::OnEvent(Event& event) {
-
 		EventDispatcher dispatcher(event);
 		//Binding once agian becuase no suitable conversion
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
 		//Logging all events for debugging purposes
-		if (event.IsInCategory(EventCategoryApplication) ||
+		/*if (event.IsInCategory(EventCategoryApplication) ||
 			event.IsInCategory(EventCategoryKeyboard)) {
 			PM_CORE_TRACE(event); //keyboard and window events in white
 		}
 		else {
 			PM_CORE_DEBUG(event); //mouse events in blue
-		}
+		}*/
 
 		//handle events on the layer
 		//reverse iterating the layer stack
@@ -72,9 +71,6 @@ namespace PriMech {
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
 			}
-
-			auto [xPos, yPos] = Input::GetMousePos();
-			PM_CORE_TRACE("{0}, {1}", xPos, yPos);
 		}
 	}
 

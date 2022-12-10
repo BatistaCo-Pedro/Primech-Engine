@@ -5,11 +5,22 @@ public:
 	ExampleLayer() : Layer("Example") {}
 
 	void OnUpdate() override {
-		PM_INFO("ExampleLayer::Update");
+		//PM_INFO("ExampleLayer::Update");
+
+		if (PriMech::Input::IsKeyPressed(PM_KEY_TAB)) {
+			PM_WARN("Tab is pressed (update)");
+		}
 	}
 
 	void OnEvent(PriMech::Event& event) override {
-		PM_WARN("{0}", event);
+		if (event.GetEventType() == PriMech::EventType::KeyPressed) {
+			PriMech::KeyPressedEvent& e = (PriMech::KeyPressedEvent&)event;
+
+			if (PriMech::Input::IsKeyPressed(PM_KEY_TAB)) {
+				PM_WARN("Tab is pressed (event)");
+			}
+			PM_INFO("{0}", (char)e.GetKeyCode());		
+		}
 	}
 };
 
