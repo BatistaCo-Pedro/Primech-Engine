@@ -17,10 +17,13 @@ includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
 includeDir["glad"] = "PriMech/vendor/glad/include"
 includeDir["imgui"] = "PriMech/vendor/imgui"
 
--- include the other premake5.lua
-include "PriMech/vendor/GLFW"
-include "PriMech/vendor/glad"
-include "PriMech/vendor/imgui"
+group "Dependencies"
+	-- include the other premake5.lua
+	include "PriMech/vendor/GLFW"
+	include "PriMech/vendor/glad"
+	include "PriMech/vendor/imgui"
+
+group ""
 
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
@@ -66,7 +69,7 @@ project "PriMech" --Name of SLN
 		}
 
 		postbuildcommands {
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 	
 	filter "configurations:Debug"
