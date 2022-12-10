@@ -35,12 +35,19 @@ namespace PriMech {
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
+
+		inline static Application& GetApplication() { return *instance_; }
+		inline Window& GetWindow() { return *pWindow_; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> pWindow_;
 		bool running_ = true;
 		LayerStack layerStack_;
+
+		//Pointer to the App instance
+		//accessible throught the whole code base to access important information such as the App window
+		static Application* instance_; 
 	};
 
 	//defined in client e.g Sandbox
