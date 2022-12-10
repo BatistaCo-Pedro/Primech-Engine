@@ -153,9 +153,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h" />
+    <ClInclude Include="src\Primech\Codes\KeyCodes.h" />
     <ClInclude Include="src\Primech\Codes\MouseButtonCodes.h" />
     <ClInclude Include="src\Primech\Core.h" />
     <ClInclude Include="src\Primech\Entrypoint.h" />
@@ -165,16 +167,15 @@
     <ClInclude Include="src\Primech\Events\MouseEvent.h" />
     <ClInclude Include="src\Primech\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Primech\Input.h" />
-    <ClInclude Include="src\Primech\Codes\KeyCodes.h" />
     <ClInclude Include="src\Primech\LayerStack\Layer.h" />
     <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
     <ClInclude Include="src\Primech\Log.h" />
     <ClInclude Include="src\Primech\Window.h" />
     <ClInclude Include="src\ppch.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />
     <ClCompile Include="src\Primech\ImGui\ImGuiLayer.cpp" />
@@ -184,7 +185,6 @@
     <ClCompile Include="src\ppch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">

@@ -13,6 +13,9 @@
     <Filter Include="Primech">
       <UniqueIdentifier>{6D3E8823-D91D-07BF-E235-92954E946D20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primech\Codes">
+      <UniqueIdentifier>{6A10687D-D6D0-E3B3-9F0B-2D310B8B2890}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Primech\Events">
       <UniqueIdentifier>{B1CD932F-9D9B-8735-862F-F85B729C639A}</UniqueIdentifier>
     </Filter>
@@ -27,12 +30,21 @@
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech.h" />
     <ClInclude Include="src\Primech\Application.h">
       <Filter>Primech</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Codes\KeyCodes.h">
+      <Filter>Primech\Codes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Codes\MouseButtonCodes.h">
+      <Filter>Primech\Codes</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Core.h">
       <Filter>Primech</Filter>
@@ -55,6 +67,9 @@
     <ClInclude Include="src\Primech\ImGui\ImGuiLayer.h">
       <Filter>Primech\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Primech\Input.h">
+      <Filter>Primech</Filter>
+    </ClInclude>
     <ClInclude Include="src\Primech\LayerStack\Layer.h">
       <Filter>Primech\LayerStack</Filter>
     </ClInclude>
@@ -68,14 +83,13 @@
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
-    <ClInclude Include="src\Primech\Input.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="src\Primech\Codes\KeyCodes.h" />
-    <ClInclude Include="src\Primech\Codes\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
       <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
@@ -96,6 +110,5 @@
       <Filter>Primech</Filter>
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
