@@ -37,11 +37,6 @@ git clone --recursive https://github.com/BatistaCo-Pedro/Primech-Engine.git
 cd Primech-Engine && generateProjects.bat && PriMech.sln
 ```
 
-The first time the Project is run it wont work, this occurs because Sandbox doesnt know PriMechs dll at first. 
-The Dll is copied into Sandbox`s binary folder as a postbuild option from premake. 
-The second time the program is run the program it will work flawlessly.
-This Problem will be corrected in the future. 
-
 ## Using PriMech
 
 There exists no Documentation yet, it will be added in the future.
