@@ -5,11 +5,12 @@
 extern PriMech::Application* PriMech::CreateApplication();
 
 int main(int argc, char** argv) {
+	//Initalize Logger
 	PriMech::Log::Init();
-	PM_CORE_WARN("Initalized CoreLog");
+	PM_CORE_WARN("Initalized CoreLog"); //Log something as test
 
-	//calls extern method and Application constructor
-	auto app = PriMech::CreateApplication(); 
+	//Calls extern method and Application constructor
+	PriMech::Application* app = PriMech::CreateApplication(); 
 	app->Run();
 	delete app;
 }

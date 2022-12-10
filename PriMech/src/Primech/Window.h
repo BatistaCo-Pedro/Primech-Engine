@@ -20,7 +20,7 @@ namespace PriMech {
 	//Interface representing desktop system based Windows
 	class PRIMECH_API Window {
 	public:
-		using EventCallbackFunction = std::function<void(Event&)>;
+		using EventCallbackFunction = std::function<void(Event&)>; 
 
 		virtual ~Window() {}
 
@@ -28,8 +28,8 @@ namespace PriMech {
 
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
+		virtual void* GetNativeWindow() const = 0;
 
-		//WIndow attrs
 		virtual void SetEventCallback(const EventCallbackFunction& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
 		virtual bool IsVSync() const = 0;

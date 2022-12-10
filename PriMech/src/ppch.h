@@ -1,5 +1,7 @@
 #pragma once
 
+// precompiled Header file
+
 #include <iostream>
 #include <memory>
 #include <utility>
@@ -14,6 +16,7 @@
 
 #include "Primech/Log.h"
 
+//only include std windows.h if the platform is windows
 #ifdef PM_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif
