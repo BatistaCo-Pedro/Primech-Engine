@@ -4,6 +4,8 @@
 
 #include <glad/glad.h>
 
+#include <Primech/Input.h>
+
 namespace PriMech {
 
 	Application* Application::instance_ = nullptr; //init Pointer 
@@ -70,6 +72,9 @@ namespace PriMech {
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
 			}
+
+			auto [xPos, yPos] = Input::GetMousePos();
+			PM_CORE_TRACE("{0}, {1}", xPos, yPos);
 		}
 	}
 

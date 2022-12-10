@@ -68,6 +68,8 @@
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
+    <ClInclude Include="src\Primech\Input.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
@@ -92,5 +94,6 @@
       <Filter>Primech</Filter>
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
