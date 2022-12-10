@@ -33,7 +33,7 @@ namespace PriMech {
 	
 		if (!s_GLFWInitialized) {
 			int success = glfwInit();
-			PM_CORE_ASSERT(scucces, "Could not initalize GLFW!");
+			PM_CORE_ASSERT(success, "Could not initalize GLFW!");
 			//set callback function to be called in case of error
 			glfwSetErrorCallback(glfwErrorCallback);
 
