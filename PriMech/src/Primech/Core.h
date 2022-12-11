@@ -2,11 +2,15 @@
 //PriMech Core to set macros such as dllexport or dllimport
 
 #ifdef PM_PLATFORM_WINDOWS
+#if PM_DYNAMIC_LINK
 	#ifdef PRIMECH_BUILD_DLL
 		#define PRIMECH_API __declspec(dllexport)
 	#else
 		#define PRIMECH_API __declspec(dllimport)
 	#endif // DEBUG
+#else
+	#define PRIMECH_API 
+#endif
 #else
 	#error PriMech only supports windows!
 #endif 

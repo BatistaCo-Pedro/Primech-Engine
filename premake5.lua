@@ -27,9 +27,10 @@ group ""
 
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
-	kind "SharedLib" 
+	kind "StaticLib" 
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -40,6 +41,10 @@ project "PriMech" --Name of SLN
 	files {
 		"%{prj.name}/src/**.h", -- ** => recursively, find all files that end wiht .h
 		"%{prj.name}/src/**.cpp" --all files that end with .cpp
+	}
+
+	defines {
+		"_CRT_SECURE_NO_WARNINGS",
 	}
 
 	includedirs {
@@ -58,7 +63,6 @@ project "PriMech" --Name of SLN
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines {
@@ -66,31 +70,28 @@ project "PriMech" --Name of SLN
 			"PRIMECH_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
 		}
-
-		postbuildcommands {
-			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-		}
 	
 	filter "configurations:Debug"
 		defines "PM_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "PM_Release"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "PM_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "consoleApp"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++20"
+	staticruntime "on"
 	
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -112,7 +113,6 @@ project "Sandbox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++20"
 		systemversion "latest"
 
 		defines {
@@ -122,14 +122,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "PM_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "PM_Release"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
 
 	filter "configurations:Dist"
 		defines "PM_DIST"
 		runtime "Release"
-		optimize "On"
+		optimize "on"
