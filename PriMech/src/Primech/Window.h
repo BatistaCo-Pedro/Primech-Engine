@@ -12,15 +12,15 @@ namespace PriMech {
 		unsigned int height;
 
 		WindowProps(const std::string& titleIn = "PriMech Engine",
-					unsigned int heightIn = 720,
-					unsigned int widthIn = 1280)
+					unsigned int widthIn = 1280,
+					unsigned int heightIn = 720)
 			: title(titleIn), width(widthIn), height(heightIn) {}
 	};
 
 	//Interface representing desktop system based Windows
 	class PRIMECH_API Window {
 	public:
-		using EventCallbackFunction = std::function<void(Event&)>; 
+		using EventCallbackFunction = std::function<void(Event&)>; //std::function returning void and having Event& as param
 
 		virtual ~Window() {}
 

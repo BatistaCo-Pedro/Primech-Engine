@@ -29,7 +29,8 @@ namespace PriMech {
 		wData_.height_ = props.height;
 		wData_.width_ = props.width;
 
-		PM_CORE_DEBUG("Creating Window {0} ({1}, {2})", props.title, props.width, props.height);
+		PM_CORE_DEBUG("Creating Window (Window props): {0} ({1}, {2})", props.title, props.width, props.height);
+		PM_CORE_DEBUG("Creating Window (Window Data): {0} ({1}, {2})", wData_.title_, wData_.width_, wData_.height_);
 	
 		if (!s_GLFWInitialized) {
 			int success = glfwInit();
@@ -41,7 +42,7 @@ namespace PriMech {
 		}
 
 		//create the actual window and save it to a variable of type GLFWwindow
-		window_ = glfwCreateWindow((int)props.width, (int)props.height, wData_.title_.c_str(), nullptr, nullptr);
+		window_ = glfwCreateWindow(wData_.width_, wData_.height_, wData_.title_.c_str(), nullptr, nullptr);
 
 		//"focus* on the created window
 		glfwMakeContextCurrent(window_);

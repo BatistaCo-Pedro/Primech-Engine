@@ -103,8 +103,8 @@ project "Sandbox"
 	includedirs {
 		"PriMech/vendor/spdlog/include",
 		"PriMech/src",
-		"{includeDir.glm}",
-		"{includeDir.imgui}",
+		"%{includeDir.glm}",
+		"PriMech/vendor",
 	}
 
 	links {

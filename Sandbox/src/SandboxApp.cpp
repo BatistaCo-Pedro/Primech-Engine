@@ -1,5 +1,7 @@
 #include <Primech.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public PriMech::Layer {
 public:
 	ExampleLayer() : Layer("Example") {}
@@ -21,6 +23,9 @@ public:
 			}
 			PM_INFO("{0}", (char)e.GetKeyCode());		
 		}
+	}
+
+	void OnImGuiRender() override {
 	}
 };
 
