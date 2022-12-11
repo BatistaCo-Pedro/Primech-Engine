@@ -22,8 +22,8 @@ namespace PriMech {
 		//Call the Logger; Logging macros are defined in Log.h
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
 
-		unsigned int id;
-		glGenVertexArrays(1, &id);
+		imGuiLayer_ = new ImGuiLayer();
+		PushOverlay(imGuiLayer_);
 	}
 
 	Application::~Application() {}
@@ -66,11 +66,21 @@ namespace PriMech {
 
 	//Method called by Application to start running the program
 	void Application::Run() {
-		while (running_) {
-			pWindow_->OnUpdate(); //updates the frame
+		while (running_) {	
+			glClearColor(0, 0, 0, 0);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
 			}
+
+			imGuiLayer_->Begin();
+			for (Layer* layer : layerStack_) {
+				layer->OnImGuiRender();
+			}
+			imGuiLayer_->End();
+
+			pWindow_->OnUpdate(); //updates the frame
 		}
 	}
 

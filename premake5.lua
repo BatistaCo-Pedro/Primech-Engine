@@ -27,7 +27,7 @@ group ""
 
 project "PriMech" --Name of SLN
 	location "PriMech" --Realtive Folder where to put files
-	kind "SharedLib" --DLL
+	kind "SharedLib" 
 	language "C++"
 	staticruntime "off"
 	
@@ -38,7 +38,7 @@ project "PriMech" --Name of SLN
 	pchsource ("PriMech/src/ppch.cpp")
 
 	files {
-		"%{prj.name}/src/**.h", -- ** = recursively, find all files that end wiht .h
+		"%{prj.name}/src/**.h", -- ** => recursively, find all files that end wiht .h
 		"%{prj.name}/src/**.cpp" --all files that end with .cpp
 	}
 
@@ -65,7 +65,6 @@ project "PriMech" --Name of SLN
 			"PM_PLATFORM_WINDOWS",
 			"PRIMECH_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
-			"IMGUI_IMPL_OPENGL_LOADER_CUSTOM",
 		}
 
 		postbuildcommands {
@@ -103,7 +102,9 @@ project "Sandbox"
 
 	includedirs {
 		"PriMech/vendor/spdlog/include",
-		"PriMech/src"
+		"PriMech/src",
+		"{includeDir.glm}",
+		"{includeDir.imgui}",
 	}
 
 	links {

@@ -19,6 +19,8 @@
 #include "Events/ApplicationEvent.h"
 #include "Window.h"
 
+#include "ImGui/ImGuiLayer.h"
+
 /*
 * General Namespace for everything included in the Engine itself 
 */
@@ -42,6 +44,7 @@ namespace PriMech {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> pWindow_;
+		ImGuiLayer* imGuiLayer_;
 		bool running_ = true;
 		LayerStack layerStack_;
 

@@ -29,7 +29,6 @@ class Sandbox : public PriMech::Application
 public:
 	Sandbox() {
 		PushLayer(new ExampleLayer());
-		PushOverlay(new PriMech::ImGuiLayer());
 	}
 	~Sandbox() {}
 

@@ -2,9 +2,7 @@
 #include "LayerStack.h"
 
 namespace PriMech {
-	LayerStack::LayerStack() {
-		layerInsertIt = layers_.begin();
-	}
+	LayerStack::LayerStack() {}
 
 	LayerStack::~LayerStack() {
 		for (Layer* layer : layers_) {
@@ -13,7 +11,8 @@ namespace PriMech {
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {
-		layerInsertIt = layers_.emplace(layerInsertIt, layer);
+		layers_.emplace(layers_.begin() + layerInsertIndex, layer);
+		layerInsertIndex++;
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay) {
@@ -24,7 +23,7 @@ namespace PriMech {
 		auto iterator = std::find(layers_.begin(), layers_.end(), layer);
 		if (iterator != layers_.end()) { 
 			layers_.erase(iterator); 
-			layerInsertIt--;
+			layerInsertIndex--;
 		}
 	}
 	
