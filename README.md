@@ -43,11 +43,11 @@ There exists no Documentation yet, it will be added in the future.
 
 ## System requirements
 
-PriMech only supports Windows momentarily and the automatic project creation solely works for Visual Studio 2022. 
+PriMech only supports Windows momentarily and the automatic project creation solely works for Visual Studio 2022. \
 The Engine will be adapted to other OSs in the future.
 
 ## Dependancies
 
-PriMechs Dependencies are always under a vendor Folder.
-OpenGl and Logging libs: [PriMech/vendor](https://github.com/BatistaCo-Pedro/Primech-Engine/tree/master/PriMech/vendor)
-Premake for auto project creation: [globalvendor](https://github.com/BatistaCo-Pedro/Primech-Engine/tree/master/globalVendor)
+PriMechs Dependencies are always under a vendor Folder. \
+OpenGl, Logging, ImGui, etc.. libs: [PriMech/vendor](https://github.com/BatistaCo-Pedro/Primech-Engine/tree/master/PriMech/vendor) \
+Premake: [globalvendor](https://github.com/BatistaCo-Pedro/Primech-Engine/tree/master/globalVendor)
