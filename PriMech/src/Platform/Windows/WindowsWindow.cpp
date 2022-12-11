@@ -5,7 +5,7 @@
 #include <Primech/Events/KeyEvent.h>
 #include <Primech/Events/MouseEvent.h>
 
-#include <glad/glad.h>
+#include <Platform/OpenGL/OpenGLContext.h>
 
 namespace PriMech { 
 	static bool s_GLFWInitialized = false;
@@ -43,12 +43,9 @@ namespace PriMech {
 
 		//create the actual window and save it to a variable of type GLFWwindow
 		window_ = glfwCreateWindow(wData_.width_, wData_.height_, wData_.title_.c_str(), nullptr, nullptr);
+		context_ = new OpenGLContext(window_);
 
-		//"focus* on the created window
-		glfwMakeContextCurrent(window_);
-		// Load all OpenGL functions using the glfw loader function
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		PM_CORE_ASSERT(status, "Failed to initialize glad")
+		context_->Init();
 
 		//set the Window Pointer to the WindowsWindow::WindowData struct
 		glfwSetWindowUserPointer(window_, &wData_);
@@ -135,7 +132,7 @@ namespace PriMech {
 
 	void WindowsWindow::OnUpdate() {
 		glfwPollEvents(); //check if theres is any pending event and handles it
-		glfwSwapBuffers(window_); //updates the frame based on SwapInterval; 1 for VSync, 0 for all
+		context_->SwapBuffers(); //updates the frame
 	}
 
 	void WindowsWindow::SetVSync(bool enabled) {

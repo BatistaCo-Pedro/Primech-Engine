@@ -1,6 +1,8 @@
 #pragma once
 #include "Primech/Window.h"
-#include <GLFW/glfw3.h>
+#include <Primech/Renderer/GraphicsContext.h>
+
+#include "GLFW/glfw3.h"
 
 namespace PriMech {
 	class WindowsWindow : public Window {
@@ -22,6 +24,7 @@ namespace PriMech {
 		virtual void ShutDown();
 
 		GLFWwindow* window_;
+		GraphicsContext* context_;
 
 		struct WindowData {
 			std::string title_;

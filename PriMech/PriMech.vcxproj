@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\Primech.h" />
@@ -160,10 +161,12 @@
     <ClInclude Include="src\Primech\LayerStack\Layer.h" />
     <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
     <ClInclude Include="src\Primech\Log.h" />
+    <ClInclude Include="src\Primech\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Primech\Window.h" />
     <ClInclude Include="src\ppch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\Primech\Application.cpp" />

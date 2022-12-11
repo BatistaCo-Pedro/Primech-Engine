@@ -48,6 +48,8 @@ namespace PriMech {
 		bool running_ = true;
 		LayerStack layerStack_;
 
+		unsigned int vertexArray_, vertexBuffer_, indexBuffer_;
+
 		//Pointer to the App instance
 		//accessible throught the whole code base to access important information such as the App window
 		static Application* instance_; 
