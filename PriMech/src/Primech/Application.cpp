@@ -35,7 +35,7 @@ namespace PriMech {
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f
+			0.0f, 0.5f, 0.0f,
 		};
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -48,6 +48,34 @@ namespace PriMech {
 		unsigned int indices[3] = { 0, 1, 2 };
 
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		
+		std::string vertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 attributePosition;
+
+			out vec3 varPosition;
+
+			void main() {
+				varPosition = attributePosition;
+				gl_Position = vec4(attributePosition, 1.0);
+			}
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 outColor;
+
+			in vec3 varPosition;
+
+			void main() {
+				vec4 color = vec4(varPosition * 0.5 + 0.5, 1.0);
+				outColor = color;
+			}
+		)";
+
+		shader_.reset(new Shader(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application() {}
@@ -89,8 +117,10 @@ namespace PriMech {
 	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
-			glClearColor(0, 0, 0, 0);
+			glClearColor(0.1, 0.1, 0.1, 0);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			shader_->Bind();
 
 			glBindVertexArray(vertexArray_);
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);

@@ -162,6 +162,7 @@
     <ClInclude Include="src\Primech\LayerStack\LayerStack.h" />
     <ClInclude Include="src\Primech\Log.h" />
     <ClInclude Include="src\Primech\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Primech\Renderer\Shader.h" />
     <ClInclude Include="src\Primech\Window.h" />
     <ClInclude Include="src\ppch.h" />
   </ItemGroup>
@@ -178,6 +179,7 @@
     <ClCompile Include="src\ppch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
