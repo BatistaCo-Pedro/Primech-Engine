@@ -18,9 +18,10 @@
 #include "PriMech/LayerStack/LayerStack.h"
 #include "Events/ApplicationEvent.h"
 #include "Window.h"
-
 #include "ImGui/ImGuiLayer.h"
+
 #include "Primech/Renderer/Shader.h"
+#include "Primech/Renderer/Buffer.h"
 
 /*
 * General Namespace for everything included in the Engine itself 
@@ -49,8 +50,10 @@ namespace PriMech {
 		bool running_ = true;
 		LayerStack layerStack_;
 
-		unsigned int vertexArray_, vertexBuffer_, indexBuffer_;
+		unsigned int vertexArray_;
 		std::unique_ptr<Shader> shader_;
+		std::unique_ptr<VertexBuffer> vertexBuffer_;
+		std::unique_ptr<IndexBuffer> indexBuffer_;
 
 		//Pointer to the App instance
 		//accessible throught the whole code base to access important information such as the App window

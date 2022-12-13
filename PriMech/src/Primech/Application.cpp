@@ -28,9 +28,6 @@ namespace PriMech {
 		glGenVertexArrays(1, &vertexArray_);
 		glBindVertexArray(vertexArray_);
 
-		glGenBuffers(1, &vertexBuffer_);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexArray_);
-
 		//defining the points pos
 		float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
@@ -38,17 +35,15 @@ namespace PriMech {
 			0.0f, 0.5f, 0.0f,
 		};
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		uint32_t indices[3] = { 0, 1, 2 };
+
+		vertexBuffer_.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-
-		glGenBuffers(1, &indexBuffer_);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer_);
-
-		unsigned int indices[3] = { 0, 1, 2 };
-
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 		
+		indexBuffer_.reset(IndexBuffer::Create(indices, (sizeof(indices) / sizeof(vertices[0]))));
+
 		std::string vertexSrc = R"(
 			#version 330 core
 			
@@ -96,15 +91,6 @@ namespace PriMech {
 		//Binding once agian becuase no suitable conversion
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
-		//Logging all events for debugging purposes
-		/*if (event.IsInCategory(EventCategoryApplication) ||
-			event.IsInCategory(EventCategoryKeyboard)) {
-			PM_CORE_TRACE(event); //keyboard and window events in white
-		}
-		else {
-			PM_CORE_DEBUG(event); //mouse events in blue
-		}*/
-
 		//handle events on the layer
 		//reverse iterating the layer stack
 		for (auto iterator = layerStack_.end(); iterator != layerStack_.begin();) {
@@ -123,7 +109,7 @@ namespace PriMech {
 			shader_->Bind();
 
 			glBindVertexArray(vertexArray_);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, indexBuffer_->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
