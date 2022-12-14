@@ -11,8 +11,12 @@ namespace PriMech {
 
 		virtual void Bind() const override;
 		virtual void UnBind() const override;
+
+		inline virtual void SetLayout(const BufferLayout& layout) override { layout_ = layout; };
+		inline virtual const BufferLayout& GetLayout() const override { return layout_; };
 	private:
 		uint32_t rendererID_;
+		BufferLayout layout_;
 	};
 
 	class OpenGLIndexBuffer : public IndexBuffer

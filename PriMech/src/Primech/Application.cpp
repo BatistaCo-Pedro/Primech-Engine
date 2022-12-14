@@ -9,6 +9,25 @@
 namespace PriMech {
 
 	Application* Application::instance_ = nullptr; //init Pointer 
+	//Temp
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
+		switch (type)
+		{		 
+		case ShaderDataType::Float:		return GL_FLOAT;
+		case ShaderDataType::Float2:	return GL_FLOAT;
+		case ShaderDataType::Float3:	return GL_FLOAT;
+		case ShaderDataType::Float4:	return GL_FLOAT;
+		case ShaderDataType::Mat3:		return GL_FLOAT;
+		case ShaderDataType::Mat4:		return GL_FLOAT;
+		case ShaderDataType::Int:		return GL_INT;
+		case ShaderDataType::Int2:		return GL_INT;
+		case ShaderDataType::Int3:		return GL_INT;
+		case ShaderDataType::Int4:		return GL_INT;
+		case ShaderDataType::Bool:		return GL_BOOL;
+		}
+		PM_CORE_ASSERT(false, "Unkown ShaderDataType at DataTypeConversion()");
+		return 0;
+	}
 
 	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
 	Application::Application() {
@@ -25,34 +44,54 @@ namespace PriMech {
 		imGuiLayer_ = new ImGuiLayer();
 		PushOverlay(imGuiLayer_);
 
+		//Temp
 		glGenVertexArrays(1, &vertexArray_);
 		glBindVertexArray(vertexArray_);
 
 		//defining the points pos
-		float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f, 0.5f, 0.0f,
+		float vertices[3 * 7] = {
+			-0.5f, -0.5f, 0.0f, 0.7f, 0.3f, 0.3f, 1.0f,
+			0.5f, -0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f,
+			0.0f, 0.5f, 0.0f, 0.2f, 0.2f, 0.8f, 1.0f,
 		};
 
 		uint32_t indices[3] = { 0, 1, 2 };
 
 		vertexBuffer_.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+		{
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "attributePosition" },
+				{ ShaderDataType::Float4, "attributeColor" },
+			};
+			vertexBuffer_->SetLayout(layout);
+		}
+
+		const BufferLayout layout = vertexBuffer_->GetLayout();
+		uint32_t index = 0;
+		for (const auto& element : layout) {
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.type), 
+								element.normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), (const void*)element.offset);
+			index++;
+		}	
 		
 		indexBuffer_.reset(IndexBuffer::Create(indices, (sizeof(indices) / sizeof(vertices[0]))));
 
+
+		//Temp
 		std::string vertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 attributePosition;
+			layout(location = 1) in vec4 attributeColor;
 
 			out vec3 varPosition;
+			out vec4 varColor;
 
 			void main() {
 				varPosition = attributePosition;
+				varColor = attributeColor;
 				gl_Position = vec4(attributePosition, 1.0);
 			}
 		)";
@@ -63,10 +102,12 @@ namespace PriMech {
 			layout(location = 0) out vec4 outColor;
 
 			in vec3 varPosition;
+			in vec4 varColor;
 
 			void main() {
 				vec4 color = vec4(varPosition * 0.5 + 0.5, 1.0);
 				outColor = color;
+				outColor = varColor;
 			}
 		)";
 
