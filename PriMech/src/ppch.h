@@ -14,7 +14,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Primech/Log.h"
+#include "Primech/Logging/Log.h"
 
 //only include std windows.h if the platform is windows
 #ifdef PM_PLATFORM_WINDOWS

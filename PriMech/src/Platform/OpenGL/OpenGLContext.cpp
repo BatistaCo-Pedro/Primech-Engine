@@ -9,12 +9,9 @@ namespace PriMech {
 		PM_CORE_ASSERT(windowHandle_, "Window handle doesnt exist")
 	}
 
-	OpenGLContext::~OpenGLContext() {
-	
-	}
+	OpenGLContext::~OpenGLContext() {}
 
 	void OpenGLContext::Init() {
-		//"focus* on the created window
 		glfwMakeContextCurrent(windowHandle_);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PM_CORE_ASSERT(status, "Failed to initialize glad")
@@ -25,7 +22,7 @@ namespace PriMech {
 	}
 
 	void OpenGLContext::SwapBuffers() {
-
+		//Update Frame by swapping the buffer 
 		glfwSwapBuffers(windowHandle_);
 	}
 }

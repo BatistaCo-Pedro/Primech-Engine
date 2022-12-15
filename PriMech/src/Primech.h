@@ -3,7 +3,7 @@
 // FOR USE BY PRIMECH APPS e.g. Sandbox
 
 #include "Primech/Application.h"
-#include "Primech/Log.h"
+#include "Primech/Logging/Log.h"
 #include "Primech/Input.h"
 #include "Primech/Codes/KeyCodes.h"
 #include "Primech/Codes/MouseButtonCodes.h"

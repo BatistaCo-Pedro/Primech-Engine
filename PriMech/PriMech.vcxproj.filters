@@ -4,6 +4,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
@@ -22,8 +25,17 @@
     <Filter Include="Primech\LayerStack">
       <UniqueIdentifier>{2F54F692-1B38-B7E8-8498-B13B709BA16A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Primech\Renderer">
+      <UniqueIdentifier>{B30CB95A-9F05-D8AC-C837-BD31B48FB7B8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -70,21 +82,33 @@
     <ClInclude Include="src\Primech\LayerStack\LayerStack.h">
       <Filter>Primech\LayerStack</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Log.h">
+    <ClInclude Include="src\Primech\Logging\Log.h">
       <Filter>Primech</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Renderer\Buffer.h">
+      <Filter>Primech\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Renderer\GraphicsContext.h">
+      <Filter>Primech\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Renderer\Renderer.h">
+      <Filter>Primech\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Renderer\Shader.h">
+      <Filter>Primech\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Window.h">
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
-    <ClInclude Include="src\Primech\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="src\Primech\Renderer\Shader.h" />
-    <ClInclude Include="src\Primech\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\Primech\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
@@ -106,14 +130,18 @@
     <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp">
       <Filter>Primech\LayerStack</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primech\Log.cpp">
+    <ClCompile Include="src\Primech\Logging\Log.cpp">
       <Filter>Primech</Filter>
     </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\Buffer.cpp">
+      <Filter>Primech\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\Renderer.cpp">
+      <Filter>Primech\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\Shader.cpp">
+      <Filter>Primech\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="src\Primech\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Primech\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\Primech\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>

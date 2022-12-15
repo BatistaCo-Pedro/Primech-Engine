@@ -1,12 +1,13 @@
 #pragma once
 
 namespace PriMech {
-
+	//PriMechs own DataTypes
 	enum class ShaderDataType {
 		None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
 	};
 
 	//Temp location in Buffer.h
+	//Returns the types size in Bits
 	static uint32_t ShaderDataTypeSize(ShaderDataType type) {
 		switch (type)
 		{
@@ -27,14 +28,16 @@ namespace PriMech {
 		return 0;
 	}
 
+	//Each Element of a vertexBuffer is defined as BufferELement
 	struct BufferElement
 	{
 		std::string name;
 		ShaderDataType type;
 		uint32_t size;
-		uint32_t offset;
+		uint32_t offset; //Offset in the vertex, calculated by taking the size of the element items befor this one
 		bool normalized = false;
 
+		//Used to initlaize object whitout special params
 		BufferElement() {}
 		BufferElement(ShaderDataType inType, const std::string& inName, bool inNormalized = false) :
 			name(inName), type(inType), size(ShaderDataTypeSize(type)), offset(0), normalized(inNormalized) { }

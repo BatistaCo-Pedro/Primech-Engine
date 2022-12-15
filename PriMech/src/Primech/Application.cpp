@@ -9,7 +9,7 @@
 namespace PriMech {
 
 	Application* Application::instance_ = nullptr; //init Pointer 
-	//Temp
+	//Temporary
 	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
 		switch (type)
 		{		 
@@ -49,6 +49,17 @@ namespace PriMech {
 		glBindVertexArray(vertexArray_);
 
 		//defining the points pos
+		/*
+			Offset -> item1, item2, item3, item4
+			Choice: item4 -> offset item1 + item2 + item3 in bits
+			Choice: item2 -> offset item1 in bits
+			Offset is absolut not realtive, always from the start, 0
+
+			Stride -> item1, item2, item3
+					  item1, item2, item3
+			The Stride is the difference from vertex to vertex in bits
+
+		*/
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.7f, 0.3f, 0.3f, 1.0f,
 			0.5f, -0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f,
