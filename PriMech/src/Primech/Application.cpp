@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "Events/ApplicationEvent.h"
 
-#include <glad/glad.h>
 #include "Primech/Renderer/Renderer.h"
 
 #include <Primech/Input.h>
@@ -176,8 +175,6 @@ namespace PriMech {
 	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
-			glClearColor(0.1, 0.1, 0.1, 0);
-			glClear(GL_COLOR_BUFFER_BIT);
 
 			RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
 
