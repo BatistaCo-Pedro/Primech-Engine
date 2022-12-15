@@ -3,6 +3,7 @@
 #include "Events/ApplicationEvent.h"
 
 #include <glad/glad.h>
+#include "Primech/Renderer/Renderer.h"
 
 #include <Primech/Input.h>
 
@@ -178,13 +179,17 @@ namespace PriMech {
 			glClearColor(0.1, 0.1, 0.1, 0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
+
+			Renderer::BeginScene();
+
 			blueShader_->Bind();
-			squareVertexArray_->Bind();
-			glDrawElements(GL_TRIANGLES, squareVertexArray_->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(squareVertexArray_);
 
 			shader_->Bind();
-			vertexArray_->Bind();
-			glDrawElements(GL_TRIANGLES, vertexArray_->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(vertexArray_);
+			
+			Renderer::EndScene();
 
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();

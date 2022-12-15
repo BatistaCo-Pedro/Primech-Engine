@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>ppch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;PM_PLATFORM_WINDOWS;PRIMECH_BUILD_DLL;GLFW_INCLUDE_NONE;PM_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glad\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -143,6 +143,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
@@ -166,12 +167,15 @@
     <ClInclude Include="src\Primech\Renderer\Buffer.h" />
     <ClInclude Include="src\Primech\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Primech\Renderer\Renderer.h" />
+    <ClInclude Include="src\Primech\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Primech\Renderer\RendererCommand.h" />
     <ClInclude Include="src\Primech\Renderer\Shader.h" />
     <ClInclude Include="src\Primech\Renderer\VertexArray.h" />
     <ClInclude Include="src\Primech\Window.h" />
     <ClInclude Include="src\ppch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
@@ -185,6 +189,8 @@
     <ClCompile Include="src\Primech\Logging\Log.cpp" />
     <ClCompile Include="src\Primech\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Primech\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Primech\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Primech\Renderer\RendererCommand.cpp" />
     <ClCompile Include="src\Primech\Renderer\Shader.cpp" />
     <ClCompile Include="src\ppch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

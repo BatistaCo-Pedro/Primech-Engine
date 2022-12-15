@@ -1,19 +1,14 @@
 #pragma once
 
-namespace PriMech {
-	enum class RendererAPI
-	{
-		None = 0,
-		OpenGL = 1,
-		//DirectX,
-		//etc...
-	};
+#include "RendererCommand.h"
 
+namespace PriMech {
 	class Renderer {
 	public:
-		inline static RendererAPI GetAPI() { return staticRendererAPI; }
-	private:
-		static RendererAPI staticRendererAPI;
+		static void BeginScene(); //TODO add camera, environment etc.. as params
+		static void EndScene();
+
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 }
-

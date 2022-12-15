@@ -7,3 +7,6 @@
 [submodule "PriMech/vendor/imgui"]
 	path = PriMech/vendor/imgui
 	url = https://github.com/BatistaCo-Pedro/imgui.git
+[submodule "PriMech/vendor/glm"]
+	path = PriMech/vendor/glm
+	url = https://github.com/g-truc/glm.git
