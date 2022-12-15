@@ -101,6 +101,8 @@
       <Filter>Primech</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h" />
+    <ClInclude Include="src\Primech\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -143,5 +145,7 @@
       <Filter>Primech\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\ppch.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Primech\Renderer\VertexArray.cpp" />
   </ItemGroup>
 </Project>

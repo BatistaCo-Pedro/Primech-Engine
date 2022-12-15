@@ -9,25 +9,6 @@
 namespace PriMech {
 
 	Application* Application::instance_ = nullptr; //init Pointer 
-	//Temporary
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
-		switch (type)
-		{		 
-		case ShaderDataType::Float:		return GL_FLOAT;
-		case ShaderDataType::Float2:	return GL_FLOAT;
-		case ShaderDataType::Float3:	return GL_FLOAT;
-		case ShaderDataType::Float4:	return GL_FLOAT;
-		case ShaderDataType::Mat3:		return GL_FLOAT;
-		case ShaderDataType::Mat4:		return GL_FLOAT;
-		case ShaderDataType::Int:		return GL_INT;
-		case ShaderDataType::Int2:		return GL_INT;
-		case ShaderDataType::Int3:		return GL_INT;
-		case ShaderDataType::Int4:		return GL_INT;
-		case ShaderDataType::Bool:		return GL_BOOL;
-		}
-		PM_CORE_ASSERT(false, "Unkown ShaderDataType at DataTypeConversion()");
-		return 0;
-	}
 
 	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
 	Application::Application() {
@@ -44,9 +25,7 @@ namespace PriMech {
 		imGuiLayer_ = new ImGuiLayer();
 		PushOverlay(imGuiLayer_);
 
-		//Temp
-		glGenVertexArrays(1, &vertexArray_);
-		glBindVertexArray(vertexArray_);
+		vertexArray_.reset(VertexArray::Create());
 
 		//defining the points pos
 		/*
@@ -68,28 +47,19 @@ namespace PriMech {
 
 		uint32_t indices[3] = { 0, 1, 2 };
 
+		//Creating new unqiue pointer
 		vertexBuffer_.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "attributePosition" },
-				{ ShaderDataType::Float4, "attributeColor" },
-			};
-			vertexBuffer_->SetLayout(layout);
-		}
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "attributePosition" },
+			{ ShaderDataType::Float4, "attributeColor" },
+		};
+		vertexBuffer_->SetLayout(layout);
+		vertexArray_->AddVertexBuffer(vertexBuffer_);
 
-		const BufferLayout layout = vertexBuffer_->GetLayout();
-		uint32_t index = 0;
-		for (const auto& element : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.type), 
-								element.normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), (const void*)element.offset);
-			index++;
-		}	
-		
+		//Creating new unqiue pointer
 		indexBuffer_.reset(IndexBuffer::Create(indices, (sizeof(indices) / sizeof(vertices[0]))));
-
-
+		vertexArray_->SetIndexBuffer(indexBuffer_);
 		//Temp
 		std::string vertexSrc = R"(
 			#version 330 core
