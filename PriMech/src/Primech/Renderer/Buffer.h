@@ -45,17 +45,17 @@ namespace PriMech {
 		const uint32_t GetComponentCount() const {
 			switch (type)
 			{
-			case ShaderDataType::Float:		return 1;
-			case ShaderDataType::Float2:	return 2;
-			case ShaderDataType::Float3:	return 3;
-			case ShaderDataType::Float4:	return 4;
-			case ShaderDataType::Mat3:		return 9;
-			case ShaderDataType::Mat4:		return 16;
-			case ShaderDataType::Int:		return 1;
-			case ShaderDataType::Int2:		return 2;
-			case ShaderDataType::Int3:		return 3;
-			case ShaderDataType::Int4:		return 4;
-			case ShaderDataType::Bool:		return 1;
+				case ShaderDataType::Float:		return 1;
+				case ShaderDataType::Float2:	return 2;
+				case ShaderDataType::Float3:	return 3;
+				case ShaderDataType::Float4:	return 4;
+				case ShaderDataType::Mat3:		return 9;
+				case ShaderDataType::Mat4:		return 16;
+				case ShaderDataType::Int:		return 1;
+				case ShaderDataType::Int2:		return 2;
+				case ShaderDataType::Int3:		return 3;
+				case ShaderDataType::Int4:		return 4;
+				case ShaderDataType::Bool:		return 1;
 			}
 			PM_CORE_ASSERT(false, "Unkown ShaderDataType at GetComponentCount()");
 			return 0;
@@ -71,7 +71,7 @@ namespace PriMech {
 		}
 
 		inline const uint32_t GetStride() const { return stride_; }
-		inline const std::vector<BufferElement>& GetElements() { return elements_; }
+		inline const std::vector<BufferElement>& GetElements() const { return elements_; }
 
 		const std::vector<BufferElement>::const_iterator begin() const { return elements_.begin(); }
 		const std::vector<BufferElement>::const_iterator end() const { return elements_.end(); }

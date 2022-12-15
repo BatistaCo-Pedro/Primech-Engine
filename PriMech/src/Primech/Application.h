@@ -53,9 +53,9 @@ namespace PriMech {
 
 		std::shared_ptr<Shader> shader_;
 		std::shared_ptr<VertexArray> vertexArray_;
-		std::shared_ptr<VertexBuffer> vertexBuffer_;
-		std::shared_ptr<IndexBuffer> indexBuffer_;
 
+		std::shared_ptr<Shader> blueShader_;
+		std::shared_ptr<VertexArray> squareVertexArray_;
 		//Pointer to the App instance
 		//accessible throught the whole code base to access important information such as the App window
 		static Application* instance_; 

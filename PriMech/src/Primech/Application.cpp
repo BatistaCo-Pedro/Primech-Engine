@@ -48,18 +48,45 @@ namespace PriMech {
 		uint32_t indices[3] = { 0, 1, 2 };
 
 		//Creating new unqiue pointer
-		vertexBuffer_.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		BufferLayout layout = {
 			{ ShaderDataType::Float3, "attributePosition" },
 			{ ShaderDataType::Float4, "attributeColor" },
 		};
-		vertexBuffer_->SetLayout(layout);
-		vertexArray_->AddVertexBuffer(vertexBuffer_);
+		vertexBuffer->SetLayout(layout);
+		vertexArray_->AddVertexBuffer(vertexBuffer);
 
 		//Creating new unqiue pointer
-		indexBuffer_.reset(IndexBuffer::Create(indices, (sizeof(indices) / sizeof(vertices[0]))));
-		vertexArray_->SetIndexBuffer(indexBuffer_);
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0]))));
+		vertexArray_->SetIndexBuffer(indexBuffer);
+
+		squareVertexArray_.reset(VertexArray::Create());
+
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f, 
+			-0.75f,  0.75f, 0.0f, 
+		};
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };	
+
+		std::shared_ptr<VertexBuffer> squareVertexBuffer;
+		squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+
+		BufferLayout squareLayout = {
+			{ ShaderDataType::Float3, "attributePosition" },
+		};
+		squareVertexBuffer->SetLayout(squareLayout);
+
+		squareVertexArray_->AddVertexBuffer(squareVertexBuffer);
+
+		std::shared_ptr<IndexBuffer> squareIndexBuffer; 
+		squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0]))));
+		squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
+
 		//Temp
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -92,7 +119,30 @@ namespace PriMech {
 			}
 		)";
 
+
+
+		std::string blueShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 attributePosition;
+
+			void main() {
+				gl_Position = vec4(attributePosition, 1.0);
+			}
+		)";
+
+		std::string blueShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 outColor;
+
+			void main() {
+				outColor = vec4(0.2, 0.2, 0.5, 1.0);
+			}
+		)";
+
 		shader_.reset(new Shader(vertexSrc, fragmentSrc));
+		blueShader_.reset(new Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
 	}
 
 	Application::~Application() {}
@@ -128,10 +178,13 @@ namespace PriMech {
 			glClearColor(0.1, 0.1, 0.1, 0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			shader_->Bind();
+			blueShader_->Bind();
+			squareVertexArray_->Bind();
+			glDrawElements(GL_TRIANGLES, squareVertexArray_->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
-			glBindVertexArray(vertexArray_);
-			glDrawElements(GL_TRIANGLES, indexBuffer_->GetCount(), GL_UNSIGNED_INT, nullptr);
+			shader_->Bind();
+			vertexArray_->Bind();
+			glDrawElements(GL_TRIANGLES, vertexArray_->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
