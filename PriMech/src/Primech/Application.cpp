@@ -11,7 +11,7 @@ namespace PriMech {
 	Application* Application::instance_ = nullptr; //init Pointer 
 
 	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
-	Application::Application() {
+	Application::Application() : camera_(-1.6f, 1.6f, -0.9f, 0.9f) /* camera apect ration 1.6 / 0.9 -> 16 / 9 */ {
 		PM_CORE_ASSERT(!instance_, "Application already exists")
 		instance_ = this; //Set App Instance Pointer to pint to this App instance
 		//create Window as graphical interface, event callback funcitons are defined in the Window class		
@@ -32,12 +32,12 @@ namespace PriMech {
 			Offset -> item1, item2, item3, item4
 			Choice: item4 -> offset item1 + item2 + item3 in bits
 			Choice: item2 -> offset item1 in bits
-			Offset is absolut not realtive, always from the start, 0
+			Offset is absolute not relative, always from the start: pos 0
 
 			Stride -> item1, item2, item3
 					  item1, item2, item3
-			The Stride is the difference from vertex to vertex in bits
-
+			The Stride is the difference from vertex to vertex in bits,
+			in this case item1 + item2 + item3 in Bits
 		*/
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.7f, 0.3f, 0.3f, 1.0f,
@@ -94,13 +94,15 @@ namespace PriMech {
 			layout(location = 0) in vec3 attributePosition;
 			layout(location = 1) in vec4 attributeColor;
 
+			uniform mat4 uniformViewProjection;
+
 			out vec3 varPosition;
 			out vec4 varColor;
 
 			void main() {
 				varPosition = attributePosition;
 				varColor = attributeColor;
-				gl_Position = vec4(attributePosition, 1.0);
+				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
 			}
 		)";
 
@@ -125,9 +127,10 @@ namespace PriMech {
 			#version 330 core
 			
 			layout(location = 0) in vec3 attributePosition;
+			uniform mat4 uniformViewProjection;
 
 			void main() {
-				gl_Position = vec4(attributePosition, 1.0);
+				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
 			}
 		)";
 
@@ -175,19 +178,19 @@ namespace PriMech {
 	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
-
+			//Shader code
 			RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
 
-			Renderer::BeginScene();
+			camera_.SetPosition({ 0.5f, 0.5f, 0.0f });
+			camera_.SetRotation(45.0f);
 
-			blueShader_->Bind();
-			Renderer::Submit(squareVertexArray_);
+			Renderer::BeginScene(camera_);
 
-			shader_->Bind();
-			Renderer::Submit(vertexArray_);
+			Renderer::Submit(squareVertexArray_, blueShader_);
+			Renderer::Submit(vertexArray_, shader_);
 			
 			Renderer::EndScene();
-
+			//Call OnUpdate() for every layer in the stack
 			for (Layer* layer : layerStack_) {
 				layer->OnUpdate();
 			}

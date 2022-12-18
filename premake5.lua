@@ -16,6 +16,7 @@ includeDir = {}
 includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
 includeDir["glad"] = "PriMech/vendor/glad/include"
 includeDir["imgui"] = "PriMech/vendor/imgui"
+includeDir["glm"] = "PriMech/vendor/glm"
 
 group "Dependencies"
 	-- include the other premake5.lua
@@ -40,7 +41,9 @@ project "PriMech" --Name of SLN
 
 	files {
 		"%{prj.name}/src/**.h", -- ** => recursively, find all files that end wiht .h
-		"%{prj.name}/src/**.cpp" --all files that end with .cpp
+		"%{prj.name}/src/**.cpp", --all files that end with .cpp
+		"%{prj.name}/vendor/glm/glm/**.hpp",
+		"%{prj.name}/vendor/glm/glm/**.inl",
 	}
 
 	defines {
@@ -53,6 +56,7 @@ project "PriMech" --Name of SLN
 		"%{includeDir.GLFW}",
 		"%{includeDir.glad}",
 		"%{includeDir.imgui}",
+		"%{includeDir.glm}",
 	}
 
 	links {

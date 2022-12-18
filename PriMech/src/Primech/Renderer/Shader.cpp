@@ -1,8 +1,11 @@
 #include "ppch.h"
 #include "Shader.h"
 #include "glad/glad.h"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace PriMech {
+	const std::string& Shader::name_ = "uniformViewProjection";
+
 	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) {
 		// Create an empty vertex shader handle
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -70,8 +73,8 @@ namespace PriMech {
 		// Vertex and fragment shaders are successfully compiled.
 		// Now time to link them together into a program.
 		// Get a program object.
-		renderID_ = glCreateProgram();
-		GLuint program = renderID_;
+		rendererID_ = glCreateProgram();
+		GLuint program = rendererID_;
 
 		// Attach our shaders to our program
 		glAttachShader(program, vertexShader);
@@ -110,14 +113,19 @@ namespace PriMech {
 	}
 
 	Shader::~Shader() {
-		glDeleteProgram(renderID_);
+		glDeleteProgram(rendererID_);
 	}
 
 	void Shader::Bind() const {
-		glUseProgram(renderID_);
+		glUseProgram(rendererID_);
 	}
 
 	void Shader::Unbind() const {
 		glUseProgram(0);
+	}
+
+	void Shader::UploadUniformMat4(const glm::mat4& matrix,const std::string& name) {
+		GLint location = glGetUniformLocation(rendererID_, name.c_str());
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 }

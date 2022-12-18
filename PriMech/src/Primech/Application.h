@@ -23,6 +23,7 @@
 #include "Primech/Renderer/Shader.h"
 #include "Primech/Renderer/Buffer.h"
 #include "Primech/Renderer/VertexArray.h"
+#include "Primech/Renderer/OrthographicCamera.h"
 
 /*
 * General Namespace for everything included in the Engine itself 
@@ -59,6 +60,7 @@ namespace PriMech {
 		//Pointer to the App instance
 		//accessible throught the whole code base to access important information such as the App window
 		static Application* instance_; 
+		OrthographicCamera camera_;
 	};
 
 	//defined in client e.g Sandbox

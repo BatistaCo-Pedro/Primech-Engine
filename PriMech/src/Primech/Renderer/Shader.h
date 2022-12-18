@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/mat4x4.hpp>
 
 namespace PriMech {
 	class Shader {
@@ -11,7 +12,9 @@ namespace PriMech {
 		void Bind() const;
 		void Unbind() const;
 
+		void UploadUniformMat4(const glm::mat4& matrix, const std::string& name = name_);
 	private:
-		uint32_t renderID_;
+		uint32_t rendererID_;
+		static const std::string& name_;
 	};
 }
