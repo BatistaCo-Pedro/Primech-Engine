@@ -4,32 +4,195 @@
 
 class ExampleLayer : public PriMech::Layer {
 public:
-	ExampleLayer() : Layer("Example") {}
+	ExampleLayer() : Layer("Example"), 
+		camera_(-1.6f, 1.6f, -0.9f, 0.9f), /* camera apect ration 1.6 / 0.9 -> 16 / 9 */ 
+		cameraPosition_(0.0f) {
 
-	void OnUpdate() override {
-		//PM_INFO("ExampleLayer::Update");
+		vertexArray_.reset(PriMech::VertexArray::Create());
 
-		if (PriMech::Input::IsKeyPressed(PM_KEY_TAB)) {
-			PM_WARN("Tab is pressed (update)");
-		}
+		//defining the points pos
+		/*
+			Offset -> item1, item2, item3, item4
+			Choice: item4 -> offset item1 + item2 + item3 in bits
+			Choice: item2 -> offset item1 in bits
+			Offset is absolute not relative, always from the start: pos 0
+
+			Stride -> item1, item2, item3
+					  item1, item2, item3
+			The Stride is the difference from vertex to vertex in bits,
+			in this case item1 + item2 + item3 in Bits
+		*/
+		float vertices[3 * 7] = {
+			-0.5f, -0.5f, 0.0f, 0.7f, 0.3f, 0.3f, 1.0f,
+			0.5f, -0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f,
+			0.0f, 0.5f, 0.0f, 0.2f, 0.2f, 0.8f, 1.0f,
+		};
+
+		uint32_t indices[3] = { 0, 1, 2 };
+
+		//Creating new unqiue pointer
+		std::shared_ptr<PriMech::VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(PriMech::VertexBuffer::Create(vertices, sizeof(vertices)));
+
+		PriMech::BufferLayout layout = {
+			{ PriMech::ShaderDataType::Float3, "attributePosition" },
+			{ PriMech::ShaderDataType::Float4, "attributeColor" },
+		};
+		vertexBuffer->SetLayout(layout);
+		vertexArray_->AddVertexBuffer(vertexBuffer);
+
+		//Creating new unqiue pointer
+		std::shared_ptr<PriMech::IndexBuffer> indexBuffer;
+		indexBuffer.reset(PriMech::IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0]))));
+		vertexArray_->SetIndexBuffer(indexBuffer);
+
+		squareVertexArray_.reset(PriMech::VertexArray::Create());
+
+		float squareVertices[3 * 4] = {
+			-0.75f, -0.75f, 0.0f,
+			 0.75f, -0.75f, 0.0f,
+			 0.75f,  0.75f, 0.0f,
+			-0.75f,  0.75f, 0.0f,
+		};
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+
+		std::shared_ptr<PriMech::VertexBuffer> squareVertexBuffer;
+		squareVertexBuffer.reset(PriMech::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+
+		PriMech::BufferLayout squareLayout = {
+			{ PriMech::ShaderDataType::Float3, "attributePosition" },
+		};
+		squareVertexBuffer->SetLayout(squareLayout);
+
+		squareVertexArray_->AddVertexBuffer(squareVertexBuffer);
+
+		std::shared_ptr<PriMech::IndexBuffer> squareIndexBuffer;
+		squareIndexBuffer.reset(PriMech::IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0]))));
+		squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
+
+		//Temp
+		std::string vertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 attributePosition;
+			layout(location = 1) in vec4 attributeColor;
+
+			uniform mat4 uniformViewProjection;
+
+			out vec3 varPosition;
+			out vec4 varColor;
+
+			void main() {
+				varPosition = attributePosition;
+				varColor = attributeColor;
+				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
+			}
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 outColor;
+
+			in vec3 varPosition;
+			in vec4 varColor;
+
+			void main() {
+				vec4 color = vec4(varPosition * 0.5 + 0.5, 1.0);
+				outColor = color;
+				outColor = varColor;
+			}
+		)";
+
+
+
+		std::string blueShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 attributePosition;
+			uniform mat4 uniformViewProjection;
+
+			void main() {
+				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
+			}
+		)";
+
+		std::string blueShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 outColor;
+
+			void main() {
+				outColor = vec4(0.2, 0.2, 0.5, 1.0);
+			}
+		)";
+
+		shader_.reset(new PriMech::Shader(vertexSrc, fragmentSrc));
+		blueShader_.reset(new PriMech::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
 	}
 
-	void OnEvent(PriMech::Event& event) override {
-		if (event.GetEventType() == PriMech::EventType::KeyPressed) {
-			PriMech::KeyPressedEvent& e = (PriMech::KeyPressedEvent&)event;
+	void OnUpdate(PriMech::Timestep timestep) override {
+		PM_INFO("Delta time: {0}s, {1}ms", timestep.GetSeconds(), timestep.GetMiliSeconds());
 
-			if (PriMech::Input::IsKeyPressed(PM_KEY_TAB)) {
-				PM_WARN("Tab is pressed (event)");
-			}
-			PM_INFO("{0}", (char)e.GetKeyCode());		
+		if (PriMech::Input::IsKeyPressed(PM_KEY_RIGHT)) {
+			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;
 		}
+		else if (PriMech::Input::IsKeyPressed(PM_KEY_LEFT)) {
+			cameraPosition_.x -= cameraPositionChangeSpeed_ * timestep;
+		}
+
+		if (PriMech::Input::IsKeyPressed(PM_KEY_UP)) {
+			cameraPosition_.y += cameraPositionChangeSpeed_ * timestep;
+		}
+		else if (PriMech::Input::IsKeyPressed(PM_KEY_DOWN)) {
+			cameraPosition_.y -= cameraPositionChangeSpeed_ * timestep;
+		}
+
+		if (PriMech::Input::IsKeyPressed(PM_KEY_A)) {
+			cameraRotation_ += cameraRotationChangeSpeed_ * timestep;
+		}
+		if (PriMech::Input::IsKeyPressed(PM_KEY_D)) {
+			cameraRotation_ -= cameraRotationChangeSpeed_ * timestep;
+		}
+
+		//Shader code
+		PriMech::RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
+
+		camera_.SetPosition(cameraPosition_);
+		camera_.SetRotation(cameraRotation_);
+
+		PriMech::Renderer::BeginScene(camera_);
+
+		PriMech::Renderer::Submit(squareVertexArray_, blueShader_);
+		PriMech::Renderer::Submit(vertexArray_, shader_);
+
+		PriMech::Renderer::EndScene();
 	}
 
 	void OnImGuiRender() override {
-		ImGui::Begin("Hello");
-		ImGui::Text("This is a test");
-		ImGui::End();
+
 	}
+
+	void OnEvent(PriMech::Event& event) override {
+		PriMech::EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<PriMech::KeyPressedEvent>(PM_BIND_EVENT_FUNCTION(ExampleLayer::OnKeyPressedEvent));
+	}
+
+	bool OnKeyPressedEvent(PriMech::KeyPressedEvent& event) {
+		return false;
+	}
+private:
+	std::shared_ptr<PriMech::Shader> shader_;
+	std::shared_ptr<PriMech::VertexArray> vertexArray_;
+
+	std::shared_ptr<PriMech::Shader> blueShader_;
+	std::shared_ptr<PriMech::VertexArray> squareVertexArray_;
+
+	PriMech::OrthographicCamera camera_;
+	glm::vec3 cameraPosition_;
+	float cameraRotation_ = 0.0f;
+	float cameraPositionChangeSpeed_ = 2.5f;
+	float cameraRotationChangeSpeed_ = 200.0f;
 };
 
 class Sandbox : public PriMech::Application

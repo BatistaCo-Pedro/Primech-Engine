@@ -20,17 +20,12 @@
 #include "Window.h"
 #include "ImGui/ImGuiLayer.h"
 
-#include "Primech/Renderer/Shader.h"
-#include "Primech/Renderer/Buffer.h"
-#include "Primech/Renderer/VertexArray.h"
-#include "Primech/Renderer/OrthographicCamera.h"
+#include "Primech/Core/Timestep.h"
 
-/*
-* General Namespace for everything included in the Engine itself 
-*/
+//General Namespace for everything included in the Engine itself 
 namespace PriMech {
 	//PriMech_API is defined in Core.h
-	class PRIMECH_API Application
+	class Application
 	{
 	public:
 		//Methods for Applications using PriMech
@@ -43,24 +38,20 @@ namespace PriMech {
 		void PushOverlay(Layer* overlay);
 
 		inline static Application& GetApplication() { return *instance_; }
-		inline Window& GetWindow() { return *pWindow_; }
+		inline Window& GetWindow() { return *windowPtr_; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
-		std::unique_ptr<Window> pWindow_;
+		std::unique_ptr<Window> windowPtr_;
 		ImGuiLayer* imGuiLayer_;
 		bool running_ = true;
 		LayerStack layerStack_;
 
-		std::shared_ptr<Shader> shader_;
-		std::shared_ptr<VertexArray> vertexArray_;
-
-		std::shared_ptr<Shader> blueShader_;
-		std::shared_ptr<VertexArray> squareVertexArray_;
 		//Pointer to the App instance
 		//accessible throught the whole code base to access important information such as the App window
 		static Application* instance_; 
-		OrthographicCamera camera_;
+
+		float lastFrameTime_ = 0.0f;
 	};
 
 	//defined in client e.g Sandbox

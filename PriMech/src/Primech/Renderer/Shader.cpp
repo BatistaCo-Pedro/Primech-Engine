@@ -4,6 +4,7 @@
 #include "glm/gtc/type_ptr.hpp"
 
 namespace PriMech {
+	//Set default shader uniform name -> can be overriden in the method call [UploadUniform()]
 	const std::string& Shader::name_ = "uniformViewProjection";
 
 	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc) {
