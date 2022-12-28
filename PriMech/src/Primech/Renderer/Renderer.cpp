@@ -15,9 +15,10 @@ namespace PriMech {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader) {
+	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const glm::mat4& transform) {
 		shader->Bind();
 		shader->UploadUniformMat4(sceneData_->viewProjectionMatrixData_);
+		shader->UploadUniformMat4(transform, "uniformTransform");
 		vertexArray->Bind();
 		RendererCommand::DrawIndexed(vertexArray);
 	}

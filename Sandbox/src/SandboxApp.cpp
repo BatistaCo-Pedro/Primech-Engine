@@ -1,6 +1,7 @@
 #include <Primech.h>
 
 #include "imgui/imgui.h"
+#include <glm/ext/matrix_transform.hpp>
 
 class ExampleLayer : public PriMech::Layer {
 public:
@@ -49,10 +50,10 @@ public:
 		squareVertexArray_.reset(PriMech::VertexArray::Create());
 
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f,
 		};
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -78,6 +79,7 @@ public:
 			layout(location = 1) in vec4 attributeColor;
 
 			uniform mat4 uniformViewProjection;
+			uniform mat4 uniformTransform;
 
 			out vec3 varPosition;
 			out vec4 varColor;
@@ -85,7 +87,7 @@ public:
 			void main() {
 				varPosition = attributePosition;
 				varColor = attributeColor;
-				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
+				gl_Position = uniformViewProjection * uniformTransform * vec4(attributePosition, 1.0);
 			}
 		)";
 
@@ -111,9 +113,10 @@ public:
 			
 			layout(location = 0) in vec3 attributePosition;
 			uniform mat4 uniformViewProjection;
+			uniform mat4 uniformTransform;
 
 			void main() {
-				gl_Position = uniformViewProjection * vec4(attributePosition, 1.0);
+				gl_Position = uniformViewProjection * uniformTransform * vec4(attributePosition, 1.0);
 			}
 		)";
 
@@ -134,26 +137,20 @@ public:
 	void OnUpdate(PriMech::Timestep timestep) override {
 		PM_INFO("Delta time: {0}s, {1}ms", timestep.GetSeconds(), timestep.GetMiliSeconds());
 
-		if (PriMech::Input::IsKeyPressed(PM_KEY_RIGHT)) {
-			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;
-		}
-		else if (PriMech::Input::IsKeyPressed(PM_KEY_LEFT)) {
+		if (PriMech::Input::IsKeyPressed(PM_KEY_RIGHT)) 
+			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;	
+		else if (PriMech::Input::IsKeyPressed(PM_KEY_LEFT)) 
 			cameraPosition_.x -= cameraPositionChangeSpeed_ * timestep;
-		}
 
-		if (PriMech::Input::IsKeyPressed(PM_KEY_UP)) {
+		if (PriMech::Input::IsKeyPressed(PM_KEY_UP))
 			cameraPosition_.y += cameraPositionChangeSpeed_ * timestep;
-		}
-		else if (PriMech::Input::IsKeyPressed(PM_KEY_DOWN)) {
+		else if (PriMech::Input::IsKeyPressed(PM_KEY_DOWN))
 			cameraPosition_.y -= cameraPositionChangeSpeed_ * timestep;
-		}
-
-		if (PriMech::Input::IsKeyPressed(PM_KEY_A)) {
+		
+		if (PriMech::Input::IsKeyPressed(PM_KEY_A))
 			cameraRotation_ += cameraRotationChangeSpeed_ * timestep;
-		}
-		if (PriMech::Input::IsKeyPressed(PM_KEY_D)) {
+		if (PriMech::Input::IsKeyPressed(PM_KEY_D))
 			cameraRotation_ -= cameraRotationChangeSpeed_ * timestep;
-		}
 
 		//Shader code
 		PriMech::RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
@@ -163,7 +160,16 @@ public:
 
 		PriMech::Renderer::BeginScene(camera_);
 
-		PriMech::Renderer::Submit(squareVertexArray_, blueShader_);
+		float scaleMultiplier = 0.75f;
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f * scaleMultiplier));
+
+		for (int x = 0; x < 20; x++) {
+			for (int y = 0; y < 20; y++) {
+				glm::vec3 pos(x * 0.11f * scaleMultiplier, y * 0.11f * scaleMultiplier, 0.0f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
+				PriMech::Renderer::Submit(squareVertexArray_, blueShader_, transform);
+			}		
+		}	
 		PriMech::Renderer::Submit(vertexArray_, shader_);
 
 		PriMech::Renderer::EndScene();
@@ -193,6 +199,8 @@ private:
 	float cameraRotation_ = 0.0f;
 	float cameraPositionChangeSpeed_ = 2.5f;
 	float cameraRotationChangeSpeed_ = 200.0f;
+
+	float transformChangeSpeed = 1.0f;
 };
 
 class Sandbox : public PriMech::Application
