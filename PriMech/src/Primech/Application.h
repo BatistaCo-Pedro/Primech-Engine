@@ -42,7 +42,7 @@ namespace PriMech {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
-		std::unique_ptr<Window> windowPtr_;
+		Scope<Window> windowPtr_;
 		ImGuiLayer* imGuiLayer_;
 		bool running_ = true;
 		LayerStack layerStack_;

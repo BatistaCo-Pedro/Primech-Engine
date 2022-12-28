@@ -16,7 +16,7 @@ namespace PriMech {
 		PM_CORE_ASSERT(!instance_, "Application already exists")
 		instance_ = this; //Set App Instance Pointer to pint to this App instance
 		//create Window as graphical interface, event callback funcitons are defined in the Window class		
-		windowPtr_ = std::unique_ptr<Window>(Window::Create(WindowProps("PriMech Engine", 1920, 1080)));
+		windowPtr_ = Scope<Window>(Window::Create(WindowProps("PriMech Engine", 1920, 1080)));
 		//Bind the Application defined OnEvent Method to the callback var of Window
 		//Theres no suitable conversion from OnEvent() to std::function<void(Event&)> so we bind the functions
 		windowPtr_->SetEventCallback(PM_BIND_EVENT_FUNCTION(Application::OnEvent));

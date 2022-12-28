@@ -138,7 +138,7 @@
     <ClInclude Include="src\Primech\Renderer\RendererCommand.h">
       <Filter>src\Primech\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Renderer\Shader.h">
+    <ClInclude Include="src\Platform\OpenGL\Shader\OpenGLShader.h">
       <Filter>src\Primech\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Renderer\VertexArray.h">
@@ -1399,6 +1399,7 @@
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Core\Timestep.h" />
+    <ClInclude Include="src\Primech\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1452,7 +1453,7 @@
     <ClCompile Include="src\Primech\Renderer\RendererCommand.cpp">
       <Filter>src\Primech\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primech\Renderer\Shader.cpp">
+    <ClCompile Include="src\Platform\OpenGL\Shader\OpenGLShader.cpp">
       <Filter>src\Primech\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\Renderer\VertexArray.cpp">
@@ -1461,5 +1462,6 @@
     <ClCompile Include="src\ppch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>

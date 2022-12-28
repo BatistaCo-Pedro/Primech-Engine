@@ -3,6 +3,7 @@
 
 #include "glad/glad.h"
 #include "Primech/Renderer/OrthographicCamera.h"
+#include <Platform/OpenGL/Shader/OpenGLShader.h>
 
 namespace PriMech {
 	Renderer::SceneData* Renderer::sceneData_ = new Renderer::SceneData;
@@ -15,10 +16,10 @@ namespace PriMech {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<Shader>& shader, const glm::mat4& transform) {
+	void Renderer::Submit(const Ref<VertexArray>& vertexArray, const Ref<Shader>& shader, const glm::mat4& transform) {
 		shader->Bind();
-		shader->UploadUniformMat4(sceneData_->viewProjectionMatrixData_);
-		shader->UploadUniformMat4(transform, "uniformTransform");
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(sceneData_->viewProjectionMatrixData_, "uniformViewProjection");
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4(transform, "uniformTransform");
 		vertexArray->Bind();
 		RendererCommand::DrawIndexed(vertexArray);
 	}

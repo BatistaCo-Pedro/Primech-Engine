@@ -2,6 +2,8 @@
 
 #include "imgui/imgui.h"
 #include <glm/ext/matrix_transform.hpp>
+#include <Platform/OpenGL/Shader/OpenGLShader.h>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public PriMech::Layer {
 public:
@@ -32,7 +34,7 @@ public:
 		uint32_t indices[3] = { 0, 1, 2 };
 
 		//Creating new unqiue pointer
-		std::shared_ptr<PriMech::VertexBuffer> vertexBuffer;
+		PriMech::Ref<PriMech::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(PriMech::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		PriMech::BufferLayout layout = {
@@ -43,7 +45,7 @@ public:
 		vertexArray_->AddVertexBuffer(vertexBuffer);
 
 		//Creating new unqiue pointer
-		std::shared_ptr<PriMech::IndexBuffer> indexBuffer;
+		PriMech::Ref<PriMech::IndexBuffer> indexBuffer;
 		indexBuffer.reset(PriMech::IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0]))));
 		vertexArray_->SetIndexBuffer(indexBuffer);
 
@@ -57,7 +59,7 @@ public:
 		};
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
-		std::shared_ptr<PriMech::VertexBuffer> squareVertexBuffer;
+		PriMech::Ref<PriMech::VertexBuffer> squareVertexBuffer;
 		squareVertexBuffer.reset(PriMech::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
 		PriMech::BufferLayout squareLayout = {
@@ -67,7 +69,7 @@ public:
 
 		squareVertexArray_->AddVertexBuffer(squareVertexBuffer);
 
-		std::shared_ptr<PriMech::IndexBuffer> squareIndexBuffer;
+		PriMech::Ref<PriMech::IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer.reset(PriMech::IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0]))));
 		squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
 
@@ -108,7 +110,7 @@ public:
 
 
 
-		std::string blueShaderVertexSrc = R"(
+		std::string flatColorShaderVertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 attributePosition;
@@ -120,18 +122,20 @@ public:
 			}
 		)";
 
-		std::string blueShaderFragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) out vec4 outColor;
 
+			uniform vec3 uniformColor;
+			
 			void main() {
-				outColor = vec4(0.2, 0.2, 0.5, 1.0);
+				outColor = vec4(uniformColor, 1.0f);
 			}
 		)";
 
-		shader_.reset(new PriMech::Shader(vertexSrc, fragmentSrc));
-		blueShader_.reset(new PriMech::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+		shader_.reset(PriMech::Shader::Create(vertexSrc, fragmentSrc));
+		flatColorShader_.reset(PriMech::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	void OnUpdate(PriMech::Timestep timestep) override {
@@ -160,14 +164,25 @@ public:
 
 		PriMech::Renderer::BeginScene(camera_);
 
-		float scaleMultiplier = 0.75f;
-		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f * scaleMultiplier));
+		float scaleMultiplier = 1.0f;
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f) * scaleMultiplier);
 
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->Bind();
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->UploadUniformFloat3(squareColor_, "uniformColor");
+
+		/* Material API may look like
+			PriMech::MaterialRef material = new PriMech::Material(flatColorShader_);
+			PriMech::MaterialInstanceRef materialInstance = new PriMech::MaterialInstance(material);
+
+			materialInstance->Set("uniformColor", redColor);
+			materialInstance->Set("uniformAlbedoMap", albedoMapTexture);
+			squareMesh->SetMaterial(materialInstance);
+		*/
 		for (int x = 0; x < 20; x++) {
 			for (int y = 0; y < 20; y++) {
 				glm::vec3 pos(x * 0.11f * scaleMultiplier, y * 0.11f * scaleMultiplier, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				PriMech::Renderer::Submit(squareVertexArray_, blueShader_, transform);
+				PriMech::Renderer::Submit(squareVertexArray_, flatColorShader_, transform);
 			}		
 		}	
 		PriMech::Renderer::Submit(vertexArray_, shader_);
@@ -176,7 +191,9 @@ public:
 	}
 
 	void OnImGuiRender() override {
-
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit3("Square Color", glm::value_ptr(squareColor_));
+		ImGui::End();
 	}
 
 	void OnEvent(PriMech::Event& event) override {
@@ -188,11 +205,11 @@ public:
 		return false;
 	}
 private:
-	std::shared_ptr<PriMech::Shader> shader_;
-	std::shared_ptr<PriMech::VertexArray> vertexArray_;
+	PriMech::Ref<PriMech::Shader> shader_;
+	PriMech::Ref<PriMech::VertexArray> vertexArray_;
 
-	std::shared_ptr<PriMech::Shader> blueShader_;
-	std::shared_ptr<PriMech::VertexArray> squareVertexArray_;
+	PriMech::Ref<PriMech::Shader> flatColorShader_;
+	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
 
 	PriMech::OrthographicCamera camera_;
 	glm::vec3 cameraPosition_;
@@ -201,6 +218,7 @@ private:
 	float cameraRotationChangeSpeed_ = 200.0f;
 
 	float transformChangeSpeed = 1.0f;
+	glm::vec3 squareColor_ = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public PriMech::Application

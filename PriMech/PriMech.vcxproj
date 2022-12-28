@@ -171,6 +171,7 @@
     <ClInclude Include="src\Primech\Renderer\Renderer.h" />
     <ClInclude Include="src\Primech\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Primech\Renderer\RendererCommand.h" />
+    <ClInclude Include="src\Platform\OpenGL\Shader\OpenGLShader.h" />
     <ClInclude Include="src\Primech\Renderer\Shader.h" />
     <ClInclude Include="src\Primech\Renderer\VertexArray.h" />
     <ClInclude Include="src\Primech\Window.h" />
@@ -610,6 +611,7 @@
     <ClCompile Include="src\Primech\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Primech\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Primech\Renderer\RendererCommand.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\Shader\OpenGLShader.cpp" />
     <ClCompile Include="src\Primech\Renderer\Shader.cpp" />
     <ClCompile Include="src\Primech\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\ppch.cpp">
