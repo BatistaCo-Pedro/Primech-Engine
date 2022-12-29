@@ -25,7 +25,7 @@ public:
 			The Stride is the difference from vertex to vertex in bits,
 			in this case item1 + item2 + item3 in Bits
 		*/
-		float vertices[3 * 7] = {
+		float vertices[7 * 3] = {
 			-0.5f, -0.5f, 0.0f, 0.7f, 0.3f, 0.3f, 1.0f,
 			0.5f, -0.5f, 0.0f, 0.2f, 0.5f, 0.3f, 1.0f,
 			0.0f, 0.5f, 0.0f, 0.2f, 0.2f, 0.8f, 1.0f,
@@ -51,11 +51,11 @@ public:
 
 		squareVertexArray_.reset(PriMech::VertexArray::Create());
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -64,6 +64,7 @@ public:
 
 		PriMech::BufferLayout squareLayout = {
 			{ PriMech::ShaderDataType::Float3, "attributePosition" },
+			{ PriMech::ShaderDataType::Float2, "attributeTextureCoord"},
 		};
 		squareVertexBuffer->SetLayout(squareLayout);
 
@@ -114,6 +115,8 @@ public:
 			#version 330 core
 			
 			layout(location = 0) in vec3 attributePosition;
+			
+
 			uniform mat4 uniformViewProjection;
 			uniform mat4 uniformTransform;
 
@@ -130,12 +133,52 @@ public:
 			uniform vec3 uniformColor;
 			
 			void main() {
-				outColor = vec4(uniformColor, 1.0f);
+				outColor = vec4(uniformColor, 1.0);
+			}
+		)";
+
+
+
+		std::string textureShaderVertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 attributePosition;
+			layout(location = 1) in vec2 attributeTextureCoord;
+			
+			uniform mat4 uniformViewProjection;
+			uniform mat4 uniformTransform;
+
+			out vec2 varTextureCoord;
+
+			void main() {
+				varTextureCoord = attributeTextureCoord;
+				gl_Position = uniformViewProjection * uniformTransform * vec4(attributePosition, 1.0);
+			}
+		)";
+
+		std::string textureShaderFragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 outColor;
+
+			in vec2 varTextureCoord;
+			
+			uniform sampler2D uniformTexture;
+
+			void main() {
+				outColor = texture(uniformTexture, varTextureCoord);
 			}
 		)";
 
 		shader_.reset(PriMech::Shader::Create(vertexSrc, fragmentSrc));
 		flatColorShader_.reset(PriMech::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		textureShader_.reset(PriMech::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+
+		texture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
+
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->Bind();
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->UploadUniformInt(0, "uniformTexture"); //0 is the slot
+
 	}
 
 	void OnUpdate(PriMech::Timestep timestep) override {
@@ -157,7 +200,7 @@ public:
 			cameraRotation_ -= cameraRotationChangeSpeed_ * timestep;
 
 		//Shader code
-		PriMech::RendererCommand::ClearWithColor({ 0.1, 0.1, 0.1, 0 });
+		PriMech::RendererCommand::ClearWithColor({ 0.1f, 0.1f, 0.1f, 0.0f });
 
 		camera_.SetPosition(cameraPosition_);
 		camera_.SetRotation(cameraRotation_);
@@ -170,7 +213,7 @@ public:
 		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->Bind();
 		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->UploadUniformFloat3(squareColor_, "uniformColor");
 
-		/* Material API may look like
+		/* Material API may look like:
 			PriMech::MaterialRef material = new PriMech::Material(flatColorShader_);
 			PriMech::MaterialInstanceRef materialInstance = new PriMech::MaterialInstance(material);
 
@@ -185,7 +228,11 @@ public:
 				PriMech::Renderer::Submit(squareVertexArray_, flatColorShader_, transform);
 			}		
 		}	
-		PriMech::Renderer::Submit(vertexArray_, shader_);
+		//Triangle rendering
+		//PriMech::Renderer::Submit(vertexArray_, shader_);
+		texture_->Bind();
+		PriMech::Renderer::Submit(squareVertexArray_, textureShader_, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
 
 		PriMech::Renderer::EndScene();
 	}
@@ -208,8 +255,10 @@ private:
 	PriMech::Ref<PriMech::Shader> shader_;
 	PriMech::Ref<PriMech::VertexArray> vertexArray_;
 
-	PriMech::Ref<PriMech::Shader> flatColorShader_;
+	PriMech::Ref<PriMech::Shader> flatColorShader_, textureShader_;
 	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
+
+	PriMech::Ref<PriMech::Texture2D> texture_;
 
 	PriMech::OrthographicCamera camera_;
 	glm::vec3 cameraPosition_;

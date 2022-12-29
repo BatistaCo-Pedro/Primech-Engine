@@ -17,6 +17,7 @@ includeDir["GLFW"] = "PriMech/vendor/GLFW/include"
 includeDir["glad"] = "PriMech/vendor/glad/include"
 includeDir["imgui"] = "PriMech/vendor/imgui"
 includeDir["glm"] = "PriMech/vendor/glm"
+includeDir["stb_image"] = "PriMech/vendor/stb_image"
 
 group "Dependencies"
 	-- include the other premake5.lua
@@ -44,6 +45,8 @@ project "PriMech" --Name of SLN
 		"%{prj.name}/src/**.cpp", --all files that end with .cpp
 		"%{prj.name}/vendor/glm/glm/**.hpp",
 		"%{prj.name}/vendor/glm/glm/**.inl",
+		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/stb_image/**.cpp",
 	}
 
 	defines {
@@ -57,6 +60,7 @@ project "PriMech" --Name of SLN
 		"%{includeDir.glad}",
 		"%{includeDir.imgui}",
 		"%{includeDir.glm}",
+		"%{includeDir.stb_image}",
 	}
 
 	links {

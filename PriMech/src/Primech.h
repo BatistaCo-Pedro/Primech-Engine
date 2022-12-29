@@ -17,6 +17,7 @@
 #include "Primech/Renderer/RendererCommand.h"
 #include "Primech/Renderer/Renderer.h"
 #include "Primech/Renderer/Shader.h"
+#include "Primech/Renderer/Texture.h"
 #include "Primech/Renderer/Buffer.h"
 #include "Primech/Renderer/VertexArray.h"
 //----------------------------------------------
