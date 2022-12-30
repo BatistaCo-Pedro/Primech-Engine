@@ -15,11 +15,16 @@ namespace PriMech {
 	Application::Application() {
 		PM_CORE_ASSERT(!instance_, "Application already exists")
 		instance_ = this; //Set App Instance Pointer to pint to this App instance
+
 		//create Window as graphical interface, event callback funcitons are defined in the Window class		
 		windowPtr_ = Scope<Window>(Window::Create(WindowProps("PriMech Engine", 1920, 1080)));
+
 		//Bind the Application defined OnEvent Method to the callback var of Window
-		//Theres no suitable conversion from OnEvent() to std::function<void(Event&)> so we bind the functions
+		//Theres no conversion from OnEvent() to std::function<void(Event&)> so we bind the functions
 		windowPtr_->SetEventCallback(PM_BIND_EVENT_FUNCTION(Application::OnEvent));
+
+		Renderer::Init();
+
 		//Call the Logger; Logging macros are defined in Log.h
 		PM_CORE_INFO("CONSTUCTOR CALLED FOR APPLICATION");
 
@@ -42,6 +47,7 @@ namespace PriMech {
 	//This Method is binded to Window callback and is called when an event occurs
 	void Application::OnEvent(Event& event) {
 		EventDispatcher dispatcher(event);
+
 		//Binding once agian becuase no suitable conversion
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 

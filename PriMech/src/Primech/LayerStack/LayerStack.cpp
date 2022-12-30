@@ -11,8 +11,8 @@ namespace PriMech {
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {
-		layers_.emplace(layers_.begin() + layerInsertIndex, layer);
-		layerInsertIndex++;
+		layers_.emplace(layers_.begin() + layerInsertIndex_, layer);
+		layerInsertIndex_++;
 		layer->OnAttach();
 	}
 
@@ -23,9 +23,9 @@ namespace PriMech {
 
 	void LayerStack::PopLayer(Layer* layer) {
 		auto iterator = std::find(layers_.begin(), layers_.end(), layer);
-		if (iterator != layers_.end()) { 
+		if (iterator != layers_.begin() + layerInsertIndex_) {
 			layers_.erase(iterator); 
-			layerInsertIndex--;
+			layerInsertIndex_--;
 			layer->OnDetach();
 		}
 	}

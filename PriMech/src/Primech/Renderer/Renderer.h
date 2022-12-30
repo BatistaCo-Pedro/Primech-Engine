@@ -7,6 +7,7 @@
 namespace PriMech {
 	class Renderer {
 	public:
+		static void Init();
 		static void BeginScene(OrthographicCamera& camera); //TODO add camera, environment etc.. as params
 		static void EndScene();
 

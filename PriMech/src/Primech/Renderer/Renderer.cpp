@@ -8,6 +8,10 @@
 namespace PriMech {
 	Renderer::SceneData* Renderer::sceneData_ = new Renderer::SceneData;
 
+	void Renderer::Init() {
+		RendererCommand::Init();
+	}
+
 	void Renderer::BeginScene(OrthographicCamera& camera) {
 		sceneData_->viewProjectionMatrixData_ = camera.GetViewProjectionMatrix();
 	}

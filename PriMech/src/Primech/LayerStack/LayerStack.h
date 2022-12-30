@@ -19,6 +19,6 @@ namespace PriMech {
 		std::vector<Layer*>::iterator end() { return layers_.end(); }
 	private:
 		std::vector<Layer*> layers_;
-		unsigned int layerInsertIndex = 0;
+		unsigned int layerInsertIndex_ = 0;
 	};
 }

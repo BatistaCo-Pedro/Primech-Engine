@@ -175,6 +175,7 @@ public:
 		textureShader_.reset(PriMech::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
 
 		texture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
+		textureTest_ = PriMech::Texture2D::Create("assets/textures/CPic.png");
 
 		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->Bind();
 		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->UploadUniformInt(0, "uniformTexture"); //0 is the slot
@@ -233,6 +234,9 @@ public:
 		texture_->Bind();
 		PriMech::Renderer::Submit(squareVertexArray_, textureShader_, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
+		textureTest_->Bind();
+		PriMech::Renderer::Submit(squareVertexArray_, textureShader_, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
 
 		PriMech::Renderer::EndScene();
 	}
@@ -258,7 +262,7 @@ private:
 	PriMech::Ref<PriMech::Shader> flatColorShader_, textureShader_;
 	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
 
-	PriMech::Ref<PriMech::Texture2D> texture_;
+	PriMech::Ref<PriMech::Texture2D> texture_, textureTest_;
 
 	PriMech::OrthographicCamera camera_;
 	glm::vec3 cameraPosition_;
