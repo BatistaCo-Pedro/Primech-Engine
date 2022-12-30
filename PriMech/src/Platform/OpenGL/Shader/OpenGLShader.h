@@ -4,9 +4,12 @@
 #include <glm/glm.hpp>
 #include <Primech/Renderer/Shader.h>
 
+typedef unsigned int GLenum;
+
 namespace PriMech {
 	class OpenGLShader : public Shader {
 	public:
+		OpenGLShader(const std::string& filepath);
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		~OpenGLShader();
 
@@ -22,6 +25,10 @@ namespace PriMech {
 		void UploadUniformFloat3(const glm::vec3& value, const std::string& name);
 		void UploadUniformFloat4(const glm::vec4& value, const std::string& name);
 	private:
-		uint32_t rendererID_;
+		std::string ReadFile(const std::string& filepath);
+		std::unordered_map<GLenum, std::string> PreProcessFile(const std::string& shaderSource);
+		void Compile(const std::unordered_map<GLenum, std::string>& shaderSourceMap);
+
+		uint32_t rendererID_;	
 	};
 }

@@ -137,42 +137,9 @@ public:
 			}
 		)";
 
-
-
-		std::string textureShaderVertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 attributePosition;
-			layout(location = 1) in vec2 attributeTextureCoord;
-			
-			uniform mat4 uniformViewProjection;
-			uniform mat4 uniformTransform;
-
-			out vec2 varTextureCoord;
-
-			void main() {
-				varTextureCoord = attributeTextureCoord;
-				gl_Position = uniformViewProjection * uniformTransform * vec4(attributePosition, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 outColor;
-
-			in vec2 varTextureCoord;
-			
-			uniform sampler2D uniformTexture;
-
-			void main() {
-				outColor = texture(uniformTexture, varTextureCoord);
-			}
-		)";
-
-		shader_.reset(PriMech::Shader::Create(vertexSrc, fragmentSrc));
-		flatColorShader_.reset(PriMech::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
-		textureShader_.reset(PriMech::Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc));
+		shader_ = PriMech::Shader::Create(vertexSrc, fragmentSrc);
+		flatColorShader_ = PriMech::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+		textureShader_ = PriMech::Shader::Create("assets/shaders/Texture.glsl");;
 
 		texture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
 		textureTest_ = PriMech::Texture2D::Create("assets/textures/CPic.png");
@@ -183,8 +150,6 @@ public:
 	}
 
 	void OnUpdate(PriMech::Timestep timestep) override {
-		PM_INFO("Delta time: {0}s, {1}ms", timestep.GetSeconds(), timestep.GetMiliSeconds());
-
 		if (PriMech::Input::IsKeyPressed(PM_KEY_RIGHT)) 
 			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;	
 		else if (PriMech::Input::IsKeyPressed(PM_KEY_LEFT)) 
