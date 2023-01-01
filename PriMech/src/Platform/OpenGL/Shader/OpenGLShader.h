@@ -10,11 +10,13 @@ namespace PriMech {
 	class OpenGLShader : public Shader {
 	public:
 		OpenGLShader(const std::string& filepath);
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		inline virtual const std::string& GetName() const override { return name_; };
 
 		void UploadUniformMat3(const glm::mat3& matrix, const std::string& name);
 		void UploadUniformMat4(const glm::mat4& matrix, const std::string& name);
@@ -30,5 +32,6 @@ namespace PriMech {
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSourceMap);
 
 		uint32_t rendererID_;	
+		std::string name_;
 	};
 }

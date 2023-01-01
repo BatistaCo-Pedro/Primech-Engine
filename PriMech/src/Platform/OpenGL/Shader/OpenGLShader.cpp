@@ -10,9 +10,17 @@ namespace PriMech {
 		std::string shaderSource = ReadFile(filepath);
 		auto shaderSourceMap = PreProcessFile(shaderSource);
 		Compile(shaderSourceMap);
+
+		// assets/shaders/Texture.glsl -> get Texture (filename) as name
+		//Extract name from filepath
+		size_t lastSlashPos = filepath.find_last_of("/\\");
+		lastSlashPos = lastSlashPos == std::string::npos ? 0 : lastSlashPos + 1;
+		size_t lastDotPos = filepath.rfind('.');
+		size_t count = lastDotPos == std::string::npos ? filepath.size() - lastSlashPos : lastDotPos - lastSlashPos;
+		name_ = filepath.substr(lastSlashPos, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc) {
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : name_(name) {
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -25,7 +33,7 @@ namespace PriMech {
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
 		std::string result;
-		std::ifstream in(filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in) {
 			in.seekg(0, std::ios::end);
 			result.resize(in.tellg());
@@ -76,8 +84,9 @@ namespace PriMech {
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSourceMap) {
 		// Get a program object.
 		GLuint program = glCreateProgram();
-
-		std::vector<GLuint> glShaderIDs(shaderSourceMap.size());
+		PM_CORE_ASSERT(shaderSourceMap.size() <= 2, "Only support two Shaders momentarily");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIDindex = 0;
 
 		for (auto value : shaderSourceMap) {
 			GLenum type = value.first;
@@ -115,7 +124,7 @@ namespace PriMech {
 
 			// Attach our shaders to our program
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIDindex++] = shader; //post increment index
 		}
 
 		// Link our program

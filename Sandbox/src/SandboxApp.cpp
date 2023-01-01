@@ -137,15 +137,15 @@ public:
 			}
 		)";
 
-		shader_ = PriMech::Shader::Create(vertexSrc, fragmentSrc);
-		flatColorShader_ = PriMech::Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
-		textureShader_ = PriMech::Shader::Create("assets/shaders/Texture.glsl");;
+		shader_ = PriMech::Shader::Create("TriangleShader", vertexSrc, fragmentSrc);
+		flatColorShader_ = PriMech::Shader::Create("FlatColor", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+		PriMech::Ref<PriMech::Shader> textureShader = shaderLibrary_.Load("assets/shaders/Texture.glsl");
 
 		texture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
 		textureTest_ = PriMech::Texture2D::Create("assets/textures/CPic.png");
 
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->Bind();
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader_)->UploadUniformInt(0, "uniformTexture"); //0 is the slot
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader)->UploadUniformInt(0, "uniformTexture"); //uploading to slot 0
 
 	}
 
@@ -194,13 +194,15 @@ public:
 				PriMech::Renderer::Submit(squareVertexArray_, flatColorShader_, transform);
 			}		
 		}	
+		PriMech::Ref<PriMech::Shader> textureShader = shaderLibrary_.Get("Texture");
+		
 		//Triangle rendering
 		//PriMech::Renderer::Submit(vertexArray_, shader_);
 		texture_->Bind();
-		PriMech::Renderer::Submit(squareVertexArray_, textureShader_, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		textureTest_->Bind();
-		PriMech::Renderer::Submit(squareVertexArray_, textureShader_, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 
 		PriMech::Renderer::EndScene();
@@ -221,10 +223,11 @@ public:
 		return false;
 	}
 private:
+	PriMech::ShaderLibrary shaderLibrary_;
 	PriMech::Ref<PriMech::Shader> shader_;
 	PriMech::Ref<PriMech::VertexArray> vertexArray_;
 
-	PriMech::Ref<PriMech::Shader> flatColorShader_, textureShader_;
+	PriMech::Ref<PriMech::Shader> flatColorShader_;
 	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
 
 	PriMech::Ref<PriMech::Texture2D> texture_, textureTest_;
