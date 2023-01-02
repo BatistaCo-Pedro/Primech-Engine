@@ -12,6 +12,8 @@
 
 #include "Primech/Core/Timestep.h"
 
+#include "Primech/OrthographicCameraController.h"
+
 //-----------------Renderer---------------------
 #include "Primech/Renderer/OrthographicCamera.h"
 #include "Primech/Renderer/RendererCommand.h"

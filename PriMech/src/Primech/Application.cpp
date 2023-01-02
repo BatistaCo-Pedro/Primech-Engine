@@ -48,7 +48,6 @@ namespace PriMech {
 	void Application::OnEvent(Event& event) {
 		EventDispatcher dispatcher(event);
 
-		//Binding once agian becuase no suitable conversion
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
 
 		//handle events on the layer

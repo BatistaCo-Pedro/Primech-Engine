@@ -8,8 +8,7 @@
 class ExampleLayer : public PriMech::Layer {
 public:
 	ExampleLayer() : Layer("Example"), 
-		camera_(-1.6f, 1.6f, -0.9f, 0.9f), /* camera apect ration 1.6 / 0.9 -> 16 / 9 */ 
-		cameraPosition_(0.0f) {
+		cameraController_(1920.0f / 1080.0f, true) {
 
 		vertexArray_.reset(PriMech::VertexArray::Create());
 
@@ -150,29 +149,11 @@ public:
 	}
 
 	void OnUpdate(PriMech::Timestep timestep) override {
-		if (PriMech::Input::IsKeyPressed(PM_KEY_RIGHT)) 
-			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;	
-		else if (PriMech::Input::IsKeyPressed(PM_KEY_LEFT)) 
-			cameraPosition_.x -= cameraPositionChangeSpeed_ * timestep;
-
-		if (PriMech::Input::IsKeyPressed(PM_KEY_UP))
-			cameraPosition_.y += cameraPositionChangeSpeed_ * timestep;
-		else if (PriMech::Input::IsKeyPressed(PM_KEY_DOWN))
-			cameraPosition_.y -= cameraPositionChangeSpeed_ * timestep;
-		
-		if (PriMech::Input::IsKeyPressed(PM_KEY_A))
-			cameraRotation_ += cameraRotationChangeSpeed_ * timestep;
-		if (PriMech::Input::IsKeyPressed(PM_KEY_D))
-			cameraRotation_ -= cameraRotationChangeSpeed_ * timestep;
 
 		//Shader code
 		PriMech::RendererCommand::ClearWithColor({ 0.1f, 0.1f, 0.1f, 0.0f });
 
-		camera_.SetPosition(cameraPosition_);
-		camera_.SetRotation(cameraRotation_);
-
-
-		PriMech::Renderer::BeginScene(camera_);
+		PriMech::Renderer::BeginScene(cameraController_.GetCamera());
 
 		float scaleMultiplier = 1.0f;
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f) * scaleMultiplier);
@@ -205,6 +186,7 @@ public:
 		textureTest_->Bind();
 		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
+		cameraController_.OnUpdate(timestep);
 
 		PriMech::Renderer::EndScene();
 	}
@@ -218,9 +200,11 @@ public:
 	void OnEvent(PriMech::Event& event) override {
 		PriMech::EventDispatcher dispatcher(event);
 		dispatcher.Dispatch<PriMech::KeyPressedEvent>(PM_BIND_EVENT_FUNCTION(ExampleLayer::OnKeyPressedEvent));
+		cameraController_.OnEvent(event);
 	}
 
 	bool OnKeyPressedEvent(PriMech::KeyPressedEvent& event) {
+		PM_INFO("{0} was pressed", event.GetKeyCode());
 		return false;
 	}
 private:
@@ -233,11 +217,7 @@ private:
 
 	PriMech::Ref<PriMech::Texture2D> texture_, textureTest_;
 
-	PriMech::OrthographicCamera camera_;
-	glm::vec3 cameraPosition_;
-	float cameraRotation_ = 0.0f;
-	float cameraPositionChangeSpeed_ = 2.5f;
-	float cameraRotationChangeSpeed_ = 200.0f;
+	PriMech::OrthographicCameraController cameraController_;
 
 	float transformChangeSpeed = 1.0f;
 	glm::vec3 squareColor_ = { 0.2f, 0.3f, 0.8f };

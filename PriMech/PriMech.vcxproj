@@ -170,6 +170,7 @@
     <ClInclude Include="src\Primech\Renderer\Buffer.h" />
     <ClInclude Include="src\Primech\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Primech\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="src\Primech\OrthographicCameraController.h" />
     <ClInclude Include="src\Primech\Renderer\Renderer.h" />
     <ClInclude Include="src\Primech\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Primech\Renderer\RendererCommand.h" />
@@ -613,6 +614,7 @@
     <ClCompile Include="src\Primech\Logging\Log.cpp" />
     <ClCompile Include="src\Primech\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Primech\Renderer\OrthographicCamera.cpp" />
+    <ClCompile Include="src\Primech\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Primech\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Primech\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Primech\Renderer\RendererCommand.cpp" />

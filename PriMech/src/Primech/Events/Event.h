@@ -46,19 +46,16 @@ namespace PriMech {
 	};
 
 	class EventDispatcher {		
-		//returns bool and takes in T reference
-		//T can be any Event type
-		template<typename T>
-		using EventFunction = std::function<bool(T&)>; 
 	public:
 		EventDispatcher(Event& event) : event_(event) {}
 
-		template<typename T>
-		bool Dispatch(EventFunction<T> func) {
+		//F gets deduced by the compiler
+		template<typename T, typename F>
+		bool Dispatch(const F& func) {
 			//check if eventtype passed to constructor is equal to the eventtype of the function<T>
 			if (event_.GetEventType() == T::GetStaticType()) {
 				//call function to determine if event was handled
-				event_.m_Handled = func(*(T*)&event_);
+				event_.m_Handled = func(static_cast<T&>(event_));
 				return true;
 			}
 			return false;

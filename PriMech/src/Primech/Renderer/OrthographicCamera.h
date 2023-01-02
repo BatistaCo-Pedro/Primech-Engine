@@ -8,6 +8,8 @@ namespace PriMech {
 		OrthographicCamera(float left, float right, float bottom, float top);
 		~OrthographicCamera() {}
 
+		void SetProjection(float left, float right, float bottom, float top);
+
 		inline const glm::vec3& GetPostion() const { return position_; }
 		inline float GetRotation() const { return rotation_; }
 
@@ -16,7 +18,7 @@ namespace PriMech {
 
 		inline const glm::mat4 GetViewProjectionMatrix() const { return viewProjectionMatrix_; }
 		inline const glm::mat4 GetProjectionMatrix() const { return projectionMatrix_; }
-		inline const glm::mat4 GetViewMatrix() const { return viewMatrix_;; }
+		inline const glm::mat4 GetViewMatrix() const { return viewMatrix_; }
 	private:
 		void RecalculateViewMatrix();
 
