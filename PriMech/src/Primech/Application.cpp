@@ -49,6 +49,7 @@ namespace PriMech {
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowResize));
 
 		//handle events on the layer
 		//reverse iterating the layer stack
@@ -62,21 +63,21 @@ namespace PriMech {
 	//Method called by Application to start running the program
 	void Application::Run() {
 		while (running_) {
-			float time = (float)glfwGetTime(); //glfw is temp
+			float time = (float)glfwGetTime(); //glfw is temporary
 			Timestep timestep = time - lastFrameTime_;
 			lastFrameTime_ = time;
 		
-
-			//Call OnUpdate() for every layer in the stack
-			for (Layer* layer : layerStack_) {
-				layer->OnUpdate(timestep);
-			}
-
+			if (!minimized_) {
+				//Call OnUpdate() for every layer in the stack
+				for (Layer* layer : layerStack_) {
+					layer->OnUpdate(timestep);			
+				}
+			}			
 			imGuiLayer_->Begin();
 			for (Layer* layer : layerStack_) {
 				layer->OnImGuiRender();
 			}
-			imGuiLayer_->End();
+			imGuiLayer_->End();	
 
 			windowPtr_->OnUpdate();
 		}
@@ -85,5 +86,16 @@ namespace PriMech {
 	bool Application::OnWindowClose(WindowCloseEvent& event) {
 		running_ = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& event) {
+		if (event.GetWidth() == 0 || event.GetHeight() == 0) {
+			minimized_ = true;
+			return false;
+		}
+		minimized_ = false;
+		Renderer::OnWindowResize(event.GetWidth(), event.GetHeight());
+
+		return false;
 	}
 }

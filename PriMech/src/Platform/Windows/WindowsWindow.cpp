@@ -57,6 +57,7 @@ namespace PriMech {
 			WindowResizeEvent event(width, height);
 			data.width_ = width;
 			data.height_ = height;
+			PM_CORE_TRACE("{0}, {1}", width, height);
 			data.EventCallback(event); //This calls wData_.Eventcallback which is binded to Application OnEvent()
 		});
 

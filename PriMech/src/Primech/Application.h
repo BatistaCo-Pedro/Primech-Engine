@@ -41,10 +41,14 @@ namespace PriMech {
 		inline Window& GetWindow() { return *windowPtr_; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 		Scope<Window> windowPtr_;
 		ImGuiLayer* imGuiLayer_;
+
 		bool running_ = true;
+		bool minimized_ = false;
+
 		LayerStack layerStack_;
 
 		//Pointer to the App instance

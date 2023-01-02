@@ -12,8 +12,11 @@ namespace PriMech {
 		OrthographicCameraController(float aspectRatio, bool rotationEnabled = false); // aspectratio * 2 units / 2 units
 		~OrthographicCameraController();
 
-		inline const OrthographicCamera& GetCamera() const { return camera_; }
 		inline OrthographicCamera& GetCamera() { return camera_; }
+		inline const OrthographicCamera& GetCamera() const { return camera_; }
+
+		inline float GetZoomLevel() { return zoomLevel_; }
+		inline void SetZoomLevel(float zoomLevel) { zoomLevel_ = zoomLevel; }
 
 		void OnUpdate(Timestep timestep);
 		void OnEvent(Event& event);
