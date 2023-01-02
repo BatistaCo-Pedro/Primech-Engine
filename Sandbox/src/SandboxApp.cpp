@@ -171,6 +171,7 @@ public:
 		camera_.SetPosition(cameraPosition_);
 		camera_.SetRotation(cameraRotation_);
 
+
 		PriMech::Renderer::BeginScene(camera_);
 
 		float scaleMultiplier = 1.0f;
