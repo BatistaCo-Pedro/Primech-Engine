@@ -6,7 +6,7 @@
 
 namespace PriMech {
 	//Define the static instance to a new Windows Input, used in Input.h, where method returns based on Instance
-	Input* Input::inputInstance_ = new WindowsInput();
+	Scope<Input> Input::inputInstance_ = CreateScope<WindowsInput>();
 
 	bool WindowsInput::IsKeyPressedImpl(int keycode) {
 		GLFWwindow* window = static_cast<GLFWwindow*>(Application::GetApplication().GetWindow().GetNativeWindow());

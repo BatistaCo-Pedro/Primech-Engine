@@ -12,21 +12,16 @@
 
 #include "Primech/ImGui/ImGuiLayer.h"
 
-
-
 //-----------------Renderer---------------------
 #include "Primech/Renderer/camera/OrthographicCamera.h"
 #include "Primech/Renderer/camera/OrthographicCameraController.h"
+
 #include "Primech/Renderer/RendererCommand.h"
 #include "Primech/Renderer/Renderer.h"
+#include "Primech/Renderer/Renderer2D.h"
+
 #include "Primech/Renderer/Shader.h"
 #include "Primech/Renderer/Texture.h"
 #include "Primech/Renderer/Buffer.h"
 #include "Primech/Renderer/VertexArray.h"
-//----------------------------------------------
-
-//---------------Entry Point--------------------
-
-#include "Primech/Core/Entrypoint.h"
-
 //----------------------------------------------

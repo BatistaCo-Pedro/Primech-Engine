@@ -20,6 +20,6 @@ namespace PriMech {
 			glm::mat4 viewProjectionMatrixData_;
 		};
 
-		static SceneData* sceneData_;
+		static Scope<SceneData> sceneData_;
 	};
 }

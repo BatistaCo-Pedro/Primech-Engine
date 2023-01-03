@@ -6,6 +6,7 @@ namespace PriMech {
 
 	LayerStack::~LayerStack() {
 		for (Layer* layer : layers_) {
+			layer->OnDetach();
 			delete layer;
 		}
 	}

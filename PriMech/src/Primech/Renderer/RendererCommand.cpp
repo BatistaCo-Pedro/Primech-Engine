@@ -4,5 +4,5 @@
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
 
 namespace PriMech {
-	RendererAPI* RendererCommand::s_RendererAPI_ = new OpenGLRendererAPI;
+	Scope<RendererAPI> RendererCommand::s_RendererAPI_ = CreateScope<OpenGLRendererAPI>();
 }

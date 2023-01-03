@@ -1,22 +1,54 @@
 #pragma once
 #include <memory>
 
-#ifdef PM_PLATFORM_WINDOWS
-#if PM_DYNAMIC_LINK
-	#ifdef PRIMECH_BUILD_DLL
-		#define PRIMECH_API __declspec(dllexport)
+//Platform detection using predefined macros
+#ifdef _WIN32
+	#ifdef _WIN64
+		#define PM_PLATFORM_WINDOWS
 	#else
-		#define PRIMECH_API __declspec(dllimport)
-	#endif // DEBUG
+		#error "x86 builds are not supported!"
+	#endif 
+#elif defined(__APPLE__) || defined(__MACH__)
+	#include <TargetConditionals.h>
+	#if TARGET_IPHONE_SIMULATOR == 1
+		#error "IOS simulator is not supported!"
+	#elif TARGET_OS_IPHONE == 1
+		#define HZ_PLATFORM_IOS
+		#error "IOS is not supported!"
+	#elif TARGET_OS_MAC == 1
+		#define HZ_PLATFORM_MACOS
+		#error "MacOS is not supported!"
 #else
-	#define PRIMECH_API 
+	#error "Unknown Apple platform!"
 #endif
+
+#elif defined(__ANDROID__)
+	#define HZ_PLATFORM_ANDROID
+	#error "Android is not supported!"
+#elif defined(__linux__)
+	#define HZ_PLATFORM_LINUX
+	#error "Linux is not supported!"
+#else
+	/* Unknown compiler/platform */
+	#error "Unknown platform!"
+#endif // End of platform detection
+
+#ifdef PM_PLATFORM_WINDOWS
+	#if PM_DYNAMIC_LINK
+		#ifdef PRIMECH_BUILD_DLL
+			#define PRIMECH_API __declspec(dllexport)
+		#else
+			#define PRIMECH_API __declspec(dllimport)
+		#endif // DEBUG
+	#else
+		#define PRIMECH_API 
+	#endif
 #else
 	#error PriMech only supports windows!
-#endif 
+#endif
 
 #ifdef PM_DEBUG
-#define PM_ENABLE_ASSERTS
+	#define PM_ENABLE_ASSERTS
 #endif
 
 
@@ -36,7 +68,16 @@
 namespace PriMech {
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
+	template<typename T, typename ...Args>
+	constexpr Scope<T> CreateScope(Args&& ...args) {
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
 
 	template<typename T>
 	using Ref = std::shared_ptr<T>;
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
 }

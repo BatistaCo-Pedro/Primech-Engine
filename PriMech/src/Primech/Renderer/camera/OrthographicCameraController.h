@@ -31,7 +31,7 @@ namespace PriMech {
 		bool rotationEnabled_;
 
 		glm::vec3 cameraPosition_ = glm::vec3(0.0f);
-		float cameraRotation_ = 0.0f;
+		float cameraRotation_ = 0.0f; //In degrees, in the anti-clockwise direction
 
 		float cameraPositionChangeSpeed_ = 3.0f, cameraRotationSpeed_ = 200.0f;
 	};

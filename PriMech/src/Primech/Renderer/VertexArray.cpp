@@ -4,9 +4,9 @@
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace PriMech {
-	VertexArray* VertexArray::Create() {
+	Ref<VertexArray> VertexArray::Create() {
 		switch (Renderer::GetAPI()) {
-			case RendererAPI::API::OpenGL:		return new OpenGLVertexArray();
+			case RendererAPI::API::OpenGL:		return CreateRef<OpenGLVertexArray>();
 			case RendererAPI::API::None:		PM_CORE_ASSERT(false, "None RenderAPI is not supported"); return nullptr;
 		}
 

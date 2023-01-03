@@ -8,15 +8,17 @@
 namespace PriMech {
 	OpenGLShader::OpenGLShader(const std::string& filepath) {
 		std::string shaderSource = ReadFile(filepath);
-		auto shaderSourceMap = PreProcessFile(shaderSource);
+		std::unordered_map<GLenum, std::string> shaderSourceMap = PreProcessFile(shaderSource);
 		Compile(shaderSourceMap);
 
 		// assets/shaders/Texture.glsl -> get Texture (filename) as name
 		//Extract name from filepath
 		size_t lastSlashPos = filepath.find_last_of("/\\");
 		lastSlashPos = lastSlashPos == std::string::npos ? 0 : lastSlashPos + 1;
+
 		size_t lastDotPos = filepath.rfind('.');
 		size_t count = lastDotPos == std::string::npos ? filepath.size() - lastSlashPos : lastDotPos - lastSlashPos;
+
 		name_ = filepath.substr(lastSlashPos, count);
 	}
 
@@ -63,20 +65,22 @@ namespace PriMech {
 
 		const char* typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
-		size_t pos = shaderSource.find(typeToken, 0);
+		size_t pos = shaderSource.find(typeToken, 0); //Start of shader type declaration line
 
 		while (pos != std::string::npos) {
-			size_t endOfLine = shaderSource.find_first_of("\r\n", pos);
+			size_t endOfLine = shaderSource.find_first_of("\r\n", pos); //End of shader type declaration line
 			PM_CORE_ASSERT(endOfLine != std::string::npos, "Syntax Error"); //if no new line exists
-			size_t begin = pos + typeTokenLength + 1; //get the beginning of the type string
-			std::string type = shaderSource.substr(begin, endOfLine - begin);
+
+			size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after ##type keyword) 
+			std::string type = shaderSource.substr(begin, endOfLine - begin); //Get the type -> e.g. vertex
 			PM_CORE_ASSERT(ShaderTypeFromString(type), "Invalid Shader type specifier");
 			
-			size_t nextLinePos = shaderSource.find_first_not_of("\r\n", endOfLine);
-			pos = shaderSource.find(typeToken, nextLinePos);
-			shaderSourceMap[ShaderTypeFromString(type)] = shaderSource.substr(nextLinePos, 
-														pos - (nextLinePos == std::string::npos ? shaderSource.size() -1 : nextLinePos));
-	
+			size_t nextLinePos = shaderSource.find_first_not_of("\r\n", endOfLine); //Start of shader code after shader type declaration line
+			PM_CORE_ASSERT(nextLinePos != std::string::npos, "Syntax error");
+
+			pos = shaderSource.find(typeToken, nextLinePos); //Start of next shader type declaration line
+			shaderSourceMap[ShaderTypeFromString(type)] = (pos == std::string::npos) ?
+				shaderSource.substr(nextLinePos) : shaderSource.substr(nextLinePos, pos - nextLinePos);
 		}
 		return shaderSourceMap;
 	}
@@ -158,6 +162,7 @@ namespace PriMech {
 		// Always detach shaders after a successful link.
 		for (auto glShaderID : glShaderIDs) {
 			glDetachShader(program, glShaderID);
+			glDeleteShader(glShaderID);
 		}
 
 		rendererID_ = program;

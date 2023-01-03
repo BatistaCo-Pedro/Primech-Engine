@@ -43,7 +43,7 @@ namespace PriMech {
 
 		//create the actual window and save it to a variable of type GLFWwindow
 		window_ = glfwCreateWindow(wData_.width_, wData_.height_, wData_.title_.c_str(), nullptr, nullptr);
-		context_ = new OpenGLContext(window_);
+		context_ = CreateScope<OpenGLContext>(window_);
 
 		context_->Init();
 

@@ -16,21 +16,34 @@ namespace PriMech {
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep timestep) {
-		if (Input::IsKeyPressed(PM_KEY_D))
-			cameraPosition_.x += cameraPositionChangeSpeed_ * timestep;
-		else if (Input::IsKeyPressed(PM_KEY_A))
-			cameraPosition_.x -= cameraPositionChangeSpeed_ * timestep;
+		if (Input::IsKeyPressed(PM_KEY_D)) {
+			cameraPosition_.x += cos(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+			cameraPosition_.y += sin(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+		}
+		else if (Input::IsKeyPressed(PM_KEY_A)) {
+			cameraPosition_.x -= cos(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+			cameraPosition_.y -= sin(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+		}
 
-		if (Input::IsKeyPressed(PM_KEY_W))
-			cameraPosition_.y += cameraPositionChangeSpeed_ * timestep;
-		else if (Input::IsKeyPressed(PM_KEY_S))
-			cameraPosition_.y -= cameraPositionChangeSpeed_ * timestep;
+		if (Input::IsKeyPressed(PM_KEY_W)) {
+			cameraPosition_.x += sin(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+			cameraPosition_.y += cos(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+		}
+		else if (Input::IsKeyPressed(PM_KEY_S)) {
+			cameraPosition_.x -= sin(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+			cameraPosition_.y -= cos(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
+		}
 
 		if (rotationEnabled_) {
 			if (Input::IsKeyPressed(PM_KEY_Q))
 				cameraRotation_ += cameraRotationSpeed_ * timestep;
 			if (Input::IsKeyPressed(PM_KEY_E))
 				cameraRotation_ -= cameraRotationSpeed_ * timestep;
+
+			if (cameraRotation_ > 180.0f)
+				cameraRotation_ -= 360.0f;
+			else if (cameraRotation_ <= -180.0f)
+				cameraRotation_ += 360.0f;
 			
 			camera_.SetRotation(cameraRotation_);
 		}		

@@ -20,6 +20,6 @@ namespace PriMech {
 		virtual float GetMouseXImpl() = 0;
 		virtual float GetMouseYImpl() = 0;
 	private:
-		static Input* inputInstance_;
+		static Scope<Input> inputInstance_;
 	};
 }

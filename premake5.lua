@@ -74,7 +74,6 @@ project "PriMech" --Name of SLN
 		systemversion "latest"
 
 		defines {
-			"PM_PLATFORM_WINDOWS",
 			"PRIMECH_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
 		}
@@ -122,10 +121,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		systemversion "latest"
-
-		defines {
-			"PM_PLATFORM_WINDOWS",
-		}
 
 	filter "configurations:Debug"
 		defines "PM_DEBUG"

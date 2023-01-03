@@ -27,6 +27,6 @@ namespace PriMech {
 			s_RendererAPI_->DrawIndexed(vertexArray);
 		}
 	private:
-		static RendererAPI* s_RendererAPI_;
+		static Scope<RendererAPI> s_RendererAPI_;
 	};
 }

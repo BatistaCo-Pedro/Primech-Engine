@@ -1,16 +1,17 @@
 #include <Primech.h>
+#include <Primech/Core/Entrypoint.h>
 
-#include "imgui/imgui.h"
+#include "Sandbox2D.h"
+#include "Platform/OpenGL/Shader/OpenGLShader.h"
+
+#include <imgui/imgui.h>
 #include <glm/ext/matrix_transform.hpp>
-#include <Platform/OpenGL/Shader/OpenGLShader.h>
 #include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public PriMech::Layer {
 public:
-	ExampleLayer() : Layer("Example"), 
-		cameraController_(1920.0f / 1080.0f, true) {
-
-		vertexArray_.reset(PriMech::VertexArray::Create());
+	ExampleLayer() : Layer("Example"), cameraController_(1920.0f / 1080.0f, true) {
+		vertexArray_ = PriMech::VertexArray::Create();
 
 		//defining the points pos
 		/*
@@ -34,7 +35,7 @@ public:
 
 		//Creating new unqiue pointer
 		PriMech::Ref<PriMech::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(PriMech::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = PriMech::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		PriMech::BufferLayout layout = {
 			{ PriMech::ShaderDataType::Float3, "attributePosition" },
@@ -45,10 +46,10 @@ public:
 
 		//Creating new unqiue pointer
 		PriMech::Ref<PriMech::IndexBuffer> indexBuffer;
-		indexBuffer.reset(PriMech::IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0]))));
+		indexBuffer = PriMech::IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0])));
 		vertexArray_->SetIndexBuffer(indexBuffer);
 
-		squareVertexArray_.reset(PriMech::VertexArray::Create());
+		squareVertexArray_ = PriMech::VertexArray::Create();
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -59,7 +60,7 @@ public:
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
 		PriMech::Ref<PriMech::VertexBuffer> squareVertexBuffer;
-		squareVertexBuffer.reset(PriMech::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVertexBuffer = PriMech::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		PriMech::BufferLayout squareLayout = {
 			{ PriMech::ShaderDataType::Float3, "attributePosition" },
@@ -70,7 +71,7 @@ public:
 		squareVertexArray_->AddVertexBuffer(squareVertexBuffer);
 
 		PriMech::Ref<PriMech::IndexBuffer> squareIndexBuffer;
-		squareIndexBuffer.reset(PriMech::IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0]))));
+		squareIndexBuffer = PriMech::IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0])));
 		squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
 
 		//Temp
@@ -149,6 +150,7 @@ public:
 	}
 
 	void OnUpdate(PriMech::Timestep timestep) override {
+		cameraController_.OnUpdate(timestep);
 
 		//Shader code
 		PriMech::RendererCommand::ClearWithColor({ 0.1f, 0.1f, 0.1f, 0.0f });
@@ -186,8 +188,6 @@ public:
 		textureTest_->Bind();
 		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		cameraController_.OnUpdate(timestep);
-
 		PriMech::Renderer::EndScene();
 	}
 
@@ -210,24 +210,24 @@ public:
 private:
 	PriMech::ShaderLibrary shaderLibrary_;
 	PriMech::Ref<PriMech::Shader> shader_;
-	PriMech::Ref<PriMech::VertexArray> vertexArray_;
-
 	PriMech::Ref<PriMech::Shader> flatColorShader_;
+
+	PriMech::Ref<PriMech::VertexArray> vertexArray_;
 	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
 
 	PriMech::Ref<PriMech::Texture2D> texture_, textureTest_;
+	glm::vec3 squareColor_ = { 0.2f, 0.3f, 0.8f };
 
 	PriMech::OrthographicCameraController cameraController_;
 
-	float transformChangeSpeed = 1.0f;
-	glm::vec3 squareColor_ = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public PriMech::Application
 {
 public:
 	Sandbox() {
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 	~Sandbox() {}
 

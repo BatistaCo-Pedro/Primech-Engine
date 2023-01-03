@@ -3,14 +3,16 @@
 
 #include "Primech/Renderer/camera/OrthographicCamera.h"
 #include "Platform/OpenGL/Shader/OpenGLShader.h"
+#include "Primech/Renderer/Renderer2d.h"
 
 #include <glad/glad.h>
 
 namespace PriMech {
-	Renderer::SceneData* Renderer::sceneData_ = new Renderer::SceneData;
+	Scope<Renderer::SceneData> Renderer::sceneData_ = CreateScope<Renderer::SceneData>();
 
 	void Renderer::Init() {
 		RendererCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height) {
