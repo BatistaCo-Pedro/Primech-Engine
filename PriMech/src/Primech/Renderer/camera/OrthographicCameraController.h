@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "Primech/Renderer/OrthographicCamera.h"
+#include "Primech/Renderer/camera/OrthographicCamera.h"
 #include "Primech/Core/Timestep.h"
 
 #include "Primech/Events/ApplicationEvent.h"
@@ -9,7 +9,7 @@
 namespace PriMech {
 	class OrthographicCameraController {
 	public:
-		OrthographicCameraController(float aspectRatio, bool rotationEnabled = false); // aspectratio * 2 units / 2 units
+		OrthographicCameraController(float aspectRatio, bool rotationEnabled = false);
 		~OrthographicCameraController();
 
 		inline OrthographicCamera& GetCamera() { return camera_; }

@@ -1,7 +1,7 @@
 #include "ppch.h"
 #include "WindowsInput.h"
 
-#include <Primech/Application.h>
+#include "Primech/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace PriMech {

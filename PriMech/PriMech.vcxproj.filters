@@ -19,11 +19,17 @@
     <Filter Include="src\Primech">
       <UniqueIdentifier>{843EC22C-F0F3-3A22-79E8-34F9E59C3126}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Primech\Codes">
-      <UniqueIdentifier>{C1859DF4-2D9C-9B8A-7613-27ACE2686C12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Primech\Core">
       <UniqueIdentifier>{5C153B4D-480E-5A9F-7140-3F245D9839AB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Primech\Core\Codes">
+      <UniqueIdentifier>{991E02B1-8518-2B03-6E85-C1135A1E916F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Primech\Core\LayerStack">
+      <UniqueIdentifier>{BE97AB2C-2AA5-D912-B38B-D5FD1F98A5C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Primech\Core\Logging">
+      <UniqueIdentifier>{F29107AF-DEB6-562F-0702-3CBFF385554D}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Primech\Events">
       <UniqueIdentifier>{E8ED778D-D4D1-38E3-3D32-333629352365}</UniqueIdentifier>
@@ -31,14 +37,11 @@
     <Filter Include="src\Primech\ImGui">
       <UniqueIdentifier>{AE8608F5-1A9D-068B-6314-92ACCF69D712}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Primech\LayerStack">
-      <UniqueIdentifier>{E6B7CD89-D2B1-F6DB-BB1E-8DECA7B75C48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Primech\Logging">
-      <UniqueIdentifier>{1A631947-86C4-F654-0F32-3D077B922D14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Primech\Renderer">
       <UniqueIdentifier>{AA1626C2-96A5-AF8B-3FC4-C3862B32C031}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Primech\Renderer\camera">
+      <UniqueIdentifier>{025C61B7-6E69-8F9D-F74F-8B88635C5B54}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -93,23 +96,38 @@
     <ClInclude Include="src\Primech.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Application.h">
-      <Filter>src\Primech</Filter>
+    <ClInclude Include="src\Primech\Core\Application.h">
+      <Filter>src\Primech\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Codes\KeyCodes.h">
-      <Filter>src\Primech\Codes</Filter>
+    <ClInclude Include="src\Primech\Core\Codes\KeyCodes.h">
+      <Filter>src\Primech\Core\Codes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Codes\MouseButtonCodes.h">
-      <Filter>src\Primech\Codes</Filter>
+    <ClInclude Include="src\Primech\Core\Codes\MouseButtonCodes.h">
+      <Filter>src\Primech\Core\Codes</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Core.h">
-      <Filter>src\Primech</Filter>
+    <ClInclude Include="src\Primech\Core\Core.h">
+      <Filter>src\Primech\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Core\Entrypoint.h">
+      <Filter>src\Primech\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Core\Input.h">
+      <Filter>src\Primech\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Core\LayerStack\Layer.h">
+      <Filter>src\Primech\Core\LayerStack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Core\LayerStack\LayerStack.h">
+      <Filter>src\Primech\Core\LayerStack</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Core\Logging\Log.h">
+      <Filter>src\Primech\Core\Logging</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Core\Timestep.h">
       <Filter>src\Primech\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Entrypoint.h">
-      <Filter>src\Primech</Filter>
+    <ClInclude Include="src\Primech\Core\Window.h">
+      <Filter>src\Primech\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Events\ApplicationEvent.h">
       <Filter>src\Primech\Events</Filter>
@@ -126,25 +144,10 @@
     <ClInclude Include="src\Primech\ImGui\ImGuiLayer.h">
       <Filter>src\Primech\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Input.h">
-      <Filter>src\Primech</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Primech\LayerStack\Layer.h">
-      <Filter>src\Primech\LayerStack</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Primech\LayerStack\LayerStack.h">
-      <Filter>src\Primech\LayerStack</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Primech\Logging\Log.h">
-      <Filter>src\Primech\Logging</Filter>
-    </ClInclude>
     <ClInclude Include="src\Primech\Renderer\Buffer.h">
       <Filter>src\Primech\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Renderer\GraphicsContext.h">
-      <Filter>src\Primech\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Primech\Renderer\OrthographicCamera.h">
       <Filter>src\Primech\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Primech\Renderer\Renderer.h">
@@ -165,8 +168,11 @@
     <ClInclude Include="src\Primech\Renderer\VertexArray.h">
       <Filter>src\Primech\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\Window.h">
-      <Filter>src\Primech</Filter>
+    <ClInclude Include="src\Primech\Renderer\camera\OrthographicCamera.h">
+      <Filter>src\Primech\Renderer\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Primech\Renderer\camera\OrthographicCameraController.h">
+      <Filter>src\Primech\Renderer\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\ppch.h">
       <Filter>src</Filter>
@@ -1422,7 +1428,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Primech\OrthographicCameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1449,8 +1454,17 @@
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>src\Platform\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primech\Application.cpp">
-      <Filter>src\Primech</Filter>
+    <ClCompile Include="src\Primech\Core\Application.cpp">
+      <Filter>src\Primech\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Core\LayerStack\Layer.cpp">
+      <Filter>src\Primech\Core\LayerStack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Core\LayerStack\LayerStack.cpp">
+      <Filter>src\Primech\Core\LayerStack</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Core\Logging\Log.cpp">
+      <Filter>src\Primech\Core\Logging</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\ImGui\ImGuiBuild.cpp">
       <Filter>src\Primech\ImGui</Filter>
@@ -1458,19 +1472,7 @@
     <ClCompile Include="src\Primech\ImGui\ImGuiLayer.cpp">
       <Filter>src\Primech\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primech\LayerStack\Layer.cpp">
-      <Filter>src\Primech\LayerStack</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Primech\LayerStack\LayerStack.cpp">
-      <Filter>src\Primech\LayerStack</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Primech\Logging\Log.cpp">
-      <Filter>src\Primech\Logging</Filter>
-    </ClCompile>
     <ClCompile Include="src\Primech\Renderer\Buffer.cpp">
-      <Filter>src\Primech\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Primech\Renderer\OrthographicCamera.cpp">
       <Filter>src\Primech\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Primech\Renderer\Renderer.cpp">
@@ -1491,12 +1493,17 @@
     <ClCompile Include="src\Primech\Renderer\VertexArray.cpp">
       <Filter>src\Primech\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\camera\OrthographicCamera.cpp">
+      <Filter>src\Primech\Renderer\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Primech\Renderer\camera\OrthographicCameraController.cpp">
+      <Filter>src\Primech\Renderer\camera</Filter>
+    </ClCompile>
     <ClCompile Include="src\ppch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primech\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

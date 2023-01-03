@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Primech/LayerStack/Layer.h>
-#include <Primech/Events/ApplicationEvent.h>
-#include <Primech/Events/KeyEvent.h>
-#include <Primech/Events/MouseEvent.h>
-#include <Primech/Core.h>
+#include "Primech/Core/LayerStack/Layer.h"
+#include "Primech/Events/ApplicationEvent.h"
+#include "Primech/Events/KeyEvent.h"
+#include "Primech/Events/MouseEvent.h"
+#include "Primech/Core/Core.h"
 
 namespace PriMech {
 	class PRIMECH_API ImGuiLayer : public Layer{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Primech/Input.h"
+#include "Primech/Core/Input.h"
 
 namespace PriMech {
 	//implementation of Input static class for Windows

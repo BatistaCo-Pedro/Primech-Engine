@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PriMech/Core.h"
+#include "PriMech/Core/Core.h"
 
 namespace PriMech {
 	//static class to be used as global Input Polling

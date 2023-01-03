@@ -3,7 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/fmt/ostr.h"
-#include "PriMech/Core.h"
+#include "PriMech/Core/Core.h"
 
 namespace PriMech {
 	class PRIMECH_API Log

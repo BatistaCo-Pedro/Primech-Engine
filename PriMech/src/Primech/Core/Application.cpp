@@ -1,11 +1,11 @@
 #include "ppch.h"
 #include "Application.h"
-#include "Events/ApplicationEvent.h"
+#include "PriMech/Events/ApplicationEvent.h"
 
-#include "Primech/Renderer/Renderer.h"
+#include "PriMech/Renderer/Renderer.h"
+#include "PriMech/Core/Input.h"
+
 #include "GLFW/glfw3.h"
-
-#include <Primech/Input.h>
 
 namespace PriMech {
 

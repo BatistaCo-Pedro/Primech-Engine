@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Primech/Core.h"
+#include "Primech/Core/Core.h"
 
 namespace PriMech{
 	class Texture {

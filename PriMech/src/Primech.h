@@ -2,20 +2,21 @@
 
 // FOR USE BY PRIMECH APPS e.g. Sandbox
 
-#include "Primech/Application.h"
-#include "Primech/Logging/Log.h"
-#include "Primech/Input.h"
-#include "Primech/Codes/KeyCodes.h"
-#include "Primech/Codes/MouseButtonCodes.h"
-#include "Primech/LayerStack/Layer.h"
-#include "Primech/ImGui/ImGuiLayer.h"
-
+#include "Primech/Core/Application.h"
+#include "Primech/Core/Logging/Log.h"
+#include "Primech/Core/Input.h"
+#include "Primech/Core/Codes/KeyCodes.h"
+#include "Primech/Core/Codes/MouseButtonCodes.h"
+#include "Primech/Core/LayerStack/Layer.h"
 #include "Primech/Core/Timestep.h"
 
-#include "Primech/OrthographicCameraController.h"
+#include "Primech/ImGui/ImGuiLayer.h"
+
+
 
 //-----------------Renderer---------------------
-#include "Primech/Renderer/OrthographicCamera.h"
+#include "Primech/Renderer/camera/OrthographicCamera.h"
+#include "Primech/Renderer/camera/OrthographicCameraController.h"
 #include "Primech/Renderer/RendererCommand.h"
 #include "Primech/Renderer/Renderer.h"
 #include "Primech/Renderer/Shader.h"
@@ -26,6 +27,6 @@
 
 //---------------Entry Point--------------------
 
-#include "Primech/Entrypoint.h"
+#include "Primech/Core/Entrypoint.h"
 
 //----------------------------------------------

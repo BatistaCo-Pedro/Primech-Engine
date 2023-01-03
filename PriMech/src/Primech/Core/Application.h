@@ -15,10 +15,10 @@
 #pragma once
 #include "Core.h"
 #include "PriMech/Events/Event.h"
-#include "PriMech/LayerStack/LayerStack.h"
-#include "Events/ApplicationEvent.h"
-#include "Window.h"
-#include "ImGui/ImGuiLayer.h"
+#include "PriMech/Core/LayerStack/LayerStack.h"
+#include "PriMech/Events/ApplicationEvent.h"
+#include "PriMech/Core/Window.h"
+#include "Primech/ImGui/ImGuiLayer.h"
 
 #include "Primech/Core/Timestep.h"
 

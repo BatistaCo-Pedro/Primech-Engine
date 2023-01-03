@@ -1,6 +1,6 @@
 #pragma once
-#include "Primech/Window.h"
-#include <Primech/Renderer/GraphicsContext.h>
+#include "Primech/Core/Window.h"
+#include "Primech/Renderer/GraphicsContext.h"
 
 #include "GLFW/glfw3.h"
 

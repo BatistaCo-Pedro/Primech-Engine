@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PriMech/Core.h"
+#include "PriMech/Core/Core.h"
 #include "ppch.h"
 
 namespace PriMech {

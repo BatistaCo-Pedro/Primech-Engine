@@ -1,5 +1,5 @@
 #include "ppch.h"
-#include "Primech/Logging/Log.h"
+#include "Primech/Core/Logging/Log.h"
 #include "WindowsWindow.h"
 #include <Primech/Events/ApplicationEvent.h>
 #include <Primech/Events/KeyEvent.h>

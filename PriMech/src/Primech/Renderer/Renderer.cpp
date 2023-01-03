@@ -1,9 +1,10 @@
 #include "ppch.h"
 #include "Renderer.h"
 
-#include "glad/glad.h"
-#include "Primech/Renderer/OrthographicCamera.h"
-#include <Platform/OpenGL/Shader/OpenGLShader.h>
+#include "Primech/Renderer/camera/OrthographicCamera.h"
+#include "Platform/OpenGL/Shader/OpenGLShader.h"
+
+#include <glad/glad.h>
 
 namespace PriMech {
 	Renderer::SceneData* Renderer::sceneData_ = new Renderer::SceneData;

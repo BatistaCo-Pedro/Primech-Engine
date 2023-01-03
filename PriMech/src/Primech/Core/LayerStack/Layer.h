@@ -1,5 +1,5 @@
 #pragma once
-#include "PriMech/Core.h"
+#include "PriMech/Core/Core.h"
 #include "Primech/Events/Event.h"
 #include "Primech/Core/Timestep.h"
 

@@ -1,8 +1,8 @@
 #include "ppch.h"
 #include "OrthographicCameraController.h"
 
-#include "Primech/Input.h"
-#include "Primech/Codes/KeyCodes.h"
+#include "Primech/Core/Input.h"
+#include "Primech/Core/Codes/KeyCodes.h"
 
 
 namespace PriMech {

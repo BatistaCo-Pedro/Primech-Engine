@@ -2,7 +2,7 @@
 
 #include "ppch.h"
 
-#include "Primech/Core.h"
+#include "Primech/Core/Core.h"
 #include "PriMech/Events/Event.h"
 
 namespace PriMech {

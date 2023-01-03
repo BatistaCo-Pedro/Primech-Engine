@@ -1,8 +1,8 @@
 #pragma once
 
-#include "RendererCommand.h"
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "PriMech/Renderer/RendererCommand.h"
+#include "PriMech/Renderer/camera/OrthographicCamera.h"
+#include "PriMech/Renderer/Shader.h"
 
 namespace PriMech {
 	class Renderer {
