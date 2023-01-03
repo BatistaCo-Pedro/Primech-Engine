@@ -10,6 +10,7 @@ namespace PriMech {
 	struct Renderer2DStorage {
 		Ref<VertexArray> squareVertexArray_;
 		Ref<Shader> shader_;
+		Ref<Shader> textureShader_;
 	};
 
 	static Renderer2DStorage* staticData;
@@ -19,11 +20,11 @@ namespace PriMech {
 
 		staticData->squareVertexArray_ = VertexArray::Create();
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
 		};
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 
@@ -32,6 +33,7 @@ namespace PriMech {
 
 		BufferLayout squareLayout = {
 			{ ShaderDataType::Float3, "attributePosition" },
+			{ ShaderDataType::Float2, "attributeTextureCoord"}
 		};
 		squareVertexBuffer->SetLayout(squareLayout);
 
@@ -42,6 +44,9 @@ namespace PriMech {
 		staticData->squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
 
 		staticData->shader_ = Shader::Create("assets/shaders/FlatColor.glsl");
+		staticData->textureShader_ = Shader::Create("assets/shaders/Texture.glsl");
+		staticData->textureShader_->Bind();
+		staticData->textureShader_->SetInt(0, "uniformTexture");
 	}
 
 	void Renderer2D::Shutdown() {
@@ -51,6 +56,9 @@ namespace PriMech {
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
 		staticData->shader_->Bind();
 		staticData->shader_->SetMat4(camera.GetViewProjectionMatrix(), "uniformViewProjection");
+
+		staticData->textureShader_->Bind();
+		staticData->textureShader_->SetMat4(camera.GetViewProjectionMatrix(), "uniformViewProjection");
 	}
 
 	void Renderer2D::EndScene() {
@@ -67,6 +75,22 @@ namespace PriMech {
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
 		staticData->shader_->SetMat4(transform, "uniformTransform");
+
+		staticData->squareVertexArray_->Bind();
+		RendererCommand::DrawIndexed(staticData->squareVertexArray_);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture) {
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture) {
+		staticData->textureShader_->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+		staticData->textureShader_->SetMat4(transform, "uniformTransform");
+
+		texture->Bind();
 
 		staticData->squareVertexArray_->Bind();
 		RendererCommand::DrawIndexed(staticData->squareVertexArray_);
