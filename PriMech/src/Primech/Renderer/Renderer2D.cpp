@@ -1,10 +1,10 @@
 #include "ppch.h"
 #include "Renderer2D.h"
 
-#include "Platform/OpenGL/Shader/OpenGLShader.h"
 #include "Primech/Renderer/VertexArray.h"
 #include "PriMech/Renderer/Shader.h"
 #include "Primech/Renderer/RendererCommand.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace PriMech {
 	struct Renderer2DStorage {
@@ -49,9 +49,8 @@ namespace PriMech {
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(staticData->shader_)->Bind();
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(staticData->shader_)->UploadUniformMat4(camera.GetViewProjectionMatrix(), "uniformViewProjection");
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(staticData->shader_)->UploadUniformMat4(glm::mat4(1.0f), "uniformTransform");
+		staticData->shader_->Bind();
+		staticData->shader_->SetMat4(camera.GetViewProjectionMatrix(), "uniformViewProjection");
 	}
 
 	void Renderer2D::EndScene() {
@@ -63,8 +62,11 @@ namespace PriMech {
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(staticData->shader_)->Bind();
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(staticData->shader_)->UploadUniformFloat4(color, "uniformColor");
+		staticData->shader_->Bind();
+		staticData->shader_->SetFloat4(color, "uniformColor");
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+		staticData->shader_->SetMat4(transform, "uniformTransform");
 
 		staticData->squareVertexArray_->Bind();
 		RendererCommand::DrawIndexed(staticData->squareVertexArray_);

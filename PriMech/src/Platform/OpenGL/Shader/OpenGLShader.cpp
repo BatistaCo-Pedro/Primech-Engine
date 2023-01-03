@@ -176,6 +176,22 @@ namespace PriMech {
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetInt(int value, const std::string& name) {
+		UploadUniformInt(value, name);
+	}
+
+	void OpenGLShader::SetFloat3(const glm::vec3& value, const std::string& name) {
+		UploadUniformFloat3(value, name);
+	}
+
+	void OpenGLShader::SetFloat4(const glm::vec4& value, const std::string& name) {
+		UploadUniformFloat4(value, name);
+	}
+
+	void OpenGLShader::SetMat4(const glm::mat4& value, const std::string& name) {
+		UploadUniformMat4(value, name);
+	}
+
 	void OpenGLShader::UploadUniformMat3(const glm::mat3& matrix, const std::string& name) {
 		GLint location = glGetUniformLocation(rendererID_, name.c_str());
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));

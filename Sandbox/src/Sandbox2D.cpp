@@ -20,13 +20,10 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 
 	PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
 
-	PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	PriMech::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+	PriMech::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 
 	PriMech::Renderer2D::EndScene();
-	
-	//TODO: Shader::SetMat4, Shader::SetFloat4
-	//std::dynamic_pointer_cast<PriMech::OpenGLShader>(shader_)->Bind();
-	//std::dynamic_pointer_cast<PriMech::OpenGLShader>(shader_)->UploadUniformFloat4(squareColor_, "uniformColor");
 }
 
 void Sandbox2D::OnEvent(PriMech::Event& event) {

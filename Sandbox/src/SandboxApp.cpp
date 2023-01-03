@@ -2,7 +2,6 @@
 #include <Primech/Core/Entrypoint.h>
 
 #include "Sandbox2D.h"
-#include "Platform/OpenGL/Shader/OpenGLShader.h"
 
 #include <imgui/imgui.h>
 #include <glm/ext/matrix_transform.hpp>
@@ -144,8 +143,8 @@ public:
 		texture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
 		textureTest_ = PriMech::Texture2D::Create("assets/textures/CPic.png");
 
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader)->Bind();
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(textureShader)->UploadUniformInt(0, "uniformTexture"); //uploading to slot 0
+		textureShader->Bind();
+		textureShader->SetInt(0, "uniformTexture"); //uploading to slot 0
 
 	}
 
@@ -160,8 +159,8 @@ public:
 		float scaleMultiplier = 1.0f;
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f) * scaleMultiplier);
 
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->Bind();
-		std::dynamic_pointer_cast<PriMech::OpenGLShader>(flatColorShader_)->UploadUniformFloat3(squareColor_, "uniformColor");
+		flatColorShader_->Bind();
+		flatColorShader_->SetFloat3(squareColor_, "uniformColor");
 
 		/* Material API may look like:
 			PriMech::MaterialRef material = new PriMech::Material(flatColorShader_);
