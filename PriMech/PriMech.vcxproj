@@ -163,6 +163,7 @@
     <ClInclude Include="src\Primech\Core\Logging\Log.h" />
     <ClInclude Include="src\Primech\Core\Timestep.h" />
     <ClInclude Include="src\Primech\Core\Window.h" />
+    <ClInclude Include="src\Primech\Debug\Instrumentor.h" />
     <ClInclude Include="src\Primech\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Primech\Events\Event.h" />
     <ClInclude Include="src\Primech\Events\KeyEvent.h" />

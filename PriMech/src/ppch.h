@@ -16,6 +16,7 @@
 #include <unordered_set>
 
 #include "Primech/Core/Logging/Log.h"
+#include "Primech/Debug/Instrumentor.h"
 
 //only include std windows.h if the platform is windows
 #ifdef PM_PLATFORM_WINDOWS
