@@ -21,4 +21,10 @@ private:
 	glm::vec4 squareColor_ = { 0.2f, 0.3f, 0.8f, 1.0f };
 
 	PriMech::OrthographicCameraController cameraController_;
+
+	struct ProfileResult {
+		const char* Name_;
+		float Time_;
+	};
+	std::vector<ProfileResult> profileResults_;
 };
