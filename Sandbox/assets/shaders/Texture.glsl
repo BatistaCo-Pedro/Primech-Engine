@@ -20,9 +20,10 @@ void main() {
 layout(location = 0) out vec4 outColor;
 
 in vec2 varTextureCoord;
-			
+		
+uniform vec4 uniformColor;
 uniform sampler2D uniformTexture;
 
 void main() {
-	outColor = texture(uniformTexture, varTextureCoord * 10.0) * vec4(1.0, 0.8, 0.8, 1.0);
+	outColor = texture(uniformTexture, varTextureCoord * 10.0) * uniformColor;
 }
