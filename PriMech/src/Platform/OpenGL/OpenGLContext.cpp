@@ -12,6 +12,7 @@ namespace PriMech {
 	OpenGLContext::~OpenGLContext() {}
 
 	void OpenGLContext::Init() {
+		PM_PROFILE_FUNCTION();
 		glfwMakeContextCurrent(windowHandle_);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PM_CORE_ASSERT(status, "Failed to initialize glad")
@@ -31,6 +32,7 @@ namespace PriMech {
 	}
 
 	void OpenGLContext::SwapBuffers() {
+		PM_PROFILE_FUNCTION();
 		//Update Frame by swapping the buffer 
 		glfwSwapBuffers(windowHandle_);
 	}

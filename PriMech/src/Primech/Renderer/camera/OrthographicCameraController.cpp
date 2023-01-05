@@ -16,6 +16,7 @@ namespace PriMech {
 	}
 
 	void OrthographicCameraController::OnUpdate(Timestep timestep) {
+		PM_PROFILE_FUNCTION();
 		if (Input::IsKeyPressed(PM_KEY_D)) {
 			cameraPosition_.x += cos(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
 			cameraPosition_.y += sin(glm::radians(cameraRotation_)) * cameraPositionChangeSpeed_ * timestep;
@@ -53,13 +54,15 @@ namespace PriMech {
 	}
 
 	void OrthographicCameraController::OnEvent(Event& event) {
+		PM_PROFILE_FUNCTION();
 		EventDispatcher eventDispatcher(event);
 		eventDispatcher.Dispatch<MouseScrolledEvent>(PM_BIND_EVENT_FUNCTION(OrthographicCameraController::OnMouseScrolled));
 		eventDispatcher.Dispatch<WindowResizeEvent>(PM_BIND_EVENT_FUNCTION(OrthographicCameraController::OnWindowResize));
 	}
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& event) {
-		zoomLevel_ -= event.GetOffsetY() * 0.25;	
+		PM_PROFILE_FUNCTION();
+		zoomLevel_ -= event.GetOffsetY() * 0.25;
 		zoomLevel_ = std::max(zoomLevel_, 0.25f);
 		zoomLevel_ = std::min(zoomLevel_, 15.0f);
 		camera_.SetProjection(-aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_);
@@ -67,6 +70,7 @@ namespace PriMech {
 	}
 
 	bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& event) {
+		PM_PROFILE_FUNCTION();
 		aspectRatio_ = (float)event.GetWidth() / (float)event.GetHeight();
 		camera_.SetProjection(-aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_);
 		return false;

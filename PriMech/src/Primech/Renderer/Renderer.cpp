@@ -11,8 +11,14 @@ namespace PriMech {
 	Scope<Renderer::SceneData> Renderer::sceneData_ = CreateScope<Renderer::SceneData>();
 
 	void Renderer::Init() {
+		PM_PROFILE_FUNCTION();
 		RendererCommand::Init();
 		Renderer2D::Init();
+	}
+
+	void Renderer::Shutdown() {
+		PM_PROFILE_FUNCTION();
+		Renderer2D::Shutdown();
 	}
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height) {

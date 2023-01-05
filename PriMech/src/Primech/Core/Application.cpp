@@ -13,6 +13,8 @@ namespace PriMech {
 
 	//This cosntructor gets called whena  new Application is externally initalized with CreateApplication()
 	Application::Application() {
+		PM_PROFILE_FUNCTION();
+
 		PM_CORE_ASSERT(!instance_, "Application already exists")
 		instance_ = this; //Set App Instance Pointer to pint to this App instance
 
@@ -32,20 +34,28 @@ namespace PriMech {
 		PushOverlay(imGuiLayer_);
 	}
 
-	Application::~Application() {}
+	Application::~Application() {
+		PM_PROFILE_FUNCTION();
+		Renderer::Shutdown();
+	}
 
 	//Push layer to the starting side of the stack
 	void Application::PushLayer(Layer* layer) {
+		PM_PROFILE_FUNCTION();
 		layerStack_.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	//Push layer to the ending side of the stack
 	void Application::PushOverlay(Layer* overlay) {
+		PM_PROFILE_FUNCTION();
 		layerStack_.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	//This Method is binded to Window callback and is called when an event occurs
 	void Application::OnEvent(Event& event) {
+		PM_PROFILE_FUNCTION();
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<WindowCloseEvent>(PM_BIND_EVENT_FUNCTION(Application::OnWindowClose));
@@ -62,7 +72,9 @@ namespace PriMech {
 
 	//Method called by Application to start running the program
 	void Application::Run() {
+		PM_PROFILE_FUNCTION();
 		while (running_) {
+			PM_PROFILE_SCOPE("Application::Run()::FrameRunLoop");
 			float time = (float)glfwGetTime(); //glfw is temporary
 			Timestep timestep = time - lastFrameTime_;
 			lastFrameTime_ = time;
@@ -89,6 +101,7 @@ namespace PriMech {
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& event) {
+		PM_PROFILE_FUNCTION();
 		if (event.GetWidth() == 0 || event.GetHeight() == 0) {
 			minimized_ = true;
 			return false;

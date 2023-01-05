@@ -6,6 +6,7 @@
 
 namespace PriMech {
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) : width_(width), height_(height) {
+		PM_PROFILE_FUNCTION();
 		internalFormat_ = GL_RGBA8, dataFormat_ = GL_RGBA;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &rendererID_);
@@ -19,9 +20,14 @@ namespace PriMech {
 	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path) : path_(path) {
+		PM_PROFILE_FUNCTION();
 		int width, height, channels;
+		stbi_uc* data = nullptr;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		{
+			PM_PROFILE_SCOPE("OpenGLTexture2D::OpenGLTexture2D(const std::string&) - stbi_load");
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		}
 		PM_CORE_ASSERT(data, "Failed to load image!");
 		width_ = width;
 		height_ = height;
@@ -55,14 +61,17 @@ namespace PriMech {
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D() {
+		PM_PROFILE_FUNCTION();
 		glDeleteTextures(1, &rendererID_);
 	}
 
 	void OpenGLTexture2D::SetData(void* data, uint32_t size) {
+		PM_PROFILE_FUNCTION();
 		glTextureSubImage2D(rendererID_, 0, 0, 0, width_, height_, dataFormat_, GL_UNSIGNED_BYTE, data);
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const {
+		PM_PROFILE_FUNCTION();
 		glBindTextureUnit(slot, rendererID_);
 	}
 }

@@ -4,6 +4,7 @@
 
 namespace PriMech {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) {
+		PM_PROFILE_FUNCTION();
 		//creating OpenGL Buffer ans assigning Data to it
 		glCreateBuffers(1, &rendererID_);
 		glBindBuffer(GL_ARRAY_BUFFER, rendererID_);
@@ -11,20 +12,24 @@ namespace PriMech {
 	}
 
 	void OpenGLVertexBuffer::Bind() const{
+		PM_PROFILE_FUNCTION();
 		glBindBuffer(GL_ARRAY_BUFFER, rendererID_);
 	}
 
 	void OpenGLVertexBuffer::UnBind() const {
+		PM_PROFILE_FUNCTION();
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer() {
+		PM_PROFILE_FUNCTION();
 		glDeleteBuffers(1, &rendererID_);
 	}
 
 
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) :  count_(count){
+		PM_PROFILE_FUNCTION();
 		//creating OpenGL Buffer ans assigning Data to it
 		glCreateBuffers(1, &rendererID_);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID_);
@@ -32,14 +37,17 @@ namespace PriMech {
 	}
 
 	void OpenGLIndexBuffer::Bind() const {
+		PM_PROFILE_FUNCTION();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, rendererID_);
 	}
 
 	void OpenGLIndexBuffer::UnBind() const {
+		PM_PROFILE_FUNCTION();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer() {
+		PM_PROFILE_FUNCTION();
 		glDeleteBuffers(1, &rendererID_);
 	}
 }

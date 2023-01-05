@@ -25,6 +25,7 @@ namespace PriMech {
 
 	//Gets called by the constructor on object initalization
 	void WindowsWindow::Init(const WindowProps& props) {
+		PM_PROFILE_FUNCTION();
 		wData_.title_ = props.title;
 		wData_.height_ = props.height;
 		wData_.width_ = props.width;
@@ -128,6 +129,7 @@ namespace PriMech {
 	}
 
 	void WindowsWindow::ShutDown() {
+		PM_PROFILE_FUNCTION();
 		glfwDestroyWindow(window_);
 	}
 

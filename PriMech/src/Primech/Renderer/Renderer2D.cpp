@@ -16,6 +16,7 @@ namespace PriMech {
 	static Renderer2DStorage* staticData;
 
 	void Renderer2D::Init() {
+		PM_PROFILE_FUNCTION();
 		staticData = new Renderer2DStorage();
 
 		staticData->squareVertexArray_ = VertexArray::Create();
@@ -49,15 +50,18 @@ namespace PriMech {
 	}
 
 	void Renderer2D::Shutdown() {
+		PM_PROFILE_FUNCTION();
 		delete staticData;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera) {
+		PM_PROFILE_FUNCTION();
 		staticData->textureShader_->Bind();
 		staticData->textureShader_->SetMat4(camera.GetViewProjectionMatrix(), "uniformViewProjection");
 	}
 
 	void Renderer2D::EndScene() {
+		PM_PROFILE_FUNCTION();
 
 	}
 
@@ -66,6 +70,7 @@ namespace PriMech {
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
+		PM_PROFILE_FUNCTION();
 		staticData->textureShader_->SetFloat4(color, "uniformColor");
 		staticData->whiteTexture_->Bind();
 
@@ -81,6 +86,7 @@ namespace PriMech {
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture) {
+		PM_PROFILE_FUNCTION();
 		staticData->textureShader_->SetFloat4(glm::vec4(1.0f), "uniformColor");
 		texture->Bind();
 

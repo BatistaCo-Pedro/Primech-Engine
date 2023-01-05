@@ -23,22 +23,27 @@ namespace PriMech {
 	}
 
 	OpenGLVertexArray::OpenGLVertexArray() {
+		PM_PROFILE_FUNCTION();
 		glCreateVertexArrays(1, &rendererID_);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray() {
+		PM_PROFILE_FUNCTION();
 		glDeleteVertexArrays(1, &rendererID_);
 	}
 
 	void OpenGLVertexArray::Bind() const {
+		PM_PROFILE_FUNCTION();
 		glBindVertexArray(rendererID_);
 	}
 
 	void OpenGLVertexArray::UnBind() const {
+		PM_PROFILE_FUNCTION();
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer) {
+		PM_PROFILE_FUNCTION();
 		glBindVertexArray(rendererID_);
 		vertexBuffer->Bind();
 
@@ -56,6 +61,7 @@ namespace PriMech {
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) {
+		PM_PROFILE_FUNCTION();
 		glBindVertexArray(rendererID_);
 		indexBuffer->Bind();
 

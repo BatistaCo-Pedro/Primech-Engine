@@ -7,6 +7,7 @@
 
 namespace PriMech {
 	OpenGLShader::OpenGLShader(const std::string& filepath) {
+		PM_PROFILE_FUNCTION();
 		std::string shaderSource = ReadFile(filepath);
 		std::unordered_map<GLenum, std::string> shaderSourceMap = PreProcessFile(shaderSource);
 		Compile(shaderSourceMap);
@@ -23,6 +24,7 @@ namespace PriMech {
 	}
 
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc) : name_(name) {
+		PM_PROFILE_FUNCTION();
 		std::unordered_map<GLenum, std::string> shaderSources;
 		shaderSources[GL_VERTEX_SHADER] = vertexSrc;
 		shaderSources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -30,10 +32,12 @@ namespace PriMech {
 	}
 
 	OpenGLShader::~OpenGLShader() {
+		PM_PROFILE_FUNCTION();
 		glDeleteProgram(rendererID_);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
+		PM_PROFILE_FUNCTION();
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in) {
@@ -61,6 +65,7 @@ namespace PriMech {
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcessFile(const std::string& shaderSource) {
+		PM_PROFILE_FUNCTION();
 		std::unordered_map<GLenum, std::string> shaderSourceMap;
 
 		const char* typeToken = "#type";
@@ -86,6 +91,7 @@ namespace PriMech {
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSourceMap) {
+		PM_PROFILE_FUNCTION();
 		// Get a program object.
 		GLuint program = glCreateProgram();
 		PM_CORE_ASSERT(shaderSourceMap.size() <= 2, "Only support two Shaders momentarily");
@@ -169,26 +175,32 @@ namespace PriMech {
 	}
 
 	void OpenGLShader::Bind() const {
+		PM_PROFILE_FUNCTION();
 		glUseProgram(rendererID_);
 	}
 
 	void OpenGLShader::Unbind() const {
+		PM_PROFILE_FUNCTION();
 		glUseProgram(0);
 	}
 
 	void OpenGLShader::SetInt(int value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
 		UploadUniformInt(value, name);
 	}
 
 	void OpenGLShader::SetFloat3(const glm::vec3& value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
 		UploadUniformFloat3(value, name);
 	}
 
 	void OpenGLShader::SetFloat4(const glm::vec4& value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
 		UploadUniformFloat4(value, name);
 	}
 
 	void OpenGLShader::SetMat4(const glm::mat4& value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
 		UploadUniformMat4(value, name);
 	}
 
@@ -198,6 +210,7 @@ namespace PriMech {
 	}
 
 	void OpenGLShader::UploadUniformMat4(const glm::mat4& matrix, const std::string& name) {
+		PM_PROFILE_SCOPE("OpenGLShader::UploadUniformMat4(const glm::mat4& matrix, const std::string& name)");
 		GLint location = glGetUniformLocation(rendererID_, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
