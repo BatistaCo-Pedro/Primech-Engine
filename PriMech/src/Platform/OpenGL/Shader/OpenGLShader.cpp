@@ -36,6 +36,16 @@ namespace PriMech {
 		glDeleteProgram(rendererID_);
 	}
 
+	static GLenum ShaderTypeFromString(const std::string& type) {
+		if (type == "vertex")
+			return GL_VERTEX_SHADER;
+		if (type == "pixel" || type == "fragment")
+			return GL_FRAGMENT_SHADER;
+
+		PM_CORE_ASSERT(false, "Unknown shader type!");
+		return 0;
+	}
+
 	std::string OpenGLShader::ReadFile(const std::string& filepath) {
 		PM_PROFILE_FUNCTION();
 		std::string result;
@@ -52,16 +62,6 @@ namespace PriMech {
 		}
 
 		return result;
-	}
-
-	static GLenum ShaderTypeFromString(const std::string& type) {
-		if (type == "vertex") 
-			return GL_VERTEX_SHADER;
-		if (type == "pixel" || type == "fragment")
-			return GL_FRAGMENT_SHADER;
-
-		PM_CORE_ASSERT(false, "Unknown shader type!");
-		return 0;
 	}
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcessFile(const std::string& shaderSource) {
@@ -189,6 +189,16 @@ namespace PriMech {
 		UploadUniformInt(value, name);
 	}
 
+	void OpenGLShader::SetFloat(float value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
+		UploadUniformFloat(value, name);
+	}
+
+	void OpenGLShader::SetFloat2(const glm::vec2& value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
+		UploadUniformFloat2(value, name);
+	}
+
 	void OpenGLShader::SetFloat3(const glm::vec3& value, const std::string& name) {
 		PM_PROFILE_FUNCTION();
 		UploadUniformFloat3(value, name);
@@ -197,6 +207,11 @@ namespace PriMech {
 	void OpenGLShader::SetFloat4(const glm::vec4& value, const std::string& name) {
 		PM_PROFILE_FUNCTION();
 		UploadUniformFloat4(value, name);
+	}
+
+    void OpenGLShader::SetMat3(const glm::mat3& value, const std::string& name) {
+		PM_PROFILE_FUNCTION();
+		UploadUniformMat3(value, name);
 	}
 
 	void OpenGLShader::SetMat4(const glm::mat4& value, const std::string& name) {
