@@ -25,6 +25,7 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
 
 		//PriMech::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(-45.0f), { 0.2f, 0.3f, 0.8f, 1.0f });
+		//for (int i = 0; i < 9999; i++)
 		PriMech::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ 0.5f, -0.2f }, { 0.8f, 0.5f }, { 0.3f, 0.3f, 0.8f, 1.0f });
 		//PriMech::Renderer2D::DrawQuad({ 0.2f, 0.5f, -0.1f }, { 10.0f, 10.0f }, checkerboardTexture_, 10.0f, glm::vec4(0.9f, 0.8f, 0.8f, 1.0f));

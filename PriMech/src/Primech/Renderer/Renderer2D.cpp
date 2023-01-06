@@ -11,13 +11,14 @@ namespace PriMech {
 		glm::vec3 position;
 		glm::vec4 color;
 		glm::vec2 textureCoord;
-		//Todo:textureID
+		float textureIndex;
 	};
 
 	struct Renderer2DData {
 		const uint32_t maxQuads = 10000;
 		const uint32_t maxVertices = maxQuads * 4;
 		const uint32_t maxIndices = maxQuads * 6;
+		static const uint32_t maxTextureSlots = 32;
 
 		Ref<VertexArray> quadVertexArray;
 		Ref<VertexBuffer> quadVertexBuffer;
@@ -27,6 +28,9 @@ namespace PriMech {
 		uint32_t quadIndexCount = 0;
 		QuadVertex* quadVertexBufferBase = nullptr;
 		QuadVertex* quadVertexBufferPtr = nullptr;
+
+		std::array<Ref<Texture2D>, maxTextureSlots> textureSlots;
+		uint32_t textureSlotIndex = 1; //texture slot 0 -> whiteTexture
 	};
 	static Renderer2DData s_Data;
 
@@ -39,7 +43,8 @@ namespace PriMech {
 		s_Data.quadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "attributePosition" },
 			{ ShaderDataType::Float4, "attributeColor" },
-			{ ShaderDataType::Float2, "attributeTextureCoord"}
+			{ ShaderDataType::Float2, "attributeTextureCoord"},
+			{ ShaderDataType::Float, "attributeTextureIndex"},
 		});
 		s_Data.quadVertexArray->AddVertexBuffer(s_Data.quadVertexBuffer);
 
@@ -71,6 +76,8 @@ namespace PriMech {
 		s_Data.textureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Data.textureShader->Bind();
 		s_Data.textureShader->SetInt(0, "uniformTexture");
+
+		s_Data.textureSlots[0] = s_Data.whiteTexture;
 	}
 
 	void Renderer2D::Shutdown() {
@@ -84,6 +91,7 @@ namespace PriMech {
 
 		s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
 		s_Data.quadIndexCount = 0;
+		s_Data.textureSlotIndex = 1;
 	}
 
 	void Renderer2D::EndScene() {
@@ -95,6 +103,9 @@ namespace PriMech {
 	}
 
 	void Renderer2D::Flush() {
+		for (uint32_t i = 0; i < s_Data.textureSlotIndex; i++) 
+			s_Data.textureSlots[i]->Bind(i);
+		
 		RendererCommand::DrawIndexed(s_Data.quadVertexArray, s_Data.quadIndexCount);
 	}
 
@@ -104,25 +115,30 @@ namespace PriMech {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		PM_PROFILE_FUNCTION();
+		const float textureIndex = 0; //white texture
 
 		s_Data.quadVertexBufferPtr->position = position;
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
@@ -143,7 +159,48 @@ namespace PriMech {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintColor) {
 		PM_PROFILE_FUNCTION();
-		s_Data.textureShader->SetFloat4(tintColor, "uniformColor");
+		constexpr glm::vec4 color = glm::vec4(1.0f);
+		float textureIndex = 0.0f;
+
+		for (uint32_t i = 1; i < s_Data.textureSlotIndex; i++) {
+			if (*s_Data.textureSlots[i].get() == *texture.get()) /*temp -> to ugly*/ {
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f) {
+			textureIndex = (float)s_Data.textureSlotIndex;
+			s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp
+		}
+
+		s_Data.quadVertexBufferPtr->position = position;
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadIndexCount += 6;
+
+		/*s_Data.textureShader->SetFloat4(tintColor, "uniformColor");
 		s_Data.textureShader->SetFloat(tileMultiplier, "uniformTileMultiplier");
 		texture->Bind();
 
@@ -151,7 +208,7 @@ namespace PriMech {
 		s_Data.textureShader->SetMat4(transform, "uniformTransform");
 
 		s_Data.quadVertexArray->Bind();
-		RendererCommand::DrawIndexed(s_Data.quadVertexArray);
+		RendererCommand::DrawIndexed(s_Data.quadVertexArray);*/
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
