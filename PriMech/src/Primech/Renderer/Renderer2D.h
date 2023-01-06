@@ -10,6 +10,7 @@ namespace PriMech {
 
 		static void BeginScene(const OrthographicCamera& camera);
 		static void EndScene();
+		static void Flush();
 
 		//To be improved with structs
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color);

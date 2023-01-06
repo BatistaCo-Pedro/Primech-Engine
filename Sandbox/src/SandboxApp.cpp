@@ -48,7 +48,7 @@ public:
 		indexBuffer = PriMech::IndexBuffer::Create(indices, (sizeof(indices) / sizeof(indices[0])));
 		vertexArray_->SetIndexBuffer(indexBuffer);
 
-		squareVertexArray_ = PriMech::VertexArray::Create();
+		quadVertexArray = PriMech::VertexArray::Create();
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -67,11 +67,11 @@ public:
 		};
 		squareVertexBuffer->SetLayout(squareLayout);
 
-		squareVertexArray_->AddVertexBuffer(squareVertexBuffer);
+		quadVertexArray->AddVertexBuffer(squareVertexBuffer);
 
 		PriMech::Ref<PriMech::IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer = PriMech::IndexBuffer::Create(squareIndices, (sizeof(squareIndices) / sizeof(squareIndices[0])));
-		squareVertexArray_->SetIndexBuffer(squareIndexBuffer);
+		quadVertexArray->SetIndexBuffer(squareIndexBuffer);
 
 		//Temp
 		std::string vertexSrc = R"(
@@ -174,7 +174,7 @@ public:
 			for (int y = 0; y < 20; y++) {
 				glm::vec3 pos(x * 0.11f * scaleMultiplier, y * 0.11f * scaleMultiplier, 0.0f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-				PriMech::Renderer::Submit(squareVertexArray_, flatColorShader_, transform);
+				PriMech::Renderer::Submit(quadVertexArray, flatColorShader_, transform);
 			}		
 		}	
 		PriMech::Ref<PriMech::Shader> textureShader = shaderLibrary_.Get("Texture");
@@ -182,10 +182,10 @@ public:
 		//Triangle rendering
 		//PriMech::Renderer::Submit(vertexArray_, shader_);
 		texture_->Bind();
-		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		PriMech::Renderer::Submit(quadVertexArray, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		textureTest_->Bind();
-		PriMech::Renderer::Submit(squareVertexArray_, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		PriMech::Renderer::Submit(quadVertexArray, textureShader, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		PriMech::Renderer::EndScene();
 	}
@@ -212,7 +212,7 @@ private:
 	PriMech::Ref<PriMech::Shader> flatColorShader_;
 
 	PriMech::Ref<PriMech::VertexArray> vertexArray_;
-	PriMech::Ref<PriMech::VertexArray> squareVertexArray_;
+	PriMech::Ref<PriMech::VertexArray> quadVertexArray;
 
 	PriMech::Ref<PriMech::Texture2D> texture_, textureTest_;
 	glm::vec3 squareColor_ = { 0.2f, 0.3f, 0.8f };

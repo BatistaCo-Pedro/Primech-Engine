@@ -12,7 +12,7 @@ namespace PriMech {
 		virtual void Clear() override;
 		virtual void ClearWithColor(const glm::vec4& color) override;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) override;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) override;
 	private:
 	};
 }

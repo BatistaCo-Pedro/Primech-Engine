@@ -23,8 +23,8 @@ namespace PriMech {
 			s_RendererAPI_->ClearWithColor(color);
 		};
 
-		inline static void DrawIndexed(const Ref<VertexArray> vertexArray) {
-			s_RendererAPI_->DrawIndexed(vertexArray);
+		inline static void DrawIndexed(const Ref<VertexArray> vertexArray, uint32_t indexCount = 0) {
+			s_RendererAPI_->DrawIndexed(vertexArray, indexCount);
 		}
 	private:
 		static Scope<RendererAPI> s_RendererAPI_;

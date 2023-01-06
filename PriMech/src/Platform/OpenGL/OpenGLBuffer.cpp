@@ -3,6 +3,14 @@
 #include "glad/glad.h"
 
 namespace PriMech {
+	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size) {
+		PM_PROFILE_FUNCTION();
+		//creating OpenGL Buffer ans assigning Data to it
+		glCreateBuffers(1, &rendererID_);
+		glBindBuffer(GL_ARRAY_BUFFER, rendererID_);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW); //no data
+	}
+
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) {
 		PM_PROFILE_FUNCTION();
 		//creating OpenGL Buffer ans assigning Data to it
@@ -19,6 +27,11 @@ namespace PriMech {
 	void OpenGLVertexBuffer::UnBind() const {
 		PM_PROFILE_FUNCTION();
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size) {
+		glBindBuffer(GL_ARRAY_BUFFER, rendererID_);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer() {

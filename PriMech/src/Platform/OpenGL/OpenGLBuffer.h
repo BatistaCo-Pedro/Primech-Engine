@@ -6,6 +6,7 @@ namespace PriMech {
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
+		OpenGLVertexBuffer(uint32_t size);
 		OpenGLVertexBuffer(float* vertices, uint32_t size);
 		virtual ~OpenGLVertexBuffer();
 
@@ -14,6 +15,8 @@ namespace PriMech {
 
 		inline virtual void SetLayout(const BufferLayout& layout) override { layout_ = layout; };
 		inline virtual const BufferLayout& GetLayout() const override { return layout_; };
+
+		virtual void SetData(const void* data, uint32_t size) override;
 	private:
 		uint32_t rendererID_;
 		BufferLayout layout_;
@@ -22,7 +25,7 @@ namespace PriMech {
 	class OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:
-		OpenGLIndexBuffer(uint32_t* indices, uint32_t size);
+		OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
 		virtual ~OpenGLIndexBuffer();
 
 		virtual void Bind() const override;

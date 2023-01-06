@@ -24,10 +24,11 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		PM_PROFILE_SCOPE("Sandbox2D::Rendering::OnUpdate()");
 		PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
 
-		PriMech::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(-45.0f), { 0.2f, 0.3f, 0.8f, 1.0f });
+		//PriMech::Renderer2D::DrawRotatedQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, glm::radians(-45.0f), { 0.2f, 0.3f, 0.8f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
-		PriMech::Renderer2D::DrawQuad({ 0.2f, 0.5f, -0.1f }, { 10.0f, 10.0f }, checkerboardTexture_, 10.0f, glm::vec4(0.9f, 0.8f, 0.8f, 1.0f));
-		PriMech::Renderer2D::DrawRotatedQuad({ 0.4f, 0.8f }, { 1.0f, 1.0f }, glm::radians(60.0f), checkerboardTexture_, 1.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
+		PriMech::Renderer2D::DrawQuad({ 0.5f, -0.2f }, { 0.8f, 0.5f }, { 0.3f, 0.3f, 0.8f, 1.0f });
+		//PriMech::Renderer2D::DrawQuad({ 0.2f, 0.5f, -0.1f }, { 10.0f, 10.0f }, checkerboardTexture_, 10.0f, glm::vec4(0.9f, 0.8f, 0.8f, 1.0f));
+		//PriMech::Renderer2D::DrawRotatedQuad({ 0.4f, 0.8f }, { 1.0f, 1.0f }, glm::radians(60.0f), checkerboardTexture_, 1.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
 
 		PriMech::Renderer2D::EndScene();
 	}
