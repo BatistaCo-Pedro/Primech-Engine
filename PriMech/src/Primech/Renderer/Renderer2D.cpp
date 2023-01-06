@@ -32,8 +32,11 @@ namespace PriMech {
 
 		std::array<Ref<Texture2D>, maxTextureSlots> textureSlots;
 		uint32_t textureSlotIndex = 1; //texture slot 0 -> whiteTexture
+
+		glm::vec4 quadVertexPositions[4];
 	};
 	static Renderer2DData s_Data;
+
 
 	void Renderer2D::Init() {
 		PM_PROFILE_FUNCTION();
@@ -51,7 +54,6 @@ namespace PriMech {
 		s_Data.quadVertexArray->AddVertexBuffer(s_Data.quadVertexBuffer);
 
 		s_Data.quadVertexBufferBase = new QuadVertex[s_Data.maxVertices];
-
 		uint32_t* quadIndices = new uint32_t[s_Data.maxIndices]; //allocate on the heap -> potential for stack overflow
 		
 		uint32_t offset = 0;
@@ -75,6 +77,7 @@ namespace PriMech {
 		int32_t whiteTextureData = 0xffffffff;
 		s_Data.whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
+
 		int32_t samplers[s_Data.maxTextureSlots];
 		for (uint32_t i = 0; i < s_Data.maxTextureSlots; i++)
 			samplers[i] = i;
@@ -84,6 +87,11 @@ namespace PriMech {
 		s_Data.textureShader->SetIntArray(samplers, s_Data.maxTextureSlots, "uniformTextures");
 
 		s_Data.textureSlots[0] = s_Data.whiteTexture;
+
+		s_Data.quadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f }; //left down
+		s_Data.quadVertexPositions[1] = {  0.5f, -0.5f, 0.0f, 1.0f }; //right down
+		s_Data.quadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f }; //right up
+		s_Data.quadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f }; //left up
 	}
 
 	void Renderer2D::Shutdown() {
@@ -115,6 +123,8 @@ namespace PriMech {
 		RendererCommand::DrawIndexed(s_Data.quadVertexArray, s_Data.quadIndexCount);
 	}
 
+#pragma region DrawingMethods
+
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color) {
 		DrawQuad({ position.x, position.y, 0.0f }, size, color);
 	}
@@ -123,28 +133,31 @@ namespace PriMech {
 		PM_PROFILE_FUNCTION();
 		const float textureIndex = 0; //white texture
 
-		s_Data.quadVertexBufferPtr->position = position;
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
@@ -152,16 +165,9 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
-
-		/*s_Data.textureShader_->SetFloat(1.0f, "uniformTileMultiplier");
-		s_Data.whiteTexture_->Bind();
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data.textureShader_->SetMat4(transform, "uniformTransform");
-
-		s_Data.squareVertexArray_->Bind();
-		RendererCommand::DrawIndexed(s_Data.squareVertexArray_);*/
 	}
+
+
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintColor) {
 		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tileMultiplier, tintColor);
@@ -181,32 +187,35 @@ namespace PriMech {
 
 		if (textureIndex == 0.0f) {
 			textureIndex = (float)s_Data.textureSlotIndex;
-			s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp
+			s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp ->needs specific textureID
 			s_Data.textureSlotIndex++;
 		}
 
-		s_Data.quadVertexBufferPtr->position = position;
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
 		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
@@ -214,17 +223,9 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
-
-		/*s_Data.textureShader->SetFloat4(tintColor, "uniformColor");
-		s_Data.textureShader->SetFloat(tileMultiplier, "uniformTileMultiplier");
-		texture->Bind();
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
-		s_Data.textureShader->SetMat4(transform, "uniformTransform");
-
-		s_Data.quadVertexArray->Bind();
-		RendererCommand::DrawIndexed(s_Data.quadVertexArray);*/
 	}
+
+
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, color);
@@ -232,37 +233,100 @@ namespace PriMech {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
 		PM_PROFILE_FUNCTION();
-		s_Data.textureShader->SetFloat4(color, "uniformColor");
-		s_Data.textureShader->SetFloat(1.0f, "uniformTileMultiplier");
-		s_Data.whiteTexture->Bind();
+		float textureIndex = 0.0f; //white texture
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		s_Data.textureShader->SetMat4(transform, "uniformTransform");
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
+		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexArray->Bind();
-		RendererCommand::DrawIndexed(s_Data.quadVertexArray);
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadIndexCount += 6;
 	} 
 	
+
+
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintcolor) {
 		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tileMultiplier, tintcolor);
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintcolor) {
 		PM_PROFILE_FUNCTION();
-		s_Data.textureShader->SetFloat4(tintcolor, "uniformColor");
-		s_Data.textureShader->SetFloat(tileMultiplier, "uniformTileMultiplier");
-		texture->Bind();
+		constexpr glm::vec4 color = glm::vec4(1.0f);
+		float textureIndex = 0.0f;
+
+		for (uint32_t i = 1; i < s_Data.textureSlotIndex; i++) {
+			if (*s_Data.textureSlots[i].get() == *texture.get()) /*temp -> to ugly*/ {
+				textureIndex = (float)i;
+				break;
+			}
+		}
+
+		if (textureIndex == 0.0f) {
+			textureIndex = (float)s_Data.textureSlotIndex;
+			s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp
+			s_Data.textureSlotIndex++;
+		}
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
-			* glm::scale(glm::mat4(1.0f), glm::vec3(size, 1.0f));
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), {0.0f, 0.0f, 1.0f})
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		s_Data.textureShader->SetMat4(transform, "uniformTransform");
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[0];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
+		s_Data.quadVertexBufferPtr++;
 
-		s_Data.quadVertexArray->Bind();
-		RendererCommand::DrawIndexed(s_Data.quadVertexArray);
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[1];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[2];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[3];
+		s_Data.quadVertexBufferPtr->color = color;
+		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
+		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
+		s_Data.quadVertexBufferPtr++;
+
+		s_Data.quadIndexCount += 6;
 	}
 }
+#pragma endregion
