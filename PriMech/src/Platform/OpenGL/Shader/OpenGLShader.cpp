@@ -189,6 +189,10 @@ namespace PriMech {
 		UploadUniformInt(value, name);
 	}
 
+	void OpenGLShader::SetIntArray(int* values, uint32_t count, const std::string& name) {
+		UploadUniformIntArray(values, count, name);
+	}
+
 	void OpenGLShader::SetFloat(float value, const std::string& name) {
 		PM_PROFILE_FUNCTION();
 		UploadUniformFloat(value, name);
@@ -233,6 +237,11 @@ namespace PriMech {
 	void OpenGLShader::UploadUniformInt(int value, const std::string& name) {
 		GLint location = glGetUniformLocation(rendererID_, name.c_str());
 		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(int* values, uint32_t count, const std::string& name) {
+		GLint location = glGetUniformLocation(rendererID_, name.c_str());
+		glUniform1iv(location, count, values);
 	}
 
 	void OpenGLShader::UploadUniformFloat(float value, const std::string& name) {

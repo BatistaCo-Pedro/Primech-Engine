@@ -16,7 +16,7 @@ namespace PriMech {
 		inline virtual uint32_t GetHeight() const override { return height_; }
 
 		virtual void Bind(uint32_t slot = 0) const override;
-		inline virtual bool operator==(const Texture2D& other) const override {
+		inline virtual bool operator==(const Texture& other) const override {
 			return rendererID_ == ((OpenGLTexture2D&)other).rendererID_;
 		}
 	private:

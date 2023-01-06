@@ -12,6 +12,7 @@ namespace PriMech {
 		glm::vec4 color;
 		glm::vec2 textureCoord;
 		float textureIndex;
+		float tilingFactor;
 	};
 
 	struct Renderer2DData {
@@ -45,6 +46,7 @@ namespace PriMech {
 			{ ShaderDataType::Float4, "attributeColor" },
 			{ ShaderDataType::Float2, "attributeTextureCoord"},
 			{ ShaderDataType::Float, "attributeTextureIndex"},
+			{ ShaderDataType::Float, "attributeTilingFactor"},
 		});
 		s_Data.quadVertexArray->AddVertexBuffer(s_Data.quadVertexBuffer);
 
@@ -70,12 +72,16 @@ namespace PriMech {
 
 
 		s_Data.whiteTexture = Texture2D::Create(1, 1);
-		uint32_t whiteTextureData = 0xffffffff;
+		int32_t whiteTextureData = 0xffffffff;
 		s_Data.whiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
+
+		int32_t samplers[s_Data.maxTextureSlots];
+		for (uint32_t i = 0; i < s_Data.maxTextureSlots; i++)
+			samplers[i] = i;
 
 		s_Data.textureShader = Shader::Create("assets/shaders/Texture.glsl");
 		s_Data.textureShader->Bind();
-		s_Data.textureShader->SetInt(0, "uniformTexture");
+		s_Data.textureShader->SetIntArray(samplers, s_Data.maxTextureSlots, "uniformTextures");
 
 		s_Data.textureSlots[0] = s_Data.whiteTexture;
 	}
@@ -121,24 +127,28 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = 1;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
@@ -172,30 +182,35 @@ namespace PriMech {
 		if (textureIndex == 0.0f) {
 			textureIndex = (float)s_Data.textureSlotIndex;
 			s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp
+			s_Data.textureSlotIndex++;
 		}
 
 		s_Data.quadVertexBufferPtr->position = position;
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 0.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x + size.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 1.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadVertexBufferPtr->position = { position.x, position.y + size.y, 0.0f };
 		s_Data.quadVertexBufferPtr->color = color;
 		s_Data.quadVertexBufferPtr->textureCoord = { 0.0f, 1.0f, };
 		s_Data.quadVertexBufferPtr->textureIndex = textureIndex;
+		s_Data.quadVertexBufferPtr->tilingFactor = tileMultiplier;
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;

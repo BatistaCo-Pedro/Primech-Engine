@@ -20,6 +20,7 @@ namespace PriMech {
 		virtual void SetMat4(const glm::mat4& value, const std::string& name) override;
 
 		virtual void SetInt(int value, const std::string& name) override;
+		virtual void SetIntArray(int* values, uint32_t count, const std::string& name) override;
 		virtual void SetFloat(float value, const std::string& name) override;
 		virtual void SetFloat2(const glm::vec2& value, const std::string& name) override;
 		virtual void SetFloat3(const glm::vec3& value, const std::string& name) override;
@@ -29,6 +30,7 @@ namespace PriMech {
 		void UploadUniformMat4(const glm::mat4& matrix, const std::string& name);
 
 		void UploadUniformInt(int value, const std::string& name);
+		void UploadUniformIntArray(int* values, uint32_t count, const std::string& name);
 		void UploadUniformFloat(float value, const std::string& name);
 		void UploadUniformFloat2(const glm::vec2& value, const std::string& name);
 		void UploadUniformFloat3(const glm::vec3& value, const std::string& name);
