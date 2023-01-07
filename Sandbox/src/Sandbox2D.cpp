@@ -30,10 +30,11 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 
 		PriMech::Renderer2D::DrawRotatedQuad({ 1.3f, 0.3f }, { 0.5f, 0.75f }, rotation, { 0.2f, 0.3f, 0.8f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 30.0f, 30.0f }, checkerboardTexture_, 100.0f);
+		PriMech::Renderer2D::DrawQuad({ 5.0f, 5.0f, 0.1f }, { 2.0f, 2.0f }, checkerboardTexture_, 5.0f, squareColor_);
 		PriMech::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ 0.5f, -0.2f }, { 0.8f, 0.5f }, squareColor_);
 		PriMech::Renderer2D::DrawQuad({ -1.2f, -1.2f, 0.1f }, { 1.0f, 1.0f }, checkerboardTexture_, 20.0f);
-		PriMech::Renderer2D::DrawRotatedQuad({ -0.0f, 0.0f }, { 1.0f, 1.0f }, 45.0f, checkerboardTexture_, 10.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
+		PriMech::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.0f, checkerboardTexture_, 10.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
 		for (float y = -5.0f; y < 5.0f; y += 0.5f) {
 			for (float x = -5.0f; x < 5.0f; x += 0.5f) {
 				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.3f, (y + 5.0f) / 10.0f, 0.65f };
