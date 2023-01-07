@@ -34,5 +34,6 @@ namespace PriMech {
 		static Statistics GetStatistics();
 	private:
 		static void StartNewBatch();
+		//static void AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f);
 	};
 }

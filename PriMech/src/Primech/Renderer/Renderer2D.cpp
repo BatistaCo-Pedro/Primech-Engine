@@ -148,6 +148,9 @@ namespace PriMech {
 			}
 
 			if (textureIndex == 0.0f) {
+				/*if (s_Data.textureSlotIndex >= Renderer2DData::maxTextureSlots)
+					StartNewBatch();*/
+
 				textureIndex = (float)s_Data.textureSlotIndex;
 				s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp ->needs specific textureID
 				s_Data.textureSlotIndex++;

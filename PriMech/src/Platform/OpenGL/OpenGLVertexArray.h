@@ -19,6 +19,7 @@ namespace PriMech {
 		static VertexArray* Create();
 	private:
 		uint32_t rendererID_;
+		uint32_t vertexBufferIndex_ = 0;
 		std::vector<Ref<VertexBuffer>> vertexBuffers_;
 		Ref<IndexBuffer> indexBuffer_;
 	};

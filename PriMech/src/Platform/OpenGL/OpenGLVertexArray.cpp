@@ -49,13 +49,52 @@ namespace PriMech {
 
 		PM_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout");
 
-		uint32_t index = 0;
 		const BufferLayout layout = vertexBuffer->GetLayout();
 		for (const BufferElement element : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.type),
-				element.normalized ? GL_TRUE : GL_FALSE, layout.GetStride(), (const void*)element.offset);
-			index++;
+			for (const BufferElement& element : layout) {
+				switch (element.type) {
+				case ShaderDataType::Float:
+				case ShaderDataType::Float2:
+				case ShaderDataType::Float3:
+				case ShaderDataType::Float4:
+				case ShaderDataType::Int:
+				case ShaderDataType::Int2:
+				case ShaderDataType::Int3:
+				case ShaderDataType::Int4:
+				case ShaderDataType::Bool:
+				{
+					glEnableVertexAttribArray(vertexBufferIndex_);
+					glVertexAttribPointer(vertexBufferIndex_,
+						element.GetComponentCount(),
+						ShaderDataTypeToOpenGLBaseType(element.type),
+						element.normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)element.offset);
+					vertexBufferIndex_++;
+					break;
+				}
+				case ShaderDataType::Mat3:
+				case ShaderDataType::Mat4:
+				{
+					uint8_t count = element.GetComponentCount();
+					for (uint8_t i = 0; i < count; i++)
+					{
+						glEnableVertexAttribArray(vertexBufferIndex_);
+						glVertexAttribPointer(vertexBufferIndex_,
+							count,
+							ShaderDataTypeToOpenGLBaseType(element.type),
+							element.normalized ? GL_TRUE : GL_FALSE,
+							layout.GetStride(),
+							(const void*)(sizeof(float) * count * i));
+						glVertexAttribDivisor(vertexBufferIndex_, 1);
+						vertexBufferIndex_++;
+					}
+					break;
+				}
+				default:
+					PM_CORE_ASSERT(false, "Unknown ShaderDataType!");
+				}
+			}
 		}
 		vertexBuffers_.push_back(vertexBuffer);
 	}
