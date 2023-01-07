@@ -16,9 +16,9 @@ namespace PriMech {
 	};
 
 	struct Renderer2DData {
-		const uint32_t maxQuads = 10000;
-		const uint32_t maxVertices = maxQuads * 4;
-		const uint32_t maxIndices = maxQuads * 6;
+		static const uint32_t maxQuads = 10000;
+		static const uint32_t maxVertices = maxQuads * 4;
+		static const uint32_t maxIndices = maxQuads * 6;
 		static const uint32_t maxTextureSlots = 32;
 
 		Ref<VertexArray> quadVertexArray;
@@ -34,6 +34,8 @@ namespace PriMech {
 		uint32_t textureSlotIndex = 1; //texture slot 0 -> whiteTexture
 
 		glm::vec4 quadVertexPositions[4];
+
+		Renderer2D::Statistics stats;
 	};
 	static Renderer2DData s_Data;
 
@@ -121,6 +123,15 @@ namespace PriMech {
 			s_Data.textureSlots[i]->Bind(i);
 		
 		RendererCommand::DrawIndexed(s_Data.quadVertexArray, s_Data.quadIndexCount);
+		s_Data.stats.drawCalls++;
+	}
+
+	void Renderer2D::StartNewBatch() {
+		EndScene();
+
+		s_Data.quadVertexBufferPtr = s_Data.quadVertexBufferBase;
+		s_Data.quadIndexCount = 0;
+		s_Data.textureSlotIndex = 1;
 	}
 
 #pragma region DrawingMethods
@@ -131,6 +142,9 @@ namespace PriMech {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
 		PM_PROFILE_FUNCTION();
+		if (s_Data.quadIndexCount >= Renderer2DData::maxIndices) 
+			StartNewBatch();
+
 		const float textureIndex = 0; //white texture
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -165,6 +179,8 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
+
+		s_Data.stats.quadCount++;
 	}
 
 
@@ -175,6 +191,9 @@ namespace PriMech {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintColor) {
 		PM_PROFILE_FUNCTION();
+		if (s_Data.quadIndexCount >= Renderer2DData::maxIndices)
+			StartNewBatch();
+
 		constexpr glm::vec4 color = glm::vec4(1.0f);
 		float textureIndex = 0.0f;
 
@@ -223,6 +242,8 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
+
+		s_Data.stats.quadCount++;
 	}
 
 
@@ -233,6 +254,9 @@ namespace PriMech {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color) {
 		PM_PROFILE_FUNCTION();
+		if (s_Data.quadIndexCount >= Renderer2DData::maxIndices)
+			StartNewBatch();
+
 		float textureIndex = 0.0f; //white texture
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
@@ -268,6 +292,8 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
+
+		s_Data.stats.quadCount++;
 	} 
 	
 
@@ -278,6 +304,9 @@ namespace PriMech {
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tileMultiplier, const glm::vec4& tintcolor) {
 		PM_PROFILE_FUNCTION();
+		if (s_Data.quadIndexCount >= Renderer2DData::maxIndices)
+			StartNewBatch();
+
 		constexpr glm::vec4 color = glm::vec4(1.0f);
 		float textureIndex = 0.0f;
 
@@ -327,6 +356,16 @@ namespace PriMech {
 		s_Data.quadVertexBufferPtr++;
 
 		s_Data.quadIndexCount += 6;
+		s_Data.stats.quadCount++;
+	}
+
+	void Renderer2D::ResetStatistics() {
+		memset(&s_Data.stats, 0, sizeof(Renderer2D::Statistics));
+	}
+
+	Renderer2D::Statistics Renderer2D::GetStatistics()
+	{
+		return s_Data.stats;
 	}
 }
 #pragma endregion

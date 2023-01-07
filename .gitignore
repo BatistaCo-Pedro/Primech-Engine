@@ -407,3 +407,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/Sandbox/PriMechProfile-Runtime.json
+/Sandbox/PriMechProfile-Shutdown.json
+/Sandbox/PriMechProfile-Startup.json
+/Sandbox/imgui.ini
