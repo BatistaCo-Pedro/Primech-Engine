@@ -8,6 +8,14 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), cameraController_(1920.0f / 1080.0f
 void Sandbox2D::OnAttach() {
 	PM_PROFILE_FUNCTION();
 	checkerboardTexture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
+
+	particle_.colorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
+	particle_.colorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
+	particle_.sizeBegin = 0.5f, particle_.sizeVariation = 0.3f, particle_.sizeEnd = 0.0f;
+	particle_.lifeTime = 5.0f;
+	particle_.velocity = { 0.0f, 0.0f };
+	particle_.velocityVariation = { 3.0f, 1.0f };
+	particle_.position = { 0.0f, 0.0f };
 }
 
 void Sandbox2D::OnDetach() {
@@ -28,13 +36,13 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		PM_PROFILE_SCOPE("Sandbox2D::Rendering::OnUpdate()");
 		PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
 
-		PriMech::Renderer2D::DrawRotatedQuad({ 1.3f, 0.3f }, { 0.5f, 0.75f }, rotation, { 0.2f, 0.3f, 0.8f, 1.0f });
+		PriMech::Renderer2D::DrawRotatedQuad({ 1.3f, 0.3f }, { 0.5f, 0.75f }, glm::radians(rotation), { 0.2f, 0.3f, 0.8f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 30.0f, 30.0f }, checkerboardTexture_, 100.0f);
 		PriMech::Renderer2D::DrawQuad({ 5.0f, 5.0f, 0.1f }, { 2.0f, 2.0f }, checkerboardTexture_, 5.0f, squareColor_);
 		PriMech::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		PriMech::Renderer2D::DrawQuad({ 0.5f, -0.2f }, { 0.8f, 0.5f }, squareColor_);
 		PriMech::Renderer2D::DrawQuad({ -1.2f, -1.2f, 0.1f }, { 1.0f, 1.0f }, checkerboardTexture_, 20.0f);
-		PriMech::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, 45.0f, checkerboardTexture_, 10.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
+		PriMech::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, glm::radians(45.0f), checkerboardTexture_, 10.0f, glm::vec4(0.5f, 0.9f, 0.5f, 1.0f));
 		for (float y = -5.0f; y < 5.0f; y += 0.5f) {
 			for (float x = -5.0f; x < 5.0f; x += 0.5f) {
 				glm::vec4 color = { (x + 5.0f) / 10.0f, 0.3f, (y + 5.0f) / 10.0f, 0.65f };
@@ -43,6 +51,24 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		}
 		PriMech::Renderer2D::EndScene();
 	}
+	if (PriMech::Input::IsMouseButtonPressed(PM_MOUSE_BUTTON_LEFT)) {
+		auto [x, y] = PriMech::Input::GetMousePos();
+		auto width = PriMech::Application::GetApplication().GetWindow().GetWidth();
+		auto height = PriMech::Application::GetApplication().GetWindow().GetHeight();
+
+		auto bounds = cameraController_.GetBounds();
+		auto pos = cameraController_.GetCamera().GetPostion();
+		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
+		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
+		particle_.position = { x + pos.x, y + pos.y };
+		for (int i = 0; i < 50; i++) {
+			particleSystem_.Emit(particle_);
+		}
+	}
+
+	particleSystem_.OnUpdate(timestep);
+	particleSystem_.OnRender(cameraController_.GetCamera());
+	
 }
 
 void Sandbox2D::OnEvent(PriMech::Event& event) {

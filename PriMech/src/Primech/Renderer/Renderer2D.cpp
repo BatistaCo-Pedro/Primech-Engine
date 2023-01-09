@@ -112,7 +112,7 @@ namespace PriMech {
 
 	void Renderer2D::EndScene() {
 		PM_PROFILE_FUNCTION();
-		uint32_t dataSize = (uint8_t*)s_Data.quadVertexBufferPtr - (uint8_t*)s_Data.quadVertexBufferBase;
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.quadVertexBufferPtr - (uint8_t*)s_Data.quadVertexBufferBase);
 		s_Data.quadVertexBuffer->SetData(s_Data.quadVertexBufferBase, dataSize);
 
 		Flush();
@@ -214,7 +214,7 @@ namespace PriMech {
 		float textureIndex = 0.0f; //white texture
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::rotate(glm::mat4(1.0f), rotation, { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		AdjustRenderer2DQuadData(transform, color);
@@ -230,7 +230,7 @@ namespace PriMech {
 			StartNewBatch();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), {0.0f, 0.0f, 1.0f})
+			* glm::rotate(glm::mat4(1.0f), rotation, {0.0f, 0.0f, 1.0f})
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		AdjustRenderer2DQuadData(transform, tintColor, texture, tileMultiplier);

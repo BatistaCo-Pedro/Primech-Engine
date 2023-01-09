@@ -7,6 +7,14 @@
 #include "Primech/Events/MouseEvent.h"
 
 namespace PriMech {
+	struct OrthoGraphicCameraBounds {
+		float left, right;
+		float bottom, top;
+
+		float GetWidth() { return right - left; }
+		float GetHeight() { return top - bottom; }
+	};
+
 	class OrthographicCameraController {
 	public:
 		OrthographicCameraController(float aspectRatio, bool rotationEnabled = false);
@@ -17,6 +25,7 @@ namespace PriMech {
 
 		inline float GetZoomLevel() { return zoomLevel_; }
 		inline void SetZoomLevel(float zoomLevel) { zoomLevel_ = zoomLevel; }
+		inline const OrthoGraphicCameraBounds& GetBounds() const { return bounds_; }
 
 		void OnUpdate(Timestep timestep);
 		void OnEvent(Event& event);
@@ -26,6 +35,7 @@ namespace PriMech {
 
 		float aspectRatio_;;
 		float zoomLevel_ = 1.0f;
+		OrthoGraphicCameraBounds bounds_;
 		OrthographicCamera camera_;
 
 		bool rotationEnabled_;

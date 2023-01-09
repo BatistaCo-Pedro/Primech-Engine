@@ -6,8 +6,10 @@
 
 
 namespace PriMech {
-	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotationEnabled) : aspectRatio_(aspectRatio),
-		camera_(-aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_), rotationEnabled_(rotationEnabled) {
+	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotationEnabled) : 
+		aspectRatio_(aspectRatio), rotationEnabled_(rotationEnabled),
+		bounds_({ -aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_ }), 
+		camera_(bounds_.left, bounds_.right, bounds_.bottom, bounds_.top) {
 
 	}
 
@@ -65,14 +67,16 @@ namespace PriMech {
 		zoomLevel_ -= event.GetOffsetY() * 0.25;
 		zoomLevel_ = std::max(zoomLevel_, 0.25f);
 		zoomLevel_ = std::min(zoomLevel_, 15.0f);
-		camera_.SetProjection(-aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_);
+		bounds_ = { -aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_ };
+		camera_.SetProjection(bounds_.left, bounds_.right, bounds_.bottom, bounds_.top);
 		return false;
 	}
 
 	bool OrthographicCameraController::OnWindowResize(WindowResizeEvent& event) {
 		PM_PROFILE_FUNCTION();
-		aspectRatio_ = (float)event.GetWidth() / (float)event.GetHeight();
-		camera_.SetProjection(-aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_);
+		aspectRatio_ = (float)event.GetWidth() / (float)event.GetHeight(); 
+		bounds_ = { -aspectRatio_ * zoomLevel_, aspectRatio_ * zoomLevel_, -zoomLevel_, zoomLevel_ };
+		camera_.SetProjection(bounds_.left, bounds_.right, bounds_.bottom, bounds_.top);
 		return false;
 	}
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "Primech.h"
 
+#include "ParticleSystem.h"
+
 class Sandbox2D : public PriMech::Layer
 {
 public:
@@ -21,4 +23,7 @@ private:
 	glm::vec4 squareColor_ = { 157.0f / 255, 0.0f, 1.0f, 1.0f };
 
 	PriMech::OrthographicCameraController cameraController_;
+
+	ParticleProps particle_;
+	ParticleSystem particleSystem_;
 };
