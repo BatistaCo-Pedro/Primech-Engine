@@ -137,7 +137,18 @@ namespace PriMech {
 	static void AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color,const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f) {
 		constexpr size_t quadVertexCount = 4;
 		float textureIndex = 0; //white texture
-		constexpr glm::vec2 textureCoords[] = { {0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}, {0.0f, 1.0f} };
+
+		//temp -> testing
+		float x = 7.0f, y = 6.0f;
+		float sheetWidth = 2560.0f, sheetHeight = 1664.0f;
+		float spriteWidth = 128.0f, spriteHeight = 128.0f;
+
+		const glm::vec2 textureCoords[] = { 
+			{ (x * spriteWidth) / sheetWidth, (y * spriteWidth) / sheetHeight }, //bottom-left
+			{ ((x + 1) * spriteWidth) / sheetWidth, (y * spriteWidth) / sheetHeight }, //bottom-right
+			{ ((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteWidth) / sheetHeight }, //top-right
+			{ (x * spriteWidth) / sheetWidth, ((y + 1) * spriteWidth) / sheetHeight }, //top-left
+		};
 
 		if (texture != nullptr) {
 			for (uint32_t i = 1; i < s_Data.textureSlotIndex; i++) {

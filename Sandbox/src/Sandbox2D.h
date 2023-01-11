@@ -20,6 +20,7 @@ private:
 	PriMech::Ref<PriMech::VertexArray> quadVertexArray_;
 	PriMech::Ref<PriMech::Shader> shader_;
 	PriMech::Ref<PriMech::Texture2D> checkerboardTexture_;
+	PriMech::Ref<PriMech::Texture2D> spriteSheet_;
 	glm::vec4 squareColor_ = { 157.0f / 255, 0.0f, 1.0f, 1.0f };
 
 	PriMech::OrthographicCameraController cameraController_;

@@ -8,11 +8,12 @@ Sandbox2D::Sandbox2D() : Layer("Sandbox2D"), cameraController_(1920.0f / 1080.0f
 void Sandbox2D::OnAttach() {
 	PM_PROFILE_FUNCTION();
 	checkerboardTexture_ = PriMech::Texture2D::Create("assets/textures/checkerboard.png");
+	spriteSheet_ = PriMech::Texture2D::Create("assets/testGame/textures/RPGpack_sheet.png");
 
 	particle_.colorBegin = { 254 / 255.0f, 212 / 255.0f, 123 / 255.0f, 1.0f };
 	particle_.colorEnd = { 254 / 255.0f, 109 / 255.0f, 41 / 255.0f, 1.0f };
 	particle_.sizeBegin = 0.5f, particle_.sizeVariation = 0.3f, particle_.sizeEnd = 0.0f;
-	particle_.lifeTime = 5.0f;
+	particle_.lifeTime = 3.0f;
 	particle_.velocity = { 0.0f, 0.0f };
 	particle_.velocityVariation = { 3.0f, 1.0f };
 	particle_.position = { 0.0f, 0.0f };
@@ -27,8 +28,8 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 	cameraController_.OnUpdate(timestep);
 	PM_WARN("FPS: {0}", 1.0f / timestep);
 	PriMech::Renderer2D::ResetStatistics();
-
 	PriMech::RendererCommand::ClearWithColor({0.1f, 0.1f, 0.1f, 0.0f});
+#if 0
 	{
 		static float rotation = 0.0f;
 		rotation += timestep * 60;
@@ -51,6 +52,7 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		}
 		PriMech::Renderer2D::EndScene();
 	}
+#endif
 	if (PriMech::Input::IsMouseButtonPressed(PM_MOUSE_BUTTON_LEFT)) {
 		auto [x, y] = PriMech::Input::GetMousePos();
 		auto width = PriMech::Application::GetApplication().GetWindow().GetWidth();
@@ -61,14 +63,16 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 		x = (x / width) * bounds.GetWidth() - bounds.GetWidth() * 0.5f;
 		y = bounds.GetHeight() * 0.5f - (y / height) * bounds.GetHeight();
 		particle_.position = { x + pos.x, y + pos.y };
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 10; i++) {
 			particleSystem_.Emit(particle_);
 		}
 	}
-
 	particleSystem_.OnUpdate(timestep);
 	particleSystem_.OnRender(cameraController_.GetCamera());
-	
+
+	PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
+	PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, spriteSheet_);
+	PriMech::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnEvent(PriMech::Event& event) {
