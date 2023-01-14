@@ -71,7 +71,7 @@ void Sandbox2D::OnUpdate(PriMech::Timestep timestep) {
 	particleSystem_.OnRender(cameraController_.GetCamera());
 
 	PriMech::Renderer2D::BeginScene(cameraController_.GetCamera());
-	PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, spriteSheet_);
+	PriMech::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.5f }, { 1.0f, 1.0f }, checkerboardTexture_);
 	PriMech::Renderer2D::EndScene();
 }
 

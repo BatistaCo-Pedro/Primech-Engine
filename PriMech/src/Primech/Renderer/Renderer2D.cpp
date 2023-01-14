@@ -134,20 +134,16 @@ namespace PriMech {
 		s_Data.textureSlotIndex = 1;
 	}
 
-	static void AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color,const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f) {
+	//TODO: Create  Template to accept both textures and subtextures
+	template <typename TextureType>
+	void Renderer2D::AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color, const Ref<TextureType>& texture, float tilingFactor) {
 		constexpr size_t quadVertexCount = 4;
 		float textureIndex = 0; //white texture
-
-		//temp -> testing
-		float x = 7.0f, y = 6.0f;
-		float sheetWidth = 2560.0f, sheetHeight = 1664.0f;
-		float spriteWidth = 128.0f, spriteHeight = 128.0f;
-
-		const glm::vec2 textureCoords[] = { 
-			{ (x * spriteWidth) / sheetWidth, (y * spriteWidth) / sheetHeight }, //bottom-left
-			{ ((x + 1) * spriteWidth) / sheetWidth, (y * spriteWidth) / sheetHeight }, //bottom-right
-			{ ((x + 1) * spriteWidth) / sheetWidth, ((y + 1) * spriteWidth) / sheetHeight }, //top-right
-			{ (x * spriteWidth) / sheetWidth, ((y + 1) * spriteWidth) / sheetHeight }, //top-left
+		glm::vec2 textureCoords[4] = {
+			{ 0.0f, 0.0f }, 
+			{ 1.0f, 0.0f },
+			{ 1.0f, 1.0f },
+			{ 0.0f, 1.0f },
 		};
 
 		if (texture != nullptr) {
@@ -159,8 +155,8 @@ namespace PriMech {
 			}
 
 			if (textureIndex == 0.0f) {
-				/*if (s_Data.textureSlotIndex >= Renderer2DData::maxTextureSlots)
-					StartNewBatch();*/
+				if (s_Data.textureSlotIndex >= Renderer2DData::maxTextureSlots)
+					StartNewBatch();
 
 				textureIndex = (float)s_Data.textureSlotIndex;
 				s_Data.textureSlots[s_Data.textureSlotIndex] = texture; //temp ->needs specific textureID
@@ -168,8 +164,7 @@ namespace PriMech {
 			}
 		}
 
-		for (size_t i = 0; i < quadVertexCount; i++)
-		{
+		for (size_t i = 0; i < quadVertexCount; i++) {
 			s_Data.quadVertexBufferPtr->position = transform * s_Data.quadVertexPositions[i];
 			s_Data.quadVertexBufferPtr->color = color;
 			s_Data.quadVertexBufferPtr->textureCoord = textureCoords[i];
@@ -211,6 +206,22 @@ namespace PriMech {
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
 		AdjustRenderer2DQuadData(transform, tintColor, texture, tileMultiplier);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tileMultiplier, const glm::vec4& tintcolor) {
+		DrawQuad({ position.x, position.y, 0.0f }, size, subtexture, tileMultiplier, tintcolor);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tileMultiplier, const glm::vec4& tintcolor) {
+		PM_PROFILE_FUNCTION();
+		if (s_Data.quadIndexCount >= Renderer2DData::maxIndices)
+			StartNewBatch();
+
+		float textureIndex = 0.0f; //white texture
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color) {

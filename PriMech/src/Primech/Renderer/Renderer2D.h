@@ -1,6 +1,7 @@
 #pragma once
 #include "Primech/Renderer/camera/OrthographicCamera.h"
 #include "Primech/Renderer/Texture.h"
+#include "Primech/Renderer/SubTexture2D.h"
 
 namespace PriMech {
 	class Renderer2D {
@@ -17,11 +18,15 @@ namespace PriMech {
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
 		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
+		static void DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
+		static void DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
 
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
+		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tileMultiplier = 1.0f, const glm::vec4& tintcolor = glm::vec4(1.0f));
 	
 		struct Statistics {
 			uint32_t drawCalls = 0;
@@ -34,6 +39,7 @@ namespace PriMech {
 		static Statistics GetStatistics();
 	private:
 		static void StartNewBatch();
-		//static void AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr, float tilingFactor = 1.0f);
+		template <typename TextureType = Texture2D>
+		static void AdjustRenderer2DQuadData(const glm::mat4& transform, const glm::vec4& color, const Ref<TextureType>& texture = nullptr, float tilingFactor = 1.0f);
 	};
 }
